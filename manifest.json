@@ -1,0 +1,20 @@
+{
+  "name": "Rwanda Revenue Authority",
+  "short_name": "RRA",
+  "description": "Official website of the Rwanda Revenue Authority — file taxes, make payments, and manage your tax obligations online.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#123D70",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/rra-logo.png",
+      "sizes": "2452x652",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "government"],
+  "lang": "en"
+}

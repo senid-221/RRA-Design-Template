@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — Rwanda Revenue Authority</title>
+  <meta name="description" content="The page you're looking for doesn't exist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .error-section { min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: 64px 0; background: var(--bg-alt); }
+    .error-card { text-align: center; max-width: 500px; }
+    .error-card__code { font-size: 120px; font-weight: 800; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+    [data-theme="dark"] .error-card__code { color: var(--gold); }
+    .error-card__title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+    .error-card__desc { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.5; }
+    .error-card__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .error-card__search { margin-top: 32px; }
+    .error-card__search input { width: 100%; max-width: 400px; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 14px; background: var(--bg-card); color: var(--text); }
+    .error-card__search input:focus { outline: none; border-color: var(--navy); }
+    [data-theme="dark"] .error-card__search input:focus { border-color: var(--gold); }
+    @media (max-width: 768px) { .error-card__code { font-size: 80px; } }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark"><img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;"></div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section"><h4>Domestic Taxes</h4><a href="domestic-tax-services.html#income-tax">Income Tax</a><a href="domestic-tax-services.html#vat">VAT</a><a href="domestic-tax-services.html#paye">PAYE</a></div>
+                <div class="dropdown__section"><h4>Customs & Trade</h4><a href="customs-services.html">Customs Services</a><a href="trade-portal.html">Trade Portal</a></div>
+                <div class="dropdown__section"><h4>Other Services</h4><a href="ebm-services.html">EBM Services</a><a href="non-fiscal.html">Non-Fiscal Revenue</a><a href="myrra.html">MyRRA Portal</a></div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link">Publications</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link">News</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="error-section">
+      <div class="container">
+        <div class="error-card">
+          <div class="error-card__code">404</div>
+          <h1 class="error-card__title">Page Not Found</h1>
+          <p class="error-card__desc">The page you're looking for doesn't exist or has been moved. Let us help you find what you need.</p>
+          <div class="error-card__actions">
+            <a href="index.html" class="btn btn--primary"><i class="lucide" data-lucide="home"></i> Go Home</a>
+            <a href="contact.html" class="btn btn--outline"><i class="lucide" data-lucide="help-circle"></i> Contact Support</a>
+          </div>
+          <div class="error-card__search">
+            <input type="search" id="errorSearch" placeholder="Search the site..." aria-label="Search">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer"><div class="logo__mark"><img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="36" style="width:auto;"></div></div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links"><h4>Tax Services</h4><a href="domestic-tax-services.html#income-tax">Income Tax</a><a href="domestic-tax-services.html#vat">VAT</a><a href="domestic-tax-services.html#paye">PAYE</a><a href="myrra.html">MyRRA Portal</a></div>
+        <div class="footer-links"><h4>Resources</h4><a href="ebm-services.html">EBM Services</a><a href="non-fiscal.html">Non-Fiscal Revenue</a><a href="customs-services.html">Customs Services</a><a href="trade-portal.html">Trade Portal</a></div>
+        <div class="footer-links"><h4>Support</h4><a href="about.html">About Us</a><a href="news.html">News</a><a href="contact.html">Contact Us</a><a href="publications.html">Publications</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p><div class="footer-bottom__links"><a href="#privacy">Privacy Policy</a><a href="#terms">Terms of Use</a><a href="#accessibility-statement">Accessibility</a><a href="#sitemap">Sitemap</a></div></div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header"><span class="logo__title">RRA</span><button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button></div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer"><a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> MyRRA Login</a></div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script>
+    lucide.createIcons();
+    document.getElementById('errorSearch').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) { window.location.href = 'index.html?q=' + encodeURIComponent(this.value.trim()); }
+    });
+  </script>
+</body>
+</html>

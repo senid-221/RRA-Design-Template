@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIN Lookup — Rwanda Revenue Authority</title>
+  <meta name="description" content="Search for your Tax Identification Number (TIN) using your National ID.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/about.css">
+  <style>
+    .tin-hero { padding: 80px 0; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff; text-align: center; }
+    .tin-hero__inner { max-width: 700px; margin: 0 auto; }
+    .tin-hero__title { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .tin-hero__subtitle { font-size: 18px; opacity: 0.9; }
+    .tin-section { padding: 64px 0; background: var(--bg-alt); }
+    .tin-card { max-width: 560px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; box-shadow: var(--shadow-lg); }
+    .tin-card h2 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; text-align: center; }
+    .tin-card > p { font-size: 14px; color: var(--text-secondary); text-align: center; margin-bottom: 28px; }
+    .tin-card .form-group { margin-bottom: 20px; }
+    .tin-card .form-group label { display: block; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .tin-card .form-group input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 14px; color: var(--text); background: var(--bg); }
+    .tin-card .form-group input:focus { outline: none; border-color: var(--navy); }
+    [data-theme="dark"] .tin-card .form-group input:focus { border-color: var(--gold); }
+    .tin-result { margin-top: 24px; padding: 20px; background: var(--gray-50); border-radius: var(--radius); border: 1px solid var(--border); display: none; }
+    [data-theme="dark"] .tin-result { background: var(--gray-800); }
+    .tin-result.show { display: block; }
+    .tin-result__row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
+    .tin-result__row:last-child { border-bottom: none; }
+    .tin-result__label { color: var(--text-muted); }
+    .tin-result__value { font-weight: 600; color: var(--text); }
+    .tin-error { color: var(--red); font-size: 14px; text-align: center; margin-top: 12px; display: none; }
+    .tin-error.show { display: block; }
+    .tin-info { max-width: 560px; margin: 32px auto 0; text-align: center; font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    .tin-info a { color: var(--navy); font-weight: 600; }
+    [data-theme="dark"] .tin-info a { color: var(--gold); }
+    @media (max-width: 768px) { .tin-hero__title { font-size: 28px; } .tin-card { padding: 28px; } }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark"><img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;"></div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section"><h4>Domestic Taxes</h4><a href="domestic-tax-services.html#income-tax">Income Tax</a><a href="domestic-tax-services.html#vat">VAT</a><a href="domestic-tax-services.html#paye">PAYE</a></div>
+                <div class="dropdown__section"><h4>Customs & Trade</h4><a href="customs-services.html">Customs Services</a><a href="trade-portal.html">Trade Portal</a></div>
+                <div class="dropdown__section"><h4>Other Services</h4><a href="ebm-services.html">EBM Services</a><a href="non-fiscal.html">Non-Fiscal Revenue</a><a href="myrra.html">MyRRA Portal</a></div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link">Publications</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link">News</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="tin-hero">
+      <div class="container"><div class="tin-hero__inner">
+        <h1 class="tin-hero__title">TIN Lookup</h1>
+        <p class="tin-hero__subtitle">Find your Tax Identification Number using your National ID</p>
+      </div></div>
+    </section>
+
+    <section class="tin-section">
+      <div class="container">
+        <div class="tin-card">
+          <h2>Search by National ID</h2>
+          <p>Enter your 16-digit National ID number to find your TIN</p>
+          <div class="form-group">
+            <label for="nationalId">National ID Number</label>
+            <input type="text" id="nationalId" placeholder="e.g. 1199080012345678" maxlength="16" pattern="[0-9]{16}">
+          </div>
+          <button class="btn btn--primary btn--full" id="tinSearchBtn"><i class="lucide" data-lucide="search"></i> Search TIN</button>
+          <div class="tin-error" id="tinError"></div>
+          <div class="tin-result" id="tinResult">
+            <div class="tin-result__row"><span class="tin-result__label">National ID</span><span class="tin-result__value" id="resNid"></span></div>
+            <div class="tin-result__row"><span class="tin-result__label">TIN</span><span class="tin-result__value" id="resTin" style="color:var(--navy);font-size:16px;"></span></div>
+            <div class="tin-result__row"><span class="tin-result__label">Taxpayer Name</span><span class="tin-result__value" id="resName"></span></div>
+            <div class="tin-result__row"><span class="tin-result__label">Status</span><span class="tin-result__value" id="resStatus"></span></div>
+          </div>
+          <p class="tin-info">Don't have a TIN? <a href="myrra.html">Register on MyRRA</a> or visit your nearest RRA office. For help, <a href="contact.html">contact support</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer"><div class="logo__mark"><img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="36" style="width:auto;"></div></div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links"><h4>Tax Services</h4><a href="domestic-tax-services.html#income-tax">Income Tax</a><a href="domestic-tax-services.html#vat">VAT</a><a href="domestic-tax-services.html#paye">PAYE</a><a href="myrra.html">MyRRA Portal</a></div>
+        <div class="footer-links"><h4>Resources</h4><a href="ebm-services.html">EBM Services</a><a href="non-fiscal.html">Non-Fiscal Revenue</a><a href="customs-services.html">Customs Services</a><a href="trade-portal.html">Trade Portal</a></div>
+        <div class="footer-links"><h4>Support</h4><a href="about.html">About Us</a><a href="news.html">News</a><a href="contact.html">Contact Us</a><a href="publications.html">Publications</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p><div class="footer-bottom__links"><a href="#privacy">Privacy Policy</a><a href="#terms">Terms of Use</a><a href="#accessibility-statement">Accessibility</a><a href="#sitemap">Sitemap</a></div></div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header"><span class="logo__title">RRA</span><button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button></div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer"><a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> MyRRA Login</a></div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script>
+  (function() {
+    'use strict';
+    lucide.createIcons();
+
+    // Simulated TIN database
+    var tinDB = {
+      '1199080012345678': { tin: '1122334455', name: 'Jean Pierre Mugabo', status: 'Active' },
+      '1198570098765432': { tin: '2233445566', name: 'Marie Claire Uwimana', status: 'Active' },
+      '1200180011223344': { tin: '3344556677', name: 'Patrick Habimana', status: 'Active' }
+    };
+
+    var btn = document.getElementById('tinSearchBtn');
+    var input = document.getElementById('nationalId');
+    var result = document.getElementById('tinResult');
+    var error = document.getElementById('tinError');
+
+    btn.addEventListener('click', function() {
+      var nid = input.value.trim();
+      result.classList.remove('show');
+      error.classList.remove('show');
+
+      if (!/^\d{16}$/.test(nid)) {
+        error.textContent = 'Please enter a valid 16-digit National ID number.';
+        error.classList.add('show');
+        return;
+      }
+
+      btn.innerHTML = '<i class="lucide" data-lucide="loader"></i> Searching...';
+      btn.disabled = true;
+      lucide.createIcons();
+
+      setTimeout(function() {
+        var record = tinDB[nid];
+        if (record) {
+          document.getElementById('resNid').textContent = nid;
+          document.getElementById('resTin').textContent = record.tin;
+          document.getElementById('resName').textContent = record.name;
+          document.getElementById('resStatus').textContent = record.status;
+          result.classList.add('show');
+        } else {
+          error.textContent = 'No TIN found for this National ID. Please verify the number or visit an RRA office.';
+          error.classList.add('show');
+        }
+        btn.innerHTML = '<i class="lucide" data-lucide="search"></i> Search TIN';
+        btn.disabled = false;
+        lucide.createIcons();
+      }, 1200);
+    });
+
+    input.addEventListener('input', function() {
+      input.value = input.value.replace(/\D/g, '').slice(0, 16);
+    });
+  })();
+  </script>
+</body>
+</html>

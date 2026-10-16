@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Rwanda Revenue Authority</title>
+  <meta name="description" content="Learn about RRA's mission, vision, leadership, and history. Discover how we collect revenue to fund Rwanda's national development.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;">
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html">EBM Services</a>
+                  <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link">Publications</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link">News</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link active">About</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="About RRA">About RRA</button>
+            <button class="search-tag" data-query="Mission">Mission</button>
+            <button class="search-tag" data-query="Leadership">Leadership</button>
+            <button class="search-tag" data-query="History">History</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="about-hero">
+      <div class="container">
+        <div class="about-hero__inner">
+          <h1 class="about-hero__title">About Rwanda Revenue Authority</h1>
+          <p class="about-hero__subtitle">Collecting revenue on behalf of the Government of Rwanda to fund national development since 1999.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission / Vision / Values -->
+    <section class="mvv-section">
+      <div class="container">
+        <div class="mvv-grid">
+          <div class="mvv-card">
+            <div class="mvv-card__icon"><i class="lucide" data-lucide="target"></i></div>
+            <h2>Our Mission</h2>
+            <p>To efficiently collect all taxes and other revenues on behalf of the Government of Rwanda, and to provide excellent service to taxpayers while ensuring compliance with tax laws.</p>
+          </div>
+          <div class="mvv-card">
+            <div class="mvv-card__icon"><i class="lucide" data-lucide="eye"></i></div>
+            <h2>Our Vision</h2>
+            <p>To be a world-class revenue administration that is trusted by taxpayers and recognized for integrity, efficiency, and innovation in service delivery.</p>
+          </div>
+          <div class="mvv-card">
+            <div class="mvv-card__icon"><i class="lucide" data-lucide="heart"></i></div>
+            <h2>Our Values</h2>
+            <p>Integrity, professionalism, transparency, accountability, and customer focus guide everything we do. We serve with honesty and respect for every taxpayer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card__number">25+</div>
+            <div class="stat-card__label">Years of Service</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__number">500K+</div>
+            <div class="stat-card__label">Registered Taxpayers</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__number">2,500+</div>
+            <div class="stat-card__label">Staff Members</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__number">30+</div>
+            <div class="stat-card__label">Service Offices</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership -->
+    <section class="leadership-section" id="leadership">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Leadership Team</h2>
+          <p class="section-subtitle">The people guiding Rwanda's revenue administration</p>
+        </div>
+        <div class="leadership-grid">
+          <div class="leader-card">
+            <div class="leader-card__photo">
+              <i class="lucide" data-lucide="user"></i>
+            </div>
+            <h3>Emmanuel Nkulikiyinka</h3>
+            <p class="leader-card__role">Commissioner General</p>
+            <p class="leader-card__bio">Leads RRA's strategic direction and overall operations since 2020.</p>
+          </div>
+          <div class="leader-card">
+            <div class="leader-card__photo">
+              <i class="lucide" data-lucide="user"></i>
+            </div>
+            <h3>Marie Claire Umuhire</h3>
+            <p class="leader-card__role">Deputy Commissioner General — Domestic Taxes</p>
+            <p class="leader-card__bio">Oversees income tax, VAT, PAYE and all domestic tax operations.</p>
+          </div>
+          <div class="leader-card">
+            <div class="leader-card__photo">
+              <i class="lucide" data-lucide="user"></i>
+            </div>
+            <h3>Jean Baptiste Nsengiyumva</h3>
+            <p class="leader-card__role">Deputy Commissioner General — Customs Services</p>
+            <p class="leader-card__bio">Manages customs operations, trade facilitation and border controls.</p>
+          </div>
+          <div class="leader-card">
+            <div class="leader-card__photo">
+              <i class="lucide" data-lucide="user"></i>
+            </div>
+            <h3>Diane Karusisi</h3>
+            <p class="leader-card__role">Chief Finance Officer</p>
+            <p class="leader-card__bio">Manages RRA's financial planning, budgeting and resource allocation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- History Timeline -->
+    <section class="timeline-section" id="history">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Our History</h2>
+          <p class="section-subtitle">Key milestones in RRA's journey</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-item__year">1999</div>
+            <div class="timeline-item__content">
+              <h3>RRA Established</h3>
+              <p>Rwanda Revenue Authority created by Law No. 15/99 to consolidate tax and customs administration under one body.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item__year">2005</div>
+            <div class="timeline-item__content">
+              <h3>EBM System Launched</h3>
+              <p>Electronic Billing Machine system introduced to combat VAT fraud and improve tax collection transparency.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item__year">2010</div>
+            <div class="timeline-item__content">
+              <h3>MyRRA Portal</h3>
+              <p>Online taxpayer portal launched, enabling e-filing, e-payment and self-service account management.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item__year">2015</div>
+            <div class="timeline-item__content">
+              <h3>Trade Portal</h3>
+              <p>Rwanda Trade Portal launched to simplify import/export procedures and boost trade facilitation.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item__year">2020</div>
+            <div class="timeline-item__content">
+              <h3>Digital Transformation</h3>
+              <p>Major digital overhaul: mobile tax payments, WhatsApp support, AI-powered chatbot, and paperless processes.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item__year">2024</div>
+            <div class="timeline-item__content">
+              <h3>Record Revenue Collection</h3>
+              <p>RRA surpassed RWF 2 trillion in annual revenue collection for the first time, a historic milestone.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Organizational Structure -->
+    <section class="org-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Organizational Structure</h2>
+          <p class="section-subtitle">How RRA is organized to serve you</p>
+        </div>
+        <div class="org-grid">
+          <div class="org-card">
+            <div class="org-card__icon"><i class="lucide" data-lucide="landmark"></i></div>
+            <h3>Commissioner General's Office</h3>
+            <p>Strategic leadership, policy direction, and overall coordination of RRA operations.</p>
+          </div>
+          <div class="org-card">
+            <div class="org-card__icon"><i class="lucide" data-lucide="building-2"></i></div>
+            <h3>Domestic Taxes Department</h3>
+            <p>Income tax, VAT, PAYE, local government taxes, and taxpayer education programs.</p>
+          </div>
+          <div class="org-card">
+            <div class="org-card__icon"><i class="lucide" data-lucide="ship"></i></div>
+            <h3>Customs Services Department</h3>
+            <p>Import/export controls, customs valuation, trade facilitation, and border management.</p>
+          </div>
+          <div class="org-card">
+            <div class="org-card__icon"><i class="lucide" data-lucide="shield"></i></div>
+            <h3>Tax Investigations & Enforcement</h3>
+            <p>Tax audit, fraud detection, compliance enforcement, and debt collection.</p>
+          </div>
+          <div class="org-card">
+            <div class="org-card__icon"><i class="lucide" data-lucide="cpu"></i></div>
+            <h3>ICT & Innovation</h3>
+            <p>Digital systems, EBM, MyRRA portal, data analytics, and technology infrastructure.</p>
+          </div>
+          <div class="org-card">
+            <div class="org-card__icon"><i class="lucide" data-lucide="users"></i></div>
+            <h3>Corporate Services</h3>
+            <p>Human resources, finance, legal affairs, communications, and administration.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-card">
+          <h2>Want to Learn More?</h2>
+          <p>Explore our publications, read the latest news, or get in touch with our team.</p>
+          <div class="cta-card__actions">
+            <a href="publications.html" class="btn btn--primary"><i class="lucide" data-lucide="file-text"></i> Publications</a>
+            <a href="news.html" class="btn btn--outline" style="border-color:#fff;color:#fff;"><i class="lucide" data-lucide="newspaper"></i> News & Events</a>
+            <a href="contact.html" class="btn btn--outline" style="border-color:#fff;color:#fff;"><i class="lucide" data-lucide="mail"></i> Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="36" style="width:auto;">
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="about.html">About Us</a>
+          <a href="news.html">News</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="publications.html">Publications</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> MyRRA Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/about-app.js"></script>
+</body>
+</html>

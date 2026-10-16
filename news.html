@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News & Events — Rwanda Revenue Authority</title>
+  <meta name="description" content="Latest news, press releases, announcements and events from Rwanda Revenue Authority.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/news.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;">
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html">EBM Services</a>
+                  <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link">Publications</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link active">News</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search news..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="Tax deadline">Tax Deadline</button>
+            <button class="search-tag" data-query="EBM">EBM</button>
+            <button class="search-tag" data-query="Revenue collection">Revenue</button>
+            <button class="search-tag" data-query="Customs">Customs</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="news-hero">
+      <div class="container">
+        <div class="news-hero__inner">
+          <h1 class="news-hero__title">News & Events</h1>
+          <p class="news-hero__subtitle">Stay updated with the latest from Rwanda Revenue Authority</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="news-filters-section">
+      <div class="container">
+        <div class="news-filter-bar">
+          <div class="news-filter-tabs" id="newsFilterTabs">
+            <button class="news-filter-tab active" data-filter="all">All</button>
+            <button class="news-filter-tab" data-filter="press">Press Releases</button>
+            <button class="news-filter-tab" data-filter="announcement">Announcements</button>
+            <button class="news-filter-tab" data-filter="event">Events</button>
+          </div>
+          <div class="news-search">
+            <i class="lucide" data-lucide="search"></i>
+            <input type="text" id="newsSearchInput" placeholder="Search news...">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section class="featured-section">
+      <div class="container">
+        <div class="featured-card" id="featuredCard"></div>
+      </div>
+    </section>
+
+    <!-- News Grid -->
+    <section class="news-grid-section">
+      <div class="container">
+        <div class="news-grid" id="newsGrid"></div>
+        <div class="news-empty" id="newsEmpty" hidden>
+          <i class="lucide" data-lucide="search-x"></i>
+          <p>No articles found matching your criteria.</p>
+        </div>
+        <div class="load-more-wrap">
+          <button class="btn btn--outline" id="loadMoreBtn">Load More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events -->
+    <section class="events-section" id="events">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Upcoming Events</h2>
+          <p class="section-subtitle">Workshops, seminars and taxpayer education sessions</p>
+        </div>
+        <div class="events-list" id="eventsList"></div>
+      </div>
+    </section>
+
+    <!-- Subscribe -->
+    <section class="subscribe-section">
+      <div class="container">
+        <div class="subscribe-card">
+          <i class="lucide" data-lucide="bell"></i>
+          <h2>Stay Informed</h2>
+          <p>Subscribe to receive RRA news, tax deadlines and announcements directly in your inbox.</p>
+          <form class="subscribe-form" id="subscribeForm">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit" class="btn btn--primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="36" style="width:auto;">
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="about.html">About Us</a>
+          <a href="news.html">News</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="publications.html">Publications</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> MyRRA Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/news-data.js"></script>
+  <script src="js/news-app.js"></script>
+</body>
+</html>
