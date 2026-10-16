@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publications & Tax Guides — Rwanda Revenue Authority</title>
+  <meta name="description" content="Tax handbooks, brochures, annual reports, user guides, forms and official documents from RRA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/publications.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__in">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html">EBM Services</a>
+                  <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link active">Publications</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="VAT Handbook">VAT Handbook</button>
+            <button class="search-tag" data-query="Annual Report">Annual Report</button>
+            <button class="search-tag" data-query="EBM Guide">EBM Guide</button>
+            <button class="search-tag" data-query="Tax Forms">Tax Forms</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <span class="breadcrumb__current">Publications</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner">
+          <div class="page-hero__icon" style="background: linear-gradient(135deg, var(--navy), var(--navy-light));">
+            <i class="lucide" data-lucide="library" style="width:32px;height:32px;color:var(--gold);"></i>
+          </div>
+          <h1 class="page-hero__title">Publications & Tax Guides</h1>
+          <p class="page-hero__desc">Official tax handbooks, brochures, annual reports, user guides, forms and legal documents.</p>
+          <div class="page-hero__actions">
+            <a href="#library" class="btn btn--primary"><i class="lucide" data-lucide="search"></i> Browse Library</a>
+            <a href="#annual-reports" class="btn btn--outline"><i class="lucide" data-lucide="bar-chart-3"></i> Annual Reports</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Document Library -->
+    <section class="pub-library" id="library">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Document Library</h2>
+          <p class="section-subtitle">Search and filter publications by type, topic, and language</p>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="pub-filters">
+          <div class="pub-search">
+            <i class="lucide" data-lucide="search"></i>
+            <input type="search" id="pubSearch" placeholder="Search by title, keyword, or topic..." aria-label="Search publications">
+          </div>
+          <div class="pub-filter-row">
+            <div class="filter-group">
+              <label>Type</label>
+              <select id="filterType" aria-label="Filter by document type">
+                <option value="all">All Types</option>
+                <option value="handbook">Handbook</option>
+                <option value="guide">User Guide</option>
+                <option value="brochure">Brochure</option>
+                <option value="report">Annual Report</option>
+                <option value="form">Form</option>
+                <option value="law">Law / Regulation</option>
+                <option value="circular">Tax Circular</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Topic</label>
+              <select id="filterTopic" aria-label="Filter by tax topic">
+                <option value="all">All Topics</option>
+                <option value="vat">VAT</option>
+                <option value="income-tax">Income Tax</option>
+                <option value="paye">PAYE</option>
+                <option value="excise">Excise Duty</option>
+                <option value="customs">Customs</option>
+                <option value="ebm">EBM</option>
+                <option value="withholding">Withholding Tax</option>
+                <option value="general">General</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Language</label>
+              <select id="filterLang" aria-label="Filter by language">
+                <option value="all">All Languages</option>
+                <option value="en">English</option>
+                <option value="rw">Kinyarwanda</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Year</label>
+              <select id="filterYear" aria-label="Filter by year">
+                <option value="all">All Years</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+          </div>
+          <div class="pub-filter-summary" id="filterSummary"></div>
+        </div>
+
+        <!-- Results Grid -->
+        <div class="pub-grid" id="pubGrid"></div>
+        <div class="pub-empty" id="pubEmpty" hidden>
+          <i class="lucide" data-lucide="file-x" style="width:48px;height:48px;color:var(--text-muted);"></i>
+          <h3>No documents found</h3>
+          <p>Try adjusting your search or filters</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Annual Reports Highlight -->
+    <section class="pub-annual" id="annual-reports">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Annual Reports</h2>
+          <p class="section-subtitle">RRA performance reports and revenue statistics</p>
+        </div>
+        <div class="annual-grid" id="annualGrid"></div>
+      </div>
+    </section>
+
+    <!-- Tax Laws & Regulations -->
+    <section class="pub-laws">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Tax Laws & Regulations</h2>
+          <p class="section-subtitle">Official legal framework governing taxation in Rwanda</p>
+        </div>
+        <div class="laws-list" id="lawsList"></div>
+      </div>
+    </section>
+
+    <!-- Tax Forms -->
+    <section class="pub-forms">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Tax Forms</h2>
+          <p class="section-subtitle">Downloadable forms for tax registration, declarations, and compliance</p>
+        </div>
+        <div class="forms-grid" id="formsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Contact / Feedback -->
+    <section class="help-section" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Contact & Feedback</h2>
+          <p class="section-subtitle">Send us a letter, request information, or share your feedback</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-form-card">
+            <h3>Send a Letter or Message</h3>
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contactName">Full Name</label>
+                  <input type="text" id="contactName" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactEmail">Email</label>
+                  <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contactTIN">TIN (optional)</label>
+                  <input type="text" id="contactTIN" placeholder="Your TIN number">
+                </div>
+                <div class="form-group">
+                  <label for="contactSubject">Subject</label>
+                  <select id="contactSubject" required>
+                    <option value="">Select a subject</option>
+                    <option value="general">General Inquiry</option>
+                    <option value="complaint">Complaint</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="request">Information Request</option>
+                    <option value="official">Official Letter</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="contactMessage">Message</label>
+                <textarea id="contactMessage" rows="5" placeholder="Write your message here..." required></textarea>
+              </div>
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="contactAttach" >
+                  <span>I want to attach a document (supported after submission via email)</span>
+                </label>
+              </div>
+              <button type="submit" class="btn btn--primary">
+                <i class="lucide" data-lucide="send"></i> Send Message
+              </button>
+            </form>
+          </div>
+          <div class="contact-info-side">
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="map-pin"></i></div>
+              <h4>Head Office</h4>
+              <p>RRA Head Office<br>Kigali, Rwanda<br>KN 82 St, Nyarugenge</p>
+            </div>
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="phone"></i></div>
+              <h4>Phone</h4>
+              <p>+250 788 111 222<br>Toll Free: 3535</p>
+            </div>
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="mail"></i></div>
+              <h4>Email</h4>
+              <p>info@rra.gov.rw<br>complaints@rra.gov.rw</p>
+            </div>
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="clock"></i></div>
+              <h4>Office Hours</h4>
+              <p>Mon–Fri: 7:30 AM – 5:00 PM<br>Sat: 8:00 AM – 12:00 PM</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="publications.html">Publications</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="myrra.html#help">Login Help</a>
+          <a href="#feedback">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> Login to MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/publications-data.js"></script>
+  <script src="js/publications-app.js"></script>
+</body>
+</html>
