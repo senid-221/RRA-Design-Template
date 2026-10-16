@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EBM Services — Rwanda Revenue Authority</title>
+  <meta name="description" content="Electronic Billing Machine (EBM) setup, user guides, transaction guidance, and software integration for RRA-compliant invoicing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/services.css">
+  <style>
+    .ebm-paths { padding: 64px 0; background: var(--bg); }
+    .ebm-path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .ebm-path-card {
+      background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-xl);
+      padding: 32px; transition: all var(--transition); cursor: pointer; position: relative; overflow: hidden;
+    }
+    .ebm-path-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--navy), var(--gold)); opacity: 0; transition: opacity var(--transition);
+    }
+    .ebm-path-card:hover { border-color: var(--navy); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .ebm-path-card:hover::before { opacity: 1; }
+    .ebm-path-card.active { border-color: var(--navy); }
+    .ebm-path-card.active::before { opacity: 1; }
+    .ebm-path-card__icon {
+      width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: var(--radius-lg); margin-bottom: 20px;
+    }
+    .ebm-path-card__icon .lucide, .ebm-path-card__icon [data-lucide] { width: 28px; height: 28px; color: var(--gold); }
+    .ebm-path-card__badge {
+      display: inline-block; padding: 4px 12px; background: var(--gold); color: var(--navy);
+      font-size: 11px; font-weight: 700; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .ebm-path-card h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .ebm-path-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px; }
+    .ebm-path-card__link { font-size: 14px; font-weight: 600; color: var(--navy); display: inline-flex; align-items: center; gap: 6px; }
+    [data-theme="dark"] .ebm-path-card__link { color: var(--gold); }
+
+    .ebm-detail { padding: 64px 0; background: var(--gray-50); }
+    [data-theme="dark"] .ebm-detail { background: var(--gray-900); }
+    .ebm-detail__content { display: none; }
+    .ebm-detail__content.active { display: block; }
+
+    .ebm-types-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 32px 0; }
+    .ebm-type-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 24px; transition: all var(--transition);
+    }
+    .ebm-type-card:hover { border-color: var(--gold); box-shadow: var(--shadow-md); }
+    .ebm-type-card__header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .ebm-type-card__header .lucide, .ebm-type-card__header [data-lucide] { width: 24px; height: 24px; color: var(--navy); }
+    [data-theme="dark"] .ebm-type-card__header .lucide, [data-theme="dark"] .ebm-type-card__header [data-lucide] { color: var(--gold); }
+    .ebm-type-card h4 { font-size: 16px; font-weight: 700; color: var(--text); }
+    .ebm-type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .ebm-type-card__tag {
+      display: inline-block; padding: 3px 10px; background: var(--green-light); color: var(--green);
+      font-size: 11px; font-weight: 600; border-radius: 12px; margin-top: 10px;
+    }
+
+    .guide-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+    .guide-item {
+      display: flex; align-items: center; gap: 16px; padding: 16px 20px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); transition: all var(--transition);
+    }
+    .guide-item:hover { border-color: var(--navy); box-shadow: var(--shadow-sm); }
+    .guide-item__icon {
+      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      background: var(--gray-100); border-radius: var(--radius); flex-shrink: 0;
+    }
+    [data-theme="dark"] .guide-item__icon { background: var(--gray-800); }
+    .guide-item__icon .lucide, .guide-item__icon [data-lucide] { width: 20px; height: 20px; color: var(--navy); }
+    [data-theme="dark"] .guide-item__icon .lucide, [data-theme="dark"] .guide-item__icon [data-lucide] { color: var(--gold); }
+    .guide-item__info { flex: 1; }
+    .guide-item__info h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .guide-item__info p { font-size: 12px; color: var(--text-muted); }
+    .guide-item__download { font-size: 13px; font-weight: 600; color: var(--navy); white-space: nowrap; }
+    [data-theme="dark"] .guide-item__download { color: var(--gold); }
+
+    .transaction-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    .transaction-table th, .transaction-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .transaction-table th { background: var(--navy); color: #fff; font-weight: 600; }
+    .transaction-table th:first-child { border-radius: var(--radius) 0 0 0; }
+    .transaction-table th:last-child { border-radius: 0 var(--radius) 0 0; }
+    [data-theme="dark"] .transaction-table th { background: var(--gray-800); }
+    .transaction-table td { color: var(--text); }
+    .transaction-table tr:hover td { background: var(--gray-50); }
+    [data-theme="dark"] .transaction-table tr:hover td { background: var(--gray-800); }
+    .transaction-badge {
+      display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+    }
+    .transaction-badge--required { background: #FEE2E2; color: #DC2626; }
+    .transaction-badge--optional { background: #DBEAFE; color: #2563EB; }
+
+    .integration-steps { counter-reset: step; margin: 24px 0; }
+    .integration-step {
+      display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border);
+    }
+    .integration-step:last-child { border-bottom: none; }
+    .integration-step__num {
+      counter-increment: step; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      background: var(--navy); color: var(--gold); font-weight: 800; font-size: 16px; border-radius: 50%; flex-shrink: 0;
+    }
+    .integration-step__content h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .integration-step__content p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+    .integration-step__content code {
+      display: inline-block; padding: 2px 8px; background: var(--gray-100); border: 1px solid var(--border);
+      border-radius: 4px; font-size: 12px; font-family: 'Courier New', monospace; color: var(--navy); margin-top: 6px;
+    }
+    [data-theme="dark"] .integration-step__content code { background: var(--gray-800); color: var(--gold); }
+
+    .purchase-code-section {
+      background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: var(--radius-xl);
+      padding: 40px; color: #fff; margin: 32px 0;
+    }
+    .purchase-code-section h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+    .purchase-code-section p { font-size: 15px; opacity: 0.9; line-height: 1.6; margin-bottom: 20px; }
+    .purchase-code-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .purchase-code-step {
+      background: rgba(255,255,255,0.1); border-radius: var(--radius); padding: 20px; backdrop-filter: blur(4px);
+    }
+    .purchase-code-step__num { font-size: 28px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+    .purchase-code-step h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .purchase-code-step p { font-size: 13px; opacity: 0.8; margin-bottom: 0; }
+
+    @media (max-width: 1024px) {
+      .ebm-path-grid { grid-template-columns: 1fr; }
+      .ebm-types-grid, .guide-list { grid-template-columns: 1fr; }
+      .purchase-code-steps { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .ebm-paths, .ebm-detail { padding: 40px 0; }
+      .transaction-table { font-size: 13px; }
+      .transaction-table th, .transaction-table td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__in">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html" class="active">EBM Services</a>
+                  <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="#faq" class="nav-link">FAQ</a></li>
+            <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="EBM setup">EBM Setup</button>
+            <button class="search-tag" data-query="VSDC">VSDC</button>
+            <button class="search-tag" data-query="Purchase Code">Purchase Code</button>
+            <button class="search-tag" data-query="Invoice">Invoice</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb__sep">/</span>
+          <span class="breadcrumb__current">EBM Services</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__inner">
+          <div class="page-hero__icon" style="background: linear-gradient(135deg, var(--navy), var(--navy-light));">
+            <i class="lucide" data-lucide="receipt" style="width:32px;height:32px;color:var(--gold);"></i>
+          </div>
+          <h1 class="page-hero__title">Electronic Billing Machine (EBM)</h1>
+          <p class="page-hero__desc">Setup guides, transaction guidance, user manuals and software integration resources for RRA-compliant invoicing.</p>
+          <div class="page-hero__actions">
+            <a href="#paths" class="btn btn--primary"><i class="lucide" data-lucide="play-circle"></i> Get Started</a>
+            <a href="#guides" class="btn btn--outline"><i class="lucide" data-lucide="book-open"></i> View Guides</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three Paths -->
+    <section class="ebm-paths" id="paths">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">How can we help you?</h2>
+          <p class="section-subtitle">Choose the path that matches your situation</p>
+        </div>
+        <div class="ebm-path-grid">
+          <div class="ebm-path-card active" data-path="new-user" onclick="switchPath('new-user')">
+            <div class="ebm-path-card__icon"><i class="lucide" data-lucide="user-plus"></i></div>
+            <span class="ebm-path-card__badge">New to EBM</span>
+            <h3>I'm starting with EBM</h3>
+            <p>New to electronic billing? Learn about EBM types, how to apply, get your device set up and start issuing compliant invoices.</p>
+            <span class="ebm-path-card__link">Get started <i class="lucide" data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
+          </div>
+          <div class="ebm-path-card" data-path="existing-user" onclick="switchPath('existing-user')">
+            <div class="ebm-path-card__icon"><i class="lucide" data-lucide="book-open"></i></div>
+            <span class="ebm-path-card__badge">Current User</span>
+            <h3>I already use EBM</h3>
+            <p>Access user guides, transaction guidance, troubleshooting tips and learn how to handle specific scenarios like refunds and credit notes.</p>
+            <span class="ebm-path-card__link">View guides <i class="lucide" data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
+          </div>
+          <div class="ebm-path-card" data-path="integration" onclick="switchPath('integration')">
+            <div class="ebm-path-card__icon"><i class="lucide" data-lucide="code-2"></i></div>
+            <span class="ebm-path-card__badge">Developer</span>
+            <h3>Integrate my software</h3>
+            <p>Technical specifications, API documentation, VSDC integration, certification process and testing environment for software developers.</p>
+            <span class="ebm-path-card__link">View docs <i class="lucide" data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detail: New User -->
+    <section class="ebm-detail" id="detail-new-user">
+      <div class="container">
+        <div class="ebm-detail__content active" id="path-new-user">
+          <div class="section-header">
+            <h2 class="section-title">Getting Started with EBM</h2>
+            <p class="section-subtitle">Everything you need to begin issuing electronic invoices</p>
+          </div>
+
+          <div class="info-card" style="margin-bottom:24px;">
+            <div class="info-card__header">
+              <i class="lucide" data-lucide="info"></i>
+              <h3 class="info-card__title">What is EBM?</h3>
+            </div>
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;">
+              An Electronic Billing Machine (EBM) is a device or software application used to generate fiscal receipts and invoices that are transmitted to RRA in real-time. All businesses registered for VAT in Rwanda are required to use EBM for their transactions. The system ensures tax compliance and provides customers with verifiable proof of purchase.
+            </p>
+          </div>
+
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px;">EBM Types Available</h3>
+          <div class="ebm-types-grid">
+            <div class="ebm-type-card">
+              <div class="ebm-type-card__header">
+                <i class="lucide" data-lucide="monitor"></i>
+                <h4>Windows EBM Application</h4>
+              </div>
+              <p>Desktop application for Windows PCs. Suitable for businesses with a fixed point of sale and reliable power supply.</p>
+              <span class="ebm-type-card__tag">Most Common</span>
+            </div>
+            <div class="ebm-type-card">
+              <div class="ebm-type-card__header">
+                <i class="lucide" data-lucide="smartphone"></i>
+                <h4>Android EBM Application</h4>
+              </div>
+              <p>Mobile application for Android devices. Ideal for businesses on the go, small shops and service providers.</p>
+              <span class="ebm-type-card__tag">Mobile</span>
+            </div>
+            <div class="ebm-type-card">
+              <div class="ebm-type-card__header">
+                <i class="lucide" data-lucide="globe"></i>
+                <h4>Online EBM (Web-based)</h4>
+              </div>
+              <p>Browser-based EBM accessible from any device with internet. No installation required — works on any operating system.</p>
+              <span class="ebm-type-card__tag">Cloud</span>
+            </div>
+            <div class="ebm-type-card">
+              <div class="ebm-type-card__header">
+                <i class="lucide" data-lucide="puzzle"></i>
+                <h4>VSDC (Virtual EBM)</h4>
+              </div>
+              <p>For businesses with existing invoicing software. Integrates your system directly with RRA through an API.</p>
+              <span class="ebm-type-card__tag">Developer</span>
+            </div>
+          </div>
+
+          <div class="info-card" style="margin-top:32px;">
+            <div class="info-card__header">
+              <i class="lucide" data-lucide="list-ordered"></i>
+              <h3 class="info-card__title">Steps to Get Your EBM</h3>
+            </div>
+            <ol class="steps-list">
+              <li class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>Register for TIN</h4>
+                  <p>If you don't have a TIN, register at MyRRA or visit the nearest RRA office with your ID and business registration documents.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>Apply for EBM</h4>
+                  <p>Submit your EBM application through MyRRA portal or at an RRA office. You will need your TIN, business license and ID.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>Receive your EBM device or credentials</h4>
+                  <p>Depending on the type chosen, you will receive a physical device, download links, or API credentials for VSDC integration.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <h4>Attend training</h4>
+                  <p>RRA provides free training sessions on how to use EBM. Training schedules are available on the RRA website and at local offices.</p>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                  <h4>Start issuing invoices</h4>
+                  <p>Begin issuing compliant fiscal receipts and invoices. All transactions are transmitted to RRA in real-time.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="purchase-code-section">
+            <h3>Purchase Code Verification</h3>
+            <p>Every EBM receipt has a unique Purchase Code that customers can use to verify the transaction. This helps prevent fraud and ensures tax compliance.</p>
+            <div class="purchase-code-steps">
+              <div class="purchase-code-step">
+                <div class="purchase-code-step__num">01</div>
+                <h4>Receive Receipt</h4>
+                <p>Get a fiscal receipt with a Purchase Code after every transaction</p>
+              </div>
+              <div class="purchase-code-step">
+                <div class="purchase-code-step__num">02</div>
+                <h4>Verify Online</h4>
+                <p>Enter the code on RRA website or scan the QR code on the receipt</p>
+              </div>
+              <div class="purchase-code-step">
+                <div class="purchase-code-step__num">03</div>
+                <h4>Confirm Valid</h4>
+                <p>System shows transaction details confirming the receipt is genuine</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-card" style="margin-top:32px;">
+            <h3>Ready to get your EBM?</h3>
+            <p>Apply through MyRRA portal or visit your nearest RRA office to get started.</p>
+            <a href="myrra.html" class="btn btn--primary"><i class="lucide" data-lucide="arrow-right"></i> Apply on MyRRA</a>
+          </div>
+        </div>
+
+        <!-- Detail: Existing User -->
+        <div class="ebm-detail__content" id="path-existing-user">
+          <div class="section-header">
+            <h2 class="section-title">User Guides & Transaction Guidance</h2>
+            <p class="section-subtitle">Resources for current EBM users</p>
+          </div>
+
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px;" id="guides">User Guides</h3>
+          <div class="guide-list">
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-pdf"></i></div>
+              <div class="guide-item__info">
+                <h4>Windows EBM User Guide</h4>
+                <p>PDF — 2.4 MB — Updated Jan 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-pdf"></i></div>
+              <div class="guide-item__info">
+                <h4>Android EBM User Guide</h4>
+                <p>PDF — 1.8 MB — Updated Jan 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-pdf"></i></div>
+              <div class="guide-item__info">
+                <h4>Online EBM User Guide</h4>
+                <p>PDF — 1.5 MB — Updated Feb 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-pdf"></i></div>
+              <div class="guide-item__info">
+                <h4>VSDC Integration Guide</h4>
+                <p>PDF — 3.1 MB — Updated Mar 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-pdf"></i></div>
+              <div class="guide-item__info">
+                <h4>EBM Troubleshooting Guide</h4>
+                <p>PDF — 980 KB — Updated Jan 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-pdf"></i></div>
+              <div class="guide-item__info">
+                <h4>MyRRA User Guide</h4>
+                <p>PDF — 2.0 MB — Updated Feb 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+          </div>
+
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin:32px 0 16px;">Transaction Guidance</h3>
+          <div class="info-card">
+            <div class="info-card__header">
+              <i class="lucide" data-lucide="list-checks"></i>
+              <h3 class="info-card__title">Common Transaction Types</h3>
+            </div>
+            <table class="transaction-table">
+              <thead>
+                <tr>
+                  <th>Transaction</th>
+                  <th>Description</th>
+                  <th>When to Use</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Sales Invoice</strong></td>
+                  <td>Standard sale of goods or services</td>
+                  <td>Every customer purchase</td>
+                  <td><span class="transaction-badge transaction-badge--required">Required</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Credit Note</strong></td>
+                  <td>Reduces amount owed by customer</td>
+                  <td>Returns, overcharges, corrections</td>
+                  <td><span class="transaction-badge transaction-badge--required">Required</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Debit Note</strong></td>
+                  <td>Increases amount owed by customer</td>
+                  <td>Undercharges, additional charges</td>
+                  <td><span class="transaction-badge transaction-badge--required">Required</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Refund Receipt</strong></td>
+                  <td>Documents money returned to customer</td>
+                  <td>Full or partial refunds</td>
+                  <td><span class="transaction-badge transaction-badge--required">Required</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Proforma Invoice</strong></td>
+                  <td>Pre-sale quotation</td>
+                  <td>Price estimates, not fiscal</td>
+                  <td><span class="transaction-badge transaction-badge--optional">Optional</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Purchase Code</strong></td>
+                  <td>Unique verification code per transaction</td>
+                  <td>Auto-generated on each receipt</td>
+                  <td><span class="transaction-badge transaction-badge--required">Required</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-card" style="margin-top:24px;">
+            <div class="info-card__header">
+              <i class="lucide" data-lucide="alert-triangle"></i>
+              <h3 class="info-card__title">Common Issues & Solutions</h3>
+            </div>
+            <div style="display:grid;gap:16px;margin-top:8px;">
+              <div style="padding:16px;background:var(--gray-50);border-radius:var(--radius);border-left:3px solid var(--gold);">
+                <h4 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">EBM not connecting to RRA servers</h4>
+                <p style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Check your internet connection. Ensure the EBM application has network access. If using a firewall, whitelist RRA server addresses. Try restarting the EBM application.</p>
+              </div>
+              <div style="padding:16px;background:var(--gray-50);border-radius:var(--radius);border-left:3px solid var(--gold);">
+                <h4 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">Receipt not printing</h4>
+                <p style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Verify printer is connected and has paper. Check printer drivers are installed. In Windows EBM, go to Settings > Printer Setup and select the correct printer model.</p>
+              </div>
+              <div style="padding:16px;background:var(--gray-50);border-radius:var(--radius);border-left:3px solid var(--gold);">
+                <h4 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">Transaction stuck in pending</h4>
+                <p style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Pending transactions are queued when the network is unavailable. They will transmit automatically when connectivity is restored. Do not turn off the device until they are sent.</p>
+              </div>
+              <div style="padding:16px;background:var(--gray-50);border-radius:var(--radius);border-left:3px solid var(--gold);">
+                <h4 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">Need to issue a credit note</h4>
+                <p style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Open the original receipt, select "Issue Credit Note," enter the reason and amount. The credit note will reference the original transaction and adjust your tax records.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-card" style="margin-top:32px;">
+            <h3>Need technical support?</h3>
+            <p>Contact our EBM support team for assistance with device issues, software errors or transaction problems.</p>
+            <a href="#contact" class="btn btn--primary"><i class="lucide" data-lucide="headphones"></i> Contact EBM Support</a>
+          </div>
+        </div>
+
+        <!-- Detail: Integration -->
+        <div class="ebm-detail__content" id="path-integration">
+          <div class="section-header">
+            <h2 class="section-title">Software Integration & VSDC</h2>
+            <p class="section-subtitle">Technical resources for developers integrating with RRA EBM</p>
+          </div>
+
+          <div class="info-card" style="margin-bottom:24px;">
+            <div class="info-card__header">
+              <i class="lucide" data-lucide="info"></i>
+              <h3 class="info-card__title">What is VSDC?</h3>
+            </div>
+            <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;">
+              VSDC (Virtual Sales Device Controller) is an API-based integration that allows businesses with existing invoicing or POS software to connect directly to RRA's EBM system. Instead of using a separate EBM device, your software sends transaction data directly to RRA through a secure API. This is ideal for businesses with custom software, ERP systems, or point-of-sale solutions.
+            </p>
+          </div>
+
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px;">Integration Process</h3>
+          <div class="integration-steps">
+            <div class="integration-step">
+              <div class="integration-step__num">1</div>
+              <div class="integration-step__content">
+                <h4>Request API Access</h4>
+                <p>Apply for VSDC API credentials through MyRRA or by contacting RRA's technical team. You will need your TIN, business details and a description of your software system.</p>
+                <code>POST /api/v1/vsdc/application</code>
+              </div>
+            </div>
+            <div class="integration-step">
+              <div class="integration-step__num">2</div>
+              <div class="integration-step__content">
+                <h4>Receive Sandbox Credentials</h4>
+                <p>RRA provides test environment credentials including API key, secret, and sandbox server URL. Use these to develop and test your integration without affecting production data.</p>
+                <code>API_KEY: vsdc_test_xxxxx | SANDBOX_URL: https://sandbox.ebm.rra.gov.rw</code>
+              </div>
+            </div>
+            <div class="integration-step">
+              <div class="integration-step__num">3</div>
+              <div class="integration-step__content">
+                <h4>Develop & Test Integration</h4>
+                <p>Implement the API endpoints for sales, credit notes, debit notes and refunds. Follow the technical specification document for request/response formats, authentication and error handling.</p>
+                <code>POST /api/v1/sales | POST /api/v1/credit-notes | POST /api/v1/refunds</code>
+              </div>
+            </div>
+            <div class="integration-step">
+              <div class="integration-step__num">4</div>
+              <div class="integration-step__content">
+                <h4>Submit for Certification</h4>
+                <p>Once testing is complete, submit your integration for RRA certification. RRA will review your implementation, verify transaction flows and confirm compliance with fiscal requirements.</p>
+                <code>Certification review: 5-10 business days</code>
+              </div>
+            </div>
+            <div class="integration-step">
+              <div class="integration-step__num">5</div>
+              <div class="integration-step__content">
+                <h4>Go Live</h4>
+                <p>After certification, receive production API credentials and switch your integration to the production environment. Your software will now transmit transactions to RRA in real-time.</p>
+                <code>PRODUCTION_URL: https://ebm.rra.gov.rw/api/v1</code>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size:18px;font-weight:700;color:var(--text);margin:32px 0 16px;">Technical Documentation</h3>
+          <div class="guide-list">
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-code-2"></i></div>
+              <div class="guide-item__info">
+                <h4>VSDC API Specification v3.0</h4>
+                <p>PDF — 4.2 MB — Updated Mar 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-code-2"></i></div>
+              <div class="guide-item__info">
+                <h4>Authentication Guide</h4>
+                <p>PDF — 890 KB — Updated Feb 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-code-2"></i></div>
+              <div class="guide-item__info">
+                <h4>Error Codes Reference</h4>
+                <p>PDF — 520 KB — Updated Jan 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-code-2"></i></div>
+              <div class="guide-item__info">
+                <h4>Sandbox Testing Guide</h4>
+                <p>PDF — 1.1 MB — Updated Feb 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-code-2"></i></div>
+              <div class="guide-item__info">
+                <h4>Receipt Format Specification</h4>
+                <p>PDF — 750 KB — Updated Jan 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+            <div class="guide-item">
+              <div class="guide-item__icon"><i class="lucide" data-lucide="file-code-2"></i></div>
+              <div class="guide-item__info">
+                <h4>Certification Checklist</h4>
+                <p>PDF — 340 KB — Updated Jan 2026</p>
+              </div>
+              <a href="#" class="guide-item__download"><i class="lucide" data-lucide="download" style="width:16px;height:16px;"></i> Download</a>
+            </div>
+          </div>
+
+          <div class="cta-card" style="margin-top:32px;">
+            <h3>Ready to integrate?</h3>
+            <p>Request API access and start building your VSDC integration with RRA's EBM system.</p>
+            <a href="myrra.html" class="btn btn--primary"><i class="lucide" data-lucide="arrow-right"></i> Request API Access</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">EBM Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about Electronic Billing Machines</p>
+        </div>
+        <div class="faq-list" id="faqList"></div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="help-section" id="contact">
+      <div class="container">
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="phone"></i></div>
+            <h3>EBM Hotline</h3>
+            <p class="help-card__detail">+250 788 111 333</p>
+            <p class="help-card__hours">Mon–Sat, 7:30 AM – 8:00 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="mail"></i></div>
+            <h3>EBM Email</h3>
+            <a href="mailto:ebm@rra.gov.rw" class="help-card__detail">ebm@rra.gov.rw</a>
+            <p class="help-card__hours">We respond within 24 hours</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="code-2"></i></div>
+            <h3>Developer Support</h3>
+            <a href="mailto:vsdc@rra.gov.rw" class="help-card__detail">vsdc@rra.gov.rw</a>
+            <p class="help-card__hours">For VSDC & API integration</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="map-pin"></i></div>
+            <h3>EBM Service Center</h3>
+            <p class="help-card__detail">RRA Head Office, Kigali</p>
+            <p class="help-card__hours">Mon–Fri, 8:00 AM – 4:30 PM</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact Us</a>
+          <a href="myrra.html#help">Login Help</a>
+          <a href="#feedback">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> Login to MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/ebm-data.js"></script>
+  <script src="js/ebm-app.js"></script>
+</body>
+</html>

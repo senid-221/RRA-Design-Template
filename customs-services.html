@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customs Services — Rwanda Revenue Authority</title>
+  <meta name="description" content="Import, export, transit, and customs services. e-Single Window, ECTS, and trade facilitation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/services.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skip_to_content">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label" data-i18n="gov_of_rwanda">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle" data-i18n="rra_full_name">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false" data-i18n="nav_tax_services">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4 data-i18n="dropdown_domestic">Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4 data-i18n="dropdown_customs">Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                  <a href="trade-portal.html#calculator">Import Duties Calculator</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false" data-i18n="nav_resources">Resources <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown">
+                <a href="#publications">Publications</a>
+                <a href="#tax-laws">Tax Laws</a>
+                <a href="#forms">Forms</a>
+              </div>
+            </li>
+            <li class="nav-item"><a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <a href="#myrra" class="btn btn--primary btn--sm"><i class="lucide" data-lucide="user-circle"></i> MyRRA</a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="Import procedures">Import Procedures</button>
+            <button class="search-tag" data-query="HS codes">HS Codes</button>
+            <button class="search-tag" data-query="e-Single Window">e-Single Window</button>
+            <button class="search-tag" data-query="Transit">Transit</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb__list">
+          <li><a href="index.html">Home</a></li>
+          <li aria-current="page">Customs Services</li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__content">
+          <h1 class="page-hero__title">Customs Services</h1>
+          <p class="page-hero__subtitle">Import, export, transit, and customs clearance services. Access the Rwanda e-Single Window for seamless trade facilitation.</p>
+        </div>
+        <div class="page-hero__actions">
+          <a href="trade-portal.html" class="btn btn--primary"><i class="lucide" data-lucide="globe"></i> Trade Portal</a>
+          <a href="#contact" class="btn btn--outline"><i class="lucide" data-lucide="help-circle"></i> Get Help</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="service-nav" id="services">
+      <div class="container">
+        <div class="service-nav__grid" id="serviceNavGrid"></div>
+      </div>
+    </section>
+
+    <div class="service-details" id="serviceDetails"></div>
+
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about customs and trade services</p>
+        </div>
+        <div class="faq-list" id="faqList"></div>
+      </div>
+    </section>
+
+    <section class="help-section" id="contact">
+      <div class="container">
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="phone"></i></div>
+            <h3>Call Us</h3>
+            <p class="help-card__detail">+250 788 111 222</p>
+            <p class="help-card__hours">Mon–Fri, 7:30 AM – 5:00 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="mail"></i></div>
+            <h3>Email Us</h3>
+            <a href="mailto:customs@rra.gov.rw" class="help-card__detail">customs@rra.gov.rw</a>
+            <p class="help-card__hours">We respond within 24 hours</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="map-pin"></i></div>
+            <h3>Visit Us</h3>
+            <p class="help-card__detail">RRA Customs Office, Kigali</p>
+            <p class="help-card__hours">Mon–Fri, 8:00 AM – 4:30 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="message-circle"></i></div>
+            <h3>Send a Message</h3>
+            <a href="#contact-form" class="help-card__detail help-card__link">Open contact form</a>
+            <p class="help-card__hours">Submit inquiries online</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="#publications">Publications</a>
+          <a href="#tax-laws">Tax Laws</a>
+          <a href="#forms">Forms</a>
+          <a href="#ebm">EBM Services</a>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="#myrra">MyRRA</a>
+          <a href="#non-fiscal">Non-Fiscal Revenue</a>
+          <a href="#contact">Contact Us</a>
+          <a href="#feedback">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="#myrra" class="btn btn--primary btn--full"><i class="lucide" data-lucide="user-circle"></i> MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/customs-data.js"></script>
+  <script src="js/customs-app.js"></script>
+</body>
+</html>

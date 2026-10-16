@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rwanda Revenue Authority</title>
+  <meta name="description" content="Rwanda Revenue Authority — Tax services, customs, trade information and EBM.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/css/lucide.min.css" integrity="sha512-1KHR/wEeICnMqFCkBmzXGCBmJnDOIRJGfCpEMBM+VBEAx0VfBaJxMfCkFwGEMfTfQGEQgEjBBEMDBmILQLGdQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skip_to_content">Skip to main content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header" role="banner">
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left">
+          <span class="top-bar__label" data-i18n="gov_of_rwanda">Government of Rwanda</span>
+        </div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast" title="High contrast">
+            <i class="lucide" data-lucide="contrast"></i>
+          </button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode" title="Dark mode">
+            <i class="lucide" data-lucide="moon"></i>
+          </button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw" aria-label="Kinyarwanda">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main nav -->
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="/" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle" data-i18n="rra_full_name">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false" data-i18n="nav_home">
+                Home <i class="lucide" data-lucide="chevron-down"></i>
+              </button>
+              <div class="dropdown">
+                <a href="#announcements" data-i18n="nav_announcements">Announcements</a>
+                <a href="#deadlines" data-i18n="nav_deadlines">Deadlines</a>
+                <a href="#news" data-i18n="nav_news">News & Updates</a>
+              </div>
+            </li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false" data-i18n="nav_tax_services">
+                Tax Services <i class="lucide" data-lucide="chevron-down"></i>
+              </button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4 data-i18n="dropdown_domestic">Domestic Taxes</h4>
+                  <a href="#income-tax" data-i18n="nav_income_tax">Income Tax</a>
+                  <a href="#vat" data-i18n="nav_vat">VAT</a>
+                  <a href="#paye" data-i18n="nav_paye">PAYE</a>
+                  <a href="#excise" data-i18n="nav_excise">Excise Duty</a>
+                  <a href="#wht" data-i18n="nav_wht">Withholding Tax</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4 data-i18n="dropdown_customs">Customs & Trade</h4>
+                  <a href="#customs" data-i18n="nav_customs_services">Customs Services</a>
+                  <a href="#esingle-window" data-i18n="nav_e_single_window">e-Single Window</a>
+                  <a href="#trade-portal" data-i18n="nav_trade_portal">Trade Portal</a>
+                  <a href="#import-calc" data-i18n="nav_import_calc">Import Duties Calculator</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4 data-i18n="dropdown_other">Other Services</h4>
+                  <a href="#ebm" data-i18n="nav_ebm">EBM Services</a>
+                  <a href="#non-fiscal" data-i18n="nav_non_fiscal">Non-Fiscal Revenue</a>
+                  <a href="#motor-vehicle" data-i18n="nav_motor_vehicle">Motor Vehicle Tax</a>
+                  <a href="#tcc" data-i18n="nav_tcc">Tax Clearance Certificate</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false" data-i18n="nav_resources">
+                Resources <i class="lucide" data-lucide="chevron-down"></i>
+              </button>
+              <div class="dropdown">
+                <a href="#publications" data-i18n="nav_publications">Publications</a>
+                <a href="#tax-laws" data-i18n="nav_tax_laws">Tax Laws</a>
+                <a href="#forms" data-i18n="nav_forms">Forms</a>
+                <a href="#guides" data-i18n="nav_guides">Guides & Handbooks</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search" aria-expanded="false">
+            <i class="lucide" data-lucide="search"></i>
+          </button>
+          <a href="#myrra" class="btn btn--primary btn--sm" data-i18n="nav_myrra">
+            <i class="lucide" data-lucide="user-circle"></i> MyRRA
+          </a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu" aria-expanded="false">
+            <i class="lucide" data-lucide="menu"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search overlay -->
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search for services, forms, laws..." data-i18n-placeholder="search_placeholder" autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search">
+            <i class="lucide" data-lucide="x"></i>
+          </button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label" data-i18n="popular_searches">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="TIN registration">TIN Registration</button>
+            <button class="search-tag" data-query="VAT return">VAT Return</button>
+            <button class="search-tag" data-query="EBM setup">EBM Setup</button>
+            <button class="search-tag" data-query="Import duties">Import Duties</button>
+            <button class="search-tag" data-query="Tax clearance">Tax Clearance</button>
+            <button class="search-tag" data-query="PAYE rates">PAYE Rates</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN ========== -->
+  <main id="main-content">
+
+    <!-- Hero / Service Finder -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <h1 class="hero__title" data-i18n="hero_title">Tax services, simplified.</h1>
+          <p class="hero__subtitle" data-i18n="hero_subtitle">Find services, submit declarations, check deadlines and access trade information — all in one place.</p>
+        </div>
+        <div class="service-finder">
+          <div class="service-finder__search">
+            <i class="lucide" data-lucide="search"></i>
+            <input type="search" id="serviceFinderInput" class="service-finder__input" placeholder="What are you looking for?" data-i18n-placeholder="service_finder_placeholder" aria-label="Find a service">
+            <button class="btn btn--primary" id="serviceFinderBtn" data-i18n="search">Search</button>
+          </div>
+          <div class="service-finder__categories">
+            <button class="category-chip active" data-category="all" data-i18n="cat_all">All Services</button>
+            <button class="category-chip" data-category="tax" data-i18n="cat_tax">Taxes</button>
+            <button class="category-chip" data-category="customs" data-i18n="cat_customs">Customs</button>
+            <button class="category-chip" data-category="trade" data-i18n="cat_trade">Trade</button>
+            <button class="category-chip" data-category="ebm" data-i18n="cat_ebm">EBM</button>
+            <button class="category-chip" data-category="non-fiscal" data-i18n="cat_non_fiscal">Non-Fiscal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+      <div class="container">
+        <div class="quick-actions__grid">
+          <a href="domestic-tax-services.html#income-tax" class="quick-action">
+            <div class="quick-action__icon">
+              <i class="lucide" data-lucide="file-text"></i>
+            </div>
+            <div class="quick-action__text">
+              <h3 data-i18n="qa_declarations">Submit Declaration</h3>
+              <p data-i18n="qa_declarations_desc">File your tax returns online</p>
+            </div>
+            <i class="lucide quick-action__arrow" data-lucide="arrow-right"></i>
+          </a>
+          <a href="domestic-tax-services.html#tcc" class="quick-action">
+            <div class="quick-action__icon">
+              <i class="lucide" data-lucide="credit-card"></i>
+            </div>
+            <div class="quick-action__text">
+              <h3 data-i18n="qa_payments">Make Payment</h3>
+              <p data-i18n="qa_payments_desc">Pay taxes, duties and fees</p>
+            </div>
+            <i class="lucide quick-action__arrow" data-lucide="arrow-right"></i>
+          </a>
+          <a href="domestic-tax-services.html#income-tax" class="quick-action">
+            <div class="quick-action__icon">
+              <i class="lucide" data-lucide="id-card"></i>
+            </div>
+            <div class="quick-action__text">
+              <h3 data-i18n="qa_tin">Get TIN</h3>
+              <p data-i18n="qa_tin_desc">Register for a Tax ID Number</p>
+            </div>
+            <i class="lucide quick-action__arrow" data-lucide="arrow-right"></i>
+          </a>
+          <a href="domestic-tax-services.html#ebm" class="quick-action">
+            <div class="quick-action__icon">
+              <i class="lucide" data-lucide="receipt"></i>
+            </div>
+            <div class="quick-action__text">
+              <h3 data-i18n="qa_ebm">EBM Services</h3>
+              <p data-i18n="qa_ebm_desc">Setup and manage EBM</p>
+            </div>
+            <i class="lucide quick-action__arrow" data-lucide="arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service Directory -->
+    <section class="service-directory" id="services">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="directory_title">Service Directory</h2>
+          <p class="section-subtitle" data-i18n="directory_subtitle">Browse all RRA services by category</p>
+        </div>
+        <div class="directory-grid" id="directoryGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Deadlines & Notices -->
+    <section class="notices-section">
+      <div class="container">
+        <div class="notices-grid">
+          <!-- Deadlines -->
+          <div class="notices-card" id="deadlines">
+            <div class="notices-card__header">
+              <i class="lucide" data-lucide="calendar-clock"></i>
+              <h2 class="notices-card__title" data-i18n="deadlines_title">Upcoming Deadlines</h2>
+            </div>
+            <ul class="deadlines-list" id="deadlinesList">
+              <!-- Populated by JS -->
+            </ul>
+            <a href="#all-deadlines" class="notices-card__footer" data-i18n="view_all_deadlines">View all deadlines</a>
+          </div>
+
+          <!-- Announcements -->
+          <div class="notices-card notices-card--announcements" id="announcements">
+            <div class="notices-card__header">
+              <i class="lucide" data-lucide="megaphone"></i>
+              <h2 class="notices-card__title" data-i18n="announcements_title">Announcements</h2>
+            </div>
+            <ul class="announcements-list" id="announcementsList">
+              <!-- Populated by JS -->
+            </ul>
+            <a href="#all-announcements" class="notices-card__footer" data-i18n="view_all_announcements">View all announcements</a>
+          </div>
+
+          <!-- News -->
+          <div class="notices-card notices-card--news" id="news">
+            <div class="notices-card__header">
+              <i class="lucide" data-lucide="newspaper"></i>
+              <h2 class="notices-card__title" data-i18n="news_title">News & Updates</h2>
+            </div>
+            <ul class="news-list" id="newsList">
+              <!-- Populated by JS -->
+            </ul>
+            <a href="#all-news" class="notices-card__footer" data-i18n="view_all_news">View all news</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Help / Contact CTA -->
+    <section class="help-section" id="contact">
+      <div class="container">
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-card__icon">
+              <i class="lucide" data-lucide="phone"></i>
+            </div>
+            <h3 data-i18n="help_call_title">Call Us</h3>
+            <p class="help-card__detail">+250 788 111 222</p>
+            <p class="help-card__hours" data-i18n="help_hours">Mon–Fri, 7:30 AM – 5:00 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon">
+              <i class="lucide" data-lucide="mail"></i>
+            </div>
+            <h3 data-i18n="help_email_title">Email Us</h3>
+            <a href="mailto:info@rra.gov.rw" class="help-card__detail">info@rra.gov.rw</a>
+            <p class="help-card__hours" data-i18n="help_email_response">We respond within 24 hours</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon">
+              <i class="lucide" data-lucide="map-pin"></i>
+            </div>
+            <h3 data-i18n="help_visit_title">Visit Us</h3>
+            <p class="help-card__detail" data-i18n="help_address">RRA Head Office, Kigali</p>
+            <p class="help-card__hours" data-i18n="help_visit_hours">Mon–Fri, 8:00 AM – 4:30 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon">
+              <i class="lucide" data-lucide="message-circle"></i>
+            </div>
+            <h3 data-i18n="help_chat_title">Send a Message</h3>
+            <a href="#contact-form" class="help-card__detail help-card__link" data-i18n="help_chat_link">Open contact form</a>
+            <p class="help-card__hours" data-i18n="help_chat_response">Submit inquiries online</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle" data-i18n="rra_full_name">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc" data-i18n="footer_desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4 data-i18n="footer_tax_services">Tax Services</h4>
+          <a href="#income-tax" data-i18n="nav_income_tax">Income Tax</a>
+          <a href="#vat" data-i18n="nav_vat">VAT</a>
+          <a href="#paye" data-i18n="nav_paye">PAYE</a>
+          <a href="#excise" data-i18n="nav_excise">Excise Duty</a>
+          <a href="#customs" data-i18n="nav_customs_services">Customs Services</a>
+        </div>
+        <div class="footer-links">
+          <h4 data-i18n="footer_resources">Resources</h4>
+          <a href="#publications" data-i18n="nav_publications">Publications</a>
+          <a href="#tax-laws" data-i18n="nav_tax_laws">Tax Laws</a>
+          <a href="#forms" data-i18n="nav_forms">Forms</a>
+          <a href="#ebm" data-i18n="nav_ebm">EBM Services</a>
+          <a href="#trade-portal" data-i18n="nav_trade_portal">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4 data-i18n="footer_quick_links">Quick Links</h4>
+          <a href="#myrra" data-i18n="nav_myrra">MyRRA</a>
+          <a href="#non-fiscal" data-i18n="nav_non_fiscal">Non-Fiscal Revenue</a>
+          <a href="#tcc" data-i18n="nav_tcc">Tax Clearance</a>
+          <a href="#contact" data-i18n="nav_contact">Contact Us</a>
+          <a href="#feedback" data-i18n="footer_feedback">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer_copyright">&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy" data-i18n="footer_privacy">Privacy Policy</a>
+          <a href="#terms" data-i18n="footer_terms">Terms of Use</a>
+          <a href="#accessibility-statement" data-i18n="footer_accessibility">Accessibility</a>
+          <a href="#sitemap" data-i18n="footer_sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu">
+          <i class="lucide" data-lucide="x"></i>
+        </button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList">
+        <!-- Populated by JS -->
+      </ul>
+      <div class="mobile-nav__footer">
+        <a href="#myrra" class="btn btn--primary btn--full" data-i18n="nav_myrra">
+          <i class="lucide" data-lucide="user-circle"></i> MyRRA
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

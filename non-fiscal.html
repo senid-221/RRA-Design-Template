@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Non-Fiscal Revenue — Rwanda Revenue Authority</title>
+  <meta name="description" content="Non-Fiscal Revenue portal for government services including embassy services, citizen services, and institutional payments.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/services.css">
+  <style>
+    .nf-hero {
+      padding: 80px 0; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff;
+    }
+    .nf-hero__inner { max-width: 700px; }
+    .nf-hero__badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px;
+      background: rgba(244,197,66,0.15); border: 1px solid rgba(244,197,66,0.3); border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 20px;
+    }
+    .nf-hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .nf-hero p { font-size: 18px; opacity: 0.9; line-height: 1.6; margin-bottom: 32px; }
+    .nf-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nf-hero .btn--primary { background: var(--gold); color: var(--navy); }
+    .nf-hero .btn--primary:hover { background: #e6b83a; }
+    .nf-hero .btn--outline { border-color: rgba(255,255,255,0.4); color: #fff; }
+    .nf-hero .btn--outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+    .nf-categories { padding: 64px 0; background: var(--bg); }
+    .nf-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .nf-cat-card {
+      background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-xl);
+      padding: 32px; transition: all var(--transition); cursor: pointer;
+    }
+    .nf-cat-card:hover { border-color: var(--navy); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .nf-cat-card.active { border-color: var(--navy); }
+    .nf-cat-card__icon {
+      width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: var(--radius-lg); margin-bottom: 20px;
+    }
+    .nf-cat-card__icon .lucide, .nf-cat-card__icon [data-lucide] { width: 28px; height: 28px; color: var(--gold); }
+    .nf-cat-card h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .nf-cat-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+    .nf-cat-card__count {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--navy);
+    }
+    [data-theme="dark"] .nf-cat-card__count { color: var(--gold); }
+
+    .nf-services-section { padding: 64px 0; background: var(--gray-50); }
+    [data-theme="dark"] .nf-services-section { background: var(--gray-900); }
+    .nf-services-content { display: none; }
+    .nf-services-content.active { display: block; }
+
+    .nf-service-list { display: grid; gap: 16px; }
+    .nf-service-item {
+      display: flex; align-items: center; gap: 20px; padding: 20px 24px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); transition: all var(--transition);
+    }
+    .nf-service-item:hover { border-color: var(--gold); box-shadow: var(--shadow-md); transform: translateX(4px); }
+    .nf-service-item__icon {
+      width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+      background: var(--gray-100); border-radius: var(--radius); flex-shrink: 0;
+    }
+    [data-theme="dark"] .nf-service-item__icon { background: var(--gray-800); }
+    .nf-service-item__icon .lucide, .nf-service-item__icon [data-lucide] { width: 24px; height: 24px; color: var(--navy); }
+    [data-theme="dark"] .nf-service-item__icon .lucide, [data-theme="dark"] .nf-service-item__icon [data-lucide] { color: var(--gold); }
+    .nf-service-item__info { flex: 1; }
+    .nf-service-item__info h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .nf-service-item__info p { font-size: 13px; color: var(--text-secondary); }
+    .nf-service-item__meta { text-align: right; flex-shrink: 0; }
+    .nf-service-item__price { font-size: 16px; font-weight: 700; color: var(--navy); }
+    [data-theme="dark"] .nf-service-item__price { color: var(--gold); }
+    .nf-service-item__time { font-size: 12px; color: var(--text-muted); }
+    .nf-service-item__action {
+      padding: 8px 20px; background: var(--navy); color: #fff; border: none; border-radius: var(--radius);
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition); white-space: nowrap;
+    }
+    .nf-service-item__action:hover { background: var(--navy-light); }
+    [data-theme="dark"] .nf-service-item__action { background: var(--gold); color: var(--navy); }
+
+    .nf-stats { padding: 48px 0; background: var(--bg); }
+    .nf-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .nf-stat {
+      text-align: center; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    }
+    .nf-stat__num { font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+    [data-theme="dark"] .nf-stat__num { color: var(--gold); }
+    .nf-stat__label { font-size: 14px; color: var(--text-secondary); }
+
+    .nf-how-it-works { padding: 64px 0; background: var(--bg); }
+    .nf-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 32px; }
+    .nf-step { text-align: center; position: relative; }
+    .nf-step__num {
+      width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+      background: var(--navy); color: var(--gold); font-weight: 800; font-size: 20px; border-radius: 50%; margin: 0 auto 16px;
+    }
+    .nf-step h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .nf-step p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+    @media (max-width: 1024px) {
+      .nf-cat-grid { grid-template-columns: 1fr; }
+      .nf-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .nf-steps { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .nf-hero { padding: 48px 0; }
+      .nf-hero h1 { font-size: 28px; }
+      .nf-stats-grid { grid-template-columns: 1fr; }
+      .nf-steps { grid-template-columns: 1fr; }
+      .nf-service-item { flex-direction: column; align-items: flex-start; }
+      .nf-service-item__meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__in">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html">EBM Services</a>
+                  <a href="non-fiscal.html" class="active">Non-Fiscal Revenue</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="#faq" class="nav-link">FAQ</a></li>
+            <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="Passport">Passport</button>
+            <button class="search-tag" data-query="Visa">Visa</button>
+            <button class="search-tag" data-query="National ID">National ID</button>
+            <button class="search-tag" data-query="Driving Permit">Driving Permit</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="nf-hero">
+      <div class="container">
+        <div class="nf-hero__inner">
+          <div class="nf-hero__badge">
+            <i class="lucide" data-lucide="landmark" style="width:14px;height:14px;"></i>
+            Non-Fiscal Revenue Portal
+          </div>
+          <h1>Government Services & Payments</h1>
+          <p>Access and pay for government services from embassies, citizen services, and public institutions — all in one place.</p>
+          <div class="nf-hero__actions">
+            <a href="#categories" class="btn btn--primary"><i class="lucide" data-lucide="search"></i> Find a Service</a>
+            <a href="#how-it-works" class="btn btn--outline"><i class="lucide" data-lucide="info"></i> How It Works</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="nf-stats">
+      <div class="container">
+        <div class="nf-stats-grid">
+          <div class="nf-stat">
+            <div class="nf-stat__num">150+</div>
+            <div class="nf-stat__label">Services Available</div>
+          </div>
+          <div class="nf-stat">
+            <div class="nf-stat__num">25+</div>
+            <div class="nf-stat__label">Government Institutions</div>
+          </div>
+          <div class="nf-stat">
+            <div class="nf-stat__num">24/7</div>
+            <div class="nf-stat__label">Online Access</div>
+          </div>
+          <div class="nf-stat">
+            <div class="nf-stat__num">1M+</div>
+            <div class="nf-stat__label">Transactions Processed</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="nf-categories" id="categories">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Service Categories</h2>
+          <p class="section-subtitle">Select a category to browse available services</p>
+        </div>
+        <div class="nf-cat-grid">
+          <div class="nf-cat-card active" data-category="embassy" onclick="switchCategory('embassy')">
+            <div class="nf-cat-card__icon"><i class="lucide" data-lucide="flag"></i></div>
+            <h3>Embassy & Consular Services</h3>
+            <p>Passport renewals, visa applications, travel documents, and other consular services for Rwandans abroad.</p>
+            <span class="nf-cat-card__count"><i class="lucide" data-lucide="layers" style="width:14px;height:14px;"></i> 12 services</span>
+          </div>
+          <div class="nf-cat-card" data-category="citizen" onclick="switchCategory('citizen')">
+            <div class="nf-cat-card__icon"><i class="lucide" data-lucide="users"></i></div>
+            <h3>Citizen Services</h3>
+            <p>National ID, driving permits, birth certificates, business registration and other citizen-facing services.</p>
+            <span class="nf-cat-card__count"><i class="lucide" data-lucide="layers" style="width:14px;height:14px;"></i> 18 services</span>
+          </div>
+          <div class="nf-cat-card" data-category="institutional" onclick="switchCategory('institutional')">
+            <div class="nf-cat-card__icon"><i class="lucide" data-lucide="building-2"></i></div>
+            <h3>Institutional Payments</h3>
+            <p>Payments to government agencies, regulatory bodies, licensing authorities and public institutions.</p>
+            <span class="nf-cat-card__count"><i class="lucide" data-lucide="layers" style="width:14px;height:14px;"></i> 15 services</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Detail -->
+    <section class="nf-services-section">
+      <div class="container">
+        <!-- Embassy Services -->
+        <div class="nf-services-content active" id="cat-embassy">
+          <div class="section-header">
+            <h2 class="section-title">Embassy & Consular Services</h2>
+            <p class="section-subtitle">Services for Rwandan citizens abroad</p>
+          </div>
+          <div class="nf-service-list" id="embassyList"></div>
+        </div>
+
+        <!-- Citizen Services -->
+        <div class="nf-services-content" id="cat-citizen">
+          <div class="section-header">
+            <h2 class="section-title">Citizen Services</h2>
+            <p class="section-subtitle">Services for individuals and businesses in Rwanda</p>
+          </div>
+          <div class="nf-service-list" id="citizenList"></div>
+        </div>
+
+        <!-- Institutional Payments -->
+        <div class="nf-services-content" id="cat-institutional">
+          <div class="section-header">
+            <h2 class="section-title">Institutional Payments</h2>
+            <p class="section-subtitle">Payments to government agencies and regulatory bodies</p>
+          </div>
+          <div class="nf-service-list" id="institutionalList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="nf-how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle">Simple steps to access and pay for government services</p>
+        </div>
+        <div class="nf-steps">
+          <div class="nf-step">
+            <div class="nf-step__num">1</div>
+            <h4>Find Your Service</h4>
+            <p>Browse categories or search for the specific government service you need.</p>
+          </div>
+          <div class="nf-step">
+            <div class="nf-step__num">2</div>
+            <h4>Submit Application</h4>
+            <p>Fill in the required information and upload any supporting documents.</p>
+          </div>
+          <div class="nf-step">
+            <div class="nf-step__num">3</div>
+            <h4>Make Payment</h4>
+            <p>Pay securely using mobile money, bank transfer, or card payment.</p>
+          </div>
+          <div class="nf-step">
+            <div class="nf-step__num">4</div>
+            <h4>Receive Confirmation</h4>
+            <p>Get a receipt and tracking number. Monitor your application status online.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Common questions about Non-Fiscal Revenue services</p>
+        </div>
+        <div class="faq-list" id="faqList"></div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="help-section" id="contact">
+      <div class="container">
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="phone"></i></div>
+            <h3>Call Support</h3>
+            <p class="help-card__detail">+250 788 111 222</p>
+            <p class="help-card__hours">Mon–Fri, 7:30 AM – 5:00 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="mail"></i></div>
+            <h3>Email Support</h3>
+            <a href="mailto:nonfiscal@rra.gov.rw" class="help-card__detail">nonfiscal@rra.gov.rw</a>
+            <p class="help-card__hours">We respond within 24 hours</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="message-circle"></i></div>
+            <h3>Live Chat</h3>
+            <a href="#chat" class="help-card__detail help-card__link">Start Chat</a>
+            <p class="help-card__hours">Available during business hours</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="map-pin"></i></div>
+            <h3>Visit Office</h3>
+            <p class="help-card__detail">RRA Head Office, Kigali</p>
+            <p class="help-card__hours">Mon–Fri, 8:00 AM – 4:30 PM</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact Us</a>
+          <a href="myrra.html#help">Login Help</a>
+          <a href="#feedback">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> Login to MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/nonfiscal-data.js"></script>
+  <script src="js/nonfiscal-app.js"></script>
+</body>
+</html>

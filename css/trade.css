@@ -1,0 +1,359 @@
+/* ===== TRADE SECTIONS ===== */
+.trade-section {
+  padding: 64px 0;
+  background: var(--bg);
+}
+.trade-section--alt {
+  background: var(--bg-alt);
+}
+
+/* ===== PRODUCT SEARCH ===== */
+.product-search-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.product-results {
+  margin-top: 24px;
+}
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.product-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: var(--gray-50);
+  border-bottom: 2px solid var(--border);
+}
+[data-theme="dark"] .product-table th { background: var(--gray-700); }
+.product-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+}
+.product-table tr:last-child td { border-bottom: none; }
+.product-table tr:hover td { background: var(--gray-50); }
+[data-theme="dark"] .product-table tr:hover td { background: var(--gray-700); }
+.product-table code {
+  background: var(--gray-100);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+}
+[data-theme="dark"] .product-table code { background: var(--gray-700); }
+.no-results {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ===== CALCULATOR ===== */
+.calculator-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.calculator-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color var(--transition);
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--navy);
+}
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group select:focus { border-color: var(--gold); }
+.calculator-results {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.calculator-results h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.calc-breakdown {
+  margin-bottom: 24px;
+}
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+}
+.calc-row:last-child { border-bottom: none; }
+.calc-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: var(--gray-50);
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+[data-theme="dark"] .calc-total { background: var(--gray-700); }
+.calc-total__amount {
+  font-size: 20px;
+  color: var(--navy);
+}
+[data-theme="dark"] .calc-total__amount { color: var(--gold); }
+.calc-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* ===== PROCEDURES ===== */
+.procedure-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.procedure-item {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition);
+}
+.procedure-item:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
+}
+.procedure-item__number {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  color: var(--gold);
+  font-size: 20px;
+  font-weight: 800;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+.procedure-item__content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.procedure-item__content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== FORMS GRID ===== */
+.forms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: all var(--transition);
+}
+.form-card:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.form-card__icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray-100);
+  border-radius: var(--radius-lg);
+  margin: 0 auto 16px;
+}
+[data-theme="dark"] .form-card__icon { background: var(--gray-700); }
+.form-card__icon .lucide, .form-card__icon [data-lucide] { width: 28px; height: 28px; color: var(--navy); }
+[data-theme="dark"] .form-card__icon .lucide,
+[data-theme="dark"] .form-card__icon [data-lucide] { color: var(--gold); }
+.form-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.form-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* ===== LAWS LIST ===== */
+.laws-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.law-item {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+.law-item:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
+}
+.law-item__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray-100);
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+[data-theme="dark"] .law-item__icon { background: var(--gray-700); }
+.law-item__icon .lucide, .law-item__icon [data-lucide] { width: 24px; height: 24px; color: var(--navy); }
+[data-theme="dark"] .law-item__icon .lucide,
+[data-theme="dark"] .law-item__icon [data-lucide] { color: var(--gold); }
+.law-item__content h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.law-item__content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.law-item__link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  transition: color var(--transition);
+}
+.law-item__link:hover { color: var(--gold-dark); }
+[data-theme="dark"] .law-item__link { color: var(--gold); }
+
+/* ===== SAFETY ALERTS ===== */
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.alert-item {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--gray-300);
+}
+.alert-item--high { border-left-color: var(--red); }
+.alert-item--medium { border-left-color: var(--amber); }
+.alert-item--low { border-left-color: var(--green); }
+.alert-item__badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-full);
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.alert-item--high .alert-item__badge { background: #FEE2E2; color: var(--red); }
+.alert-item--medium .alert-item__badge { background: #FEF3C7; color: var(--amber); }
+.alert-item--low .alert-item__badge { background: #DCFCE7; color: var(--green); }
+[data-theme="dark"] .alert-item--high .alert-item__badge { background: rgba(220,38,38,.2); }
+[data-theme="dark"] .alert-item--medium .alert-item__badge { background: rgba(217,119,6,.2); }
+[data-theme="dark"] .alert-item--low .alert-item__badge { background: rgba(22,163,74,.2); }
+.alert-item__content h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.alert-item__content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.alert-item__date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .calculator-container { grid-template-columns: 1fr; }
+  .forms-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .forms-grid { grid-template-columns: 1fr; }
+  .procedure-item { flex-direction: column; }
+  .main-nav { display: none; }
+  .mobile-menu-toggle { display: flex; }
+}

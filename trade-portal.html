@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rwanda Trade Portal — Import Duties Calculator & Trade Information</title>
+  <meta name="description" content="Search products, calculate import duties, access trade procedures, forms, laws and safety alerts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/services.css">
+  <link rel="stylesheet" href="css/trade.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                  <a href="#calculator">Import Duties Calculator</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Resources <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown">
+                <a href="#procedures">Procedures</a>
+                <a href="#forms">Forms</a>
+                <a href="#laws">Trade Laws</a>
+                <a href="#safety">Safety Alerts</a>
+              </div>
+            </li>
+            <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <a href="#myrra" class="btn btn--primary btn--sm"><i class="lucide" data-lucide="user-circle"></i> MyRRA</a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search products, HS codes, procedures..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="HS code lookup">HS Code Lookup</button>
+            <button class="search-tag" data-query="Import duties">Import Duties</button>
+            <button class="search-tag" data-query="Trade procedures">Trade Procedures</button>
+            <button class="search-tag" data-query="Safety alerts">Safety Alerts</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb__list">
+          <li><a href="index.html">Home</a></li>
+          <li aria-current="page">Trade Portal</li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero__content">
+          <h1 class="page-hero__title">Rwanda Trade Portal</h1>
+          <p class="page-hero__subtitle">Product search, HS codes, import duties calculator, trade procedures, laws and safety alerts — everything you need for international trade.</p>
+        </div>
+        <div class="page-hero__actions">
+          <a href="#calculator" class="btn btn--primary"><i class="lucide" data-lucide="calculator"></i> Duties Calculator</a>
+          <a href="#product-search" class="btn btn--outline"><i class="lucide" data-lucide="search"></i> Product Search</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Search -->
+    <section class="trade-section" id="product-search">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Product Search</h2>
+          <p class="section-subtitle">Search for products by name or HS code to find trade information</p>
+        </div>
+        <div class="product-search-container">
+          <div class="search-input-wrap" style="max-width:600px;margin:0 auto;">
+            <i class="lucide" data-lucide="search"></i>
+            <input type="search" id="productSearchInput" class="search-input" placeholder="Search products or enter HS code..." aria-label="Product search">
+          </div>
+          <div class="product-results" id="productResults"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Import Duties Calculator -->
+    <section class="trade-section trade-section--alt" id="calculator">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Import Duties Calculator</h2>
+          <p class="section-subtitle">Calculate estimated duties and taxes for your imports</p>
+        </div>
+        <div class="calculator-container">
+          <div class="calculator-form">
+            <div class="form-group">
+              <label for="calcProduct">Product Description</label>
+              <input type="text" id="calcProduct" placeholder="e.g., Laptops, Textiles, Vehicles">
+            </div>
+            <div class="form-group">
+              <label for="calcHS">HS Code (optional)</label>
+              <input type="text" id="calcHS" placeholder="e.g., 8471.30">
+            </div>
+            <div class="form-group">
+              <label for="calcValue">CIF Value (RWF)</label>
+              <input type="number" id="calcValue" placeholder="e.g., 5000000" min="0">
+            </div>
+            <div class="form-group">
+              <label for="calcOrigin">Country of Origin</label>
+              <select id="calcOrigin">
+                <option value="eac">EAC Partner State</option>
+                <option value="comesa">COMESA Member</option>
+                <option value="sadc">SADC Member</option>
+                <option value="other">Other Country</option>
+              </select>
+            </div>
+            <button class="btn btn--primary btn--full" id="calcBtn" style="margin-top:16px;">
+              <i class="lucide" data-lucide="calculator"></i> Calculate Duties
+            </button>
+          </div>
+          <div class="calculator-results" id="calcResults" hidden>
+            <h3>Estimated Duties & Taxes</h3>
+            <div class="calc-breakdown" id="calcBreakdown"></div>
+            <div class="calc-total">
+              <span>Total Estimated:</span>
+              <span id="calcTotal" class="calc-total__amount">RWF 0</span>
+            </div>
+            <p class="calc-note">* This is an estimate. Actual duties may vary based on product classification and current regulations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trade Navigation -->
+    <section class="service-nav" id="trade-nav">
+      <div class="container">
+        <div class="service-nav__grid" id="tradeNavGrid"></div>
+      </div>
+    </section>
+
+    <!-- Trade Detail Sections -->
+    <div class="service-details" id="tradeDetails"></div>
+
+    <section class="help-section" id="contact">
+      <div class="container">
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="phone"></i></div>
+            <h3>Call Us</h3>
+            <p class="help-card__detail">+250 788 111 222</p>
+            <p class="help-card__hours">Mon–Fri, 7:30 AM – 5:00 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="mail"></i></div>
+            <h3>Email Us</h3>
+            <a href="mailto:trade@rra.gov.rw" class="help-card__detail">trade@rra.gov.rw</a>
+            <p class="help-card__hours">We respond within 24 hours</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="map-pin"></i></div>
+            <h3>Visit Us</h3>
+            <p class="help-card__detail">RRA Trade Office, Kigali</p>
+            <p class="help-card__hours">Mon–Fri, 8:00 AM – 4:30 PM</p>
+          </div>
+          <div class="help-card">
+            <div class="help-card__icon"><i class="lucide" data-lucide="message-circle"></i></div>
+            <h3>Send a Message</h3>
+            <a href="#contact-form" class="help-card__detail help-card__link">Open contact form</a>
+            <p class="help-card__hours">Submit inquiries online</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="#procedures">Procedures</a>
+          <a href="#forms">Forms</a>
+          <a href="#laws">Trade Laws</a>
+          <a href="#safety">Safety Alerts</a>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="#myrra">MyRRA</a>
+          <a href="#calculator">Duties Calculator</a>
+          <a href="#contact">Contact Us</a>
+          <a href="#feedback">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="#myrra" class="btn btn--primary btn--full"><i class="lucide" data-lucide="user-circle"></i> MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/trade-data.js"></script>
+  <script src="js/trade-app.js"></script>
+</body>
+</html>
