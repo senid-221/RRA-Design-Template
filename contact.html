@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Rwanda Revenue Authority</title>
+  <meta name="description" content="Contact RRA by phone, email, live chat or visit our offices. Send feedback, complaints or official letters.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/publications.css">
+  <style>
+    .contact-hero { padding: 64px 0; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff; }
+    .contact-hero__inner { max-width: 700px; }
+    .contact-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; }
+    .contact-hero p { font-size: 17px; opacity: 0.9; line-height: 1.6; }
+
+    .contact-channels { padding: 64px 0; background: var(--bg); }
+    .channels-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .channel-card {
+      background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-xl);
+      padding: 28px; text-align: center; transition: all var(--transition);
+    }
+    .channel-card:hover { border-color: var(--gold); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .channel-card__icon {
+      width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: var(--radius-lg); margin: 0 auto 16px;
+    }
+    .channel-card__icon .lucide, .channel-card__icon [data-lucide] { width: 28px; height: 28px; color: var(--gold); }
+    .channel-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .channel-card__detail { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    [data-theme="dark"] .channel-card__detail { color: var(--gold); }
+    .channel-card__detail a { color: inherit; text-decoration: none; }
+    .channel-card__hours { font-size: 13px; color: var(--text-muted); }
+
+    .contact-form-section { padding: 64px 0; background: var(--gray-50); }
+    [data-theme="dark"] .contact-form-section { background: var(--gray-900); }
+    .contact-form-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+
+    .offices-section { padding: 64px 0; background: var(--bg); }
+    .offices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .office-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 24px; transition: all var(--transition);
+    }
+    .office-card:hover { border-color: var(--gold); box-shadow: var(--shadow-md); }
+    .office-card__badge {
+      display: inline-block; padding: 3px 10px; background: var(--gold); color: var(--navy);
+      font-size: 11px; font-weight: 700; border-radius: 12px; margin-bottom: 12px; text-transform: uppercase;
+    }
+    .office-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .office-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px; }
+    .office-card__hours { font-size: 13px; color: var(--text-muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+    .faq-mini { padding: 64px 0; background: var(--gray-50); }
+    [data-theme="dark"] .faq-mini { background: var(--gray-900); }
+
+    @media (max-width: 1024px) {
+      .channels-grid { grid-template-columns: repeat(2, 1fr); }
+      .offices-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-form-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .channels-grid { grid-template-columns: 1fr; }
+      .offices-grid { grid-template-columns: 1fr; }
+      .contact-hero h1 { font-size: 28px; }
+      .contact-hero { padding: 40px 0; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__in">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect width="40" height="40" rx="8" fill="#123D70"/>
+              <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#F4C542" text-anchor="middle">RRA</text>
+            </svg>
+          </div>
+          <div class="logo__text">
+            <span class="logo__title">RRA</span>
+            <span class="logo__subtitle">Rwanda Revenue Authority</span>
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html">EBM Services</a>
+                  <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link">Publications</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="Call RRA">Call RRA</button>
+            <button class="search-tag" data-query="Complaint">Complaint</button>
+            <button class="search-tag" data-query="Office locations">Office Locations</button>
+            <button class="search-tag" data-query="Feedback">Feedback</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="contact-hero">
+      <div class="container">
+        <div class="contact-hero__inner">
+          <h1>Contact Us</h1>
+          <p>Get in touch with RRA for tax inquiries, support, complaints or feedback. We're here to help.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Channels -->
+    <section class="contact-channels">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Reach Us</h2>
+          <p class="section-subtitle">Multiple ways to get in touch with RRA</p>
+        </div>
+        <div class="channels-grid">
+          <div class="channel-card">
+            <div class="channel-card__icon"><i class="lucide" data-lucide="phone"></i></div>
+            <h3>Call Us</h3>
+            <p class="channel-card__detail"><a href="tel:+250788111222">+250 788 111 222</a></p>
+            <p class="channel-card__hours">Toll Free: 3535</p>
+            <p class="channel-card__hours">Mon–Fri, 7:30 AM – 5:00 PM</p>
+          </div>
+          <div class="channel-card">
+            <div class="channel-card__icon"><i class="lucide" data-lucide="mail"></i></div>
+            <h3>Email Us</h3>
+            <p class="channel-card__detail"><a href="mailto:info@rra.gov.rw">info@rra.gov.rw</a></p>
+            <p class="channel-card__hours">Complaints: complaints@rra.gov.rw</p>
+            <p class="channel-card__hours">We respond within 24 hours</p>
+          </div>
+          <div class="channel-card">
+            <div class="channel-card__icon"><i class="lucide" data-lucide="message-circle"></i></div>
+            <h3>Live Chat</h3>
+            <p class="channel-card__detail"><a href="#chat">Start Chat</a></p>
+            <p class="channel-card__hours">Available during business hours</p>
+            <p class="channel-card__hours">Average response: 2 minutes</p>
+          </div>
+          <div class="channel-card">
+            <div class="channel-card__icon"><i class="lucide" data-lucide="message-square"></i></div>
+            <h3>Social Media</h3>
+            <p class="channel-card__detail"><a href="#social">@RRARwanda</a></p>
+            <p class="channel-card__hours">Twitter / X / Facebook</p>
+            <p class="channel-card__hours">Follow us for updates</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact-form-section" id="form">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Send a Message</h2>
+          <p class="section-subtitle">Fill out the form below and we'll get back to you</p>
+        </div>
+        <div class="contact-form-layout">
+          <div class="contact-form-card">
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contactName">Full Name</label>
+                  <input type="text" id="contactName" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactEmail">Email</label>
+                  <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contactPhone">Phone (optional)</label>
+                  <input type="tel" id="contactPhone" placeholder="+250 7XX XXX XXX">
+                </div>
+                <div class="form-group">
+                  <label for="contactTIN">TIN (optional)</label>
+                  <input type="text" id="contactTIN" placeholder="Your TIN number">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="contactSubject">Subject</label>
+                <select id="contactSubject" required>
+                  <option value="">Select a subject</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="tax">Tax Question</option>
+                  <option value="complaint">Complaint</option>
+                  <option value="feedback">Feedback</option>
+                  <option value="request">Information Request</option>
+                  <option value="official">Official Letter</option>
+                  <option value="technical">Technical Issue</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="contactMessage">Message</label>
+                <textarea id="contactMessage" rows="6" placeholder="Write your message here..." required></textarea>
+              </div>
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="contactCopy">
+                  <span>Send me a copy of this message</span>
+                </label>
+              </div>
+              <button type="submit" class="btn btn--primary">
+                <i class="lucide" data-lucide="send"></i> Send Message
+              </button>
+            </form>
+          </div>
+          <div class="contact-info-side">
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="clock"></i></div>
+              <h4>Response Times</h4>
+              <p><strong>Phone:</strong> Immediate<br><strong>Live Chat:</strong> ~2 minutes<br><strong>Email:</strong> Within 24 hours<br><strong>Letters:</strong> 3-5 business days</p>
+            </div>
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="shield-check"></i></div>
+              <h4>Your Privacy</h4>
+              <p>All communications are handled confidentially. Your personal information is protected under Rwanda's data protection laws.</p>
+            </div>
+            <div class="contact-info-card">
+              <div class="contact-info-card__icon"><i class="lucide" data-lucide="alert-circle"></i></div>
+              <h4>Urgent Matters</h4>
+              <p>For urgent tax matters, please call our hotline directly at <strong>+250 788 111 222</strong> or toll-free <strong>3535</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Office Locations -->
+    <section class="offices-section" id="offices">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Our Offices</h2>
+          <p class="section-subtitle">Visit us at any of our offices across Rwanda</p>
+        </div>
+        <div class="offices-grid">
+          <div class="office-card">
+            <span class="office-card__badge">Head Office</span>
+            <h3>RRA Head Office — Kigali</h3>
+            <p>KN 82 St, Nyarugenge</p>
+            <p>Kigali, Rwanda</p>
+            <div class="office-card__hours">
+              <strong>Hours:</strong> Mon–Fri, 7:30 AM – 5:00 PM<br>
+              <strong>Phone:</strong> +250 788 111 222
+            </div>
+          </div>
+          <div class="office-card">
+            <span class="office-card__badge">Branch</span>
+            <h3>RRA Northern Province</h3>
+            <p>Musanze District</p>
+            <p>Northern Province, Rwanda</p>
+            <div class="office-card__hours">
+              <strong>Hours:</strong> Mon–Fri, 7:30 AM – 4:30 PM<br>
+              <strong>Phone:</strong> +250 788 111 300
+            </div>
+          </div>
+          <div class="office-card">
+            <span class="office-card__badge">Branch</span>
+            <h3>RRA Southern Province</h3>
+            <p>Huye District</p>
+            <p>Southern Province, Rwanda</p>
+            <div class="office-card__hours">
+              <strong>Hours:</strong> Mon–Fri, 7:30 AM – 4:30 PM<br>
+              <strong>Phone:</strong> +250 788 111 400
+            </div>
+          </div>
+          <div class="office-card">
+            <span class="office-card__badge">Branch</span>
+            <h3>RRA Eastern Province</h3>
+            <p>Rwamagana District</p>
+            <p>Eastern Province, Rwanda</p>
+            <div class="office-card__hours">
+              <strong>Hours:</strong> Mon–Fri, 7:30 AM – 4:30 PM<br>
+              <strong>Phone:</strong> +250 788 111 500
+            </div>
+          </div>
+          <div class="office-card">
+            <span class="office-card__badge">Branch</span>
+            <h3>RRA Western Province</h3>
+            <p>Karongi District</p>
+            <p>Western Province, Rwanda</p>
+            <div class="office-card__hours">
+              <strong>Hours:</strong> Mon–Fri, 7:30 AM – 4:30 PM<br>
+              <strong>Phone:</strong> +250 788 111 600
+            </div>
+          </div>
+          <div class="office-card">
+            <span class="office-card__badge">Customs</span>
+            <h3>Customs Border Post — Gatuna</h3>
+            <p>Gatuna Border Post</p>
+            <p>Northern Province, Rwanda</p>
+            <div class="office-card__hours">
+              <strong>Hours:</strong> 24/7<br>
+              <strong>Phone:</strong> +250 788 111 700
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-mini" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Contact FAQ</h2>
+          <p class="section-subtitle">Quick answers to common questions</p>
+        </div>
+        <div class="faq-list" id="faqList"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="8" fill="#F4C542"/>
+                <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#123D70" text-anchor="middle">RRA</text>
+              </svg>
+            </div>
+            <div class="logo__text">
+              <span class="logo__title">RRA</span>
+              <span class="logo__subtitle">Rwanda Revenue Authority</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="trade-portal.html">Trade Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="publications.html">Publications</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="myrra.html#help">Login Help</a>
+          <a href="#form">Feedback</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="myrra.html" class="btn btn--primary btn--full"><i class="lucide" data-lucide="log-in"></i> Login to MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/contact-data.js"></script>
+  <script src="js/contact-app.js"></script>
+</body>
+</html>
