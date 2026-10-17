@@ -70,37 +70,37 @@ const tradeSections = [
           <div class="form-card__icon"><i class="lucide" data-lucide="file-down"></i></div>
           <h3>Import Declaration Form</h3>
           <p>Required for all imports into Rwanda</p>
-          <a href="#" class="btn btn--outline btn--sm">Download PDF</a>
+          <a href="https://www.rra.gov.rw/en/customs-services/forms" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Download PDF</a>
         </div>
         <div class="form-card">
           <div class="form-card__icon"><i class="lucide" data-lucide="file-down"></i></div>
           <h3>Export Declaration Form</h3>
           <p>Required for all exports from Rwanda</p>
-          <a href="#" class="btn btn--outline btn--sm">Download PDF</a>
+          <a href="https://www.rra.gov.rw/en/customs-services/forms" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Download PDF</a>
         </div>
         <div class="form-card">
           <div class="form-card__icon"><i class="lucide" data-lucide="file-down"></i></div>
           <h3>Transit Declaration Form</h3>
           <p>For goods transiting through Rwanda</p>
-          <a href="#" class="btn btn--outline btn--sm">Download PDF</a>
+          <a href="https://www.rra.gov.rw/en/customs-services/forms" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Download PDF</a>
         </div>
         <div class="form-card">
           <div class="form-card__icon"><i class="lucide" data-lucide="file-down"></i></div>
           <h3>Certificate of Origin Application</h3>
           <p>Apply for preferential trade certificates</p>
-          <a href="#" class="btn btn--outline btn--sm">Download PDF</a>
+          <a href="https://www.rra.gov.rw/en/customs-services/forms" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Download PDF</a>
         </div>
         <div class="form-card">
           <div class="form-card__icon"><i class="lucide" data-lucide="file-down"></i></div>
           <h3>Valuation Declaration Form</h3>
           <p>Declare customs value of goods</p>
-          <a href="#" class="btn btn--outline btn--sm">Download PDF</a>
+          <a href="https://www.rra.gov.rw/en/customs-services/forms" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Download PDF</a>
         </div>
         <div class="form-card">
           <div class="form-card__icon"><i class="lucide" data-lucide="file-down"></i></div>
           <h3>Traveler Declaration Form</h3>
           <p>For personal effects and duty-free items</p>
-          <a href="#" class="btn btn--outline btn--sm">Download PDF</a>
+          <a href="https://www.rra.gov.rw/en/customs-services/forms" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Download PDF</a>
         </div>
       </div>
     `
@@ -118,7 +118,7 @@ const tradeSections = [
           <div class="law-item__content">
             <h3>Customs and Excise Law</h3>
             <p>Law No. 37/2012 governing customs procedures, duties, and excise taxes in Rwanda.</p>
-            <a href="#" class="law-item__link">View Document</a>
+            <a href="https://www.rra.gov.rw/en/taxes-fees" target="_blank" rel="noopener" class="law-item__link">View Document</a>
           </div>
         </div>
         <div class="law-item">
@@ -126,7 +126,7 @@ const tradeSections = [
           <div class="law-item__content">
             <h3>EAC Customs Union Protocol</h3>
             <p>Regional agreement establishing common external tariff and customs procedures for EAC partner states.</p>
-            <a href="#" class="law-item__link">View Document</a>
+            <a href="https://www.rra.gov.rw/en/customs-services/eac-customs-union" target="_blank" rel="noopener" class="law-item__link">View Document</a>
           </div>
         </div>
         <div class="law-item">
@@ -134,7 +134,7 @@ const tradeSections = [
           <div class="law-item__content">
             <h3>Rules of Origin Regulations</h3>
             <p>Regulations determining origin of goods for preferential trade under EAC, COMESA, and SADC.</p>
-            <a href="#" class="law-item__link">View Document</a>
+            <a href="https://www.rra.gov.rw/en/customs-services/eac-customs-union" target="_blank" rel="noopener" class="law-item__link">View Document</a>
           </div>
         </div>
         <div class="law-item">
@@ -142,7 +142,7 @@ const tradeSections = [
           <div class="law-item__content">
             <h3>Trade Facilitation Agreement</h3>
             <p>WTO agreement on simplifying and modernizing customs procedures.</p>
-            <a href="#" class="law-item__link">View Document</a>
+            <a href="https://www.rra.gov.rw/en/customs-services" target="_blank" rel="noopener" class="law-item__link">View Document</a>
           </div>
         </div>
       </div>
