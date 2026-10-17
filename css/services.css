@@ -324,6 +324,38 @@
 /* ===== FAQ ===== */
 .faq-section { padding: 48px 0; background: var(--bg); }
 .faq-list { max-width: 800px; margin: 0 auto; }
+
+.faq-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.faq-control-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.faq-control-btn:hover {
+  color: var(--navy);
+  border-color: var(--navy);
+  background: var(--gray-50);
+}
+[data-theme="dark"] .faq-control-btn:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: var(--gray-700);
+}
+.faq-control-btn .lucide, .faq-control-btn [data-lucide] { width: 14px; height: 14px; }
 .faq-item {
   border: 1px solid var(--border);
   border-radius: var(--radius);

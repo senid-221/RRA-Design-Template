@@ -265,6 +265,30 @@
         }
       });
     });
+
+    const expandBtn = document.getElementById('faqExpandAll');
+    const collapseBtn = document.getElementById('faqCollapseAll');
+
+    if (expandBtn) {
+      expandBtn.addEventListener('click', () => {
+        document.querySelectorAll('.faq-item').forEach(fi => {
+          fi.classList.add('open');
+          fi.querySelector('.faq-question').setAttribute('aria-expanded', 'true');
+          const answer = fi.querySelector('.faq-answer');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        });
+      });
+    }
+
+    if (collapseBtn) {
+      collapseBtn.addEventListener('click', () => {
+        document.querySelectorAll('.faq-item').forEach(fi => {
+          fi.classList.remove('open');
+          fi.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          fi.querySelector('.faq-answer').style.maxHeight = null;
+        });
+      });
+    }
   }
 
   // ===== SERVICE NAV CLICKS =====

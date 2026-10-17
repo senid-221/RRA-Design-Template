@@ -101,6 +101,30 @@
         }
       });
     });
+
+    var expandBtn = document.getElementById('faqExpandAll');
+    var collapseBtn = document.getElementById('faqCollapseAll');
+
+    if (expandBtn) {
+      expandBtn.addEventListener('click', function() {
+        document.querySelectorAll('.faq-item').forEach(function(fi) {
+          fi.classList.add('open');
+          fi.querySelector('.faq-question').setAttribute('aria-expanded', 'true');
+          var answer = fi.querySelector('.faq-answer');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        });
+      });
+    }
+
+    if (collapseBtn) {
+      collapseBtn.addEventListener('click', function() {
+        document.querySelectorAll('.faq-item').forEach(function(fi) {
+          fi.classList.remove('open');
+          fi.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          fi.querySelector('.faq-answer').style.maxHeight = null;
+        });
+      });
+    }
   }
 
   // ===== SEARCH =====
