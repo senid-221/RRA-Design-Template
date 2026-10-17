@@ -74,7 +74,7 @@
     const grid = document.getElementById('serviceNavGrid');
     if (!grid) return;
     grid.innerHTML = taxServices.map(s => `
-      <a href="#${s.id}" class="service-nav-card ${s.id === activeService ? 'active' : ''}" data-service="${s.id}">
+      <a href="${officialPages[s.id] || '#'}" target="_blank" rel="noopener" class="service-nav-card ${s.id === activeService ? 'active' : ''}" data-service="${s.id}">
         <div class="service-nav-card__icon">
           <i class="lucide" data-lucide="${s.icon}"></i>
         </div>
@@ -293,25 +293,8 @@
 
   // ===== SERVICE NAV CLICKS =====
   function bindServiceNavClicks() {
-    document.querySelectorAll('.service-nav-card').forEach(card => {
-      card.addEventListener('click', (e) => {
-        e.preventDefault();
-        const serviceId = card.dataset.service;
-        activeService = serviceId;
-
-        document.querySelectorAll('.service-nav-card').forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-
-        document.querySelectorAll('.service-detail').forEach(d => d.classList.remove('active'));
-        const detail = document.getElementById(serviceId);
-        if (detail) {
-          detail.classList.add('active');
-          detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-
-    // Handle hash navigation
+    // Service nav cards now link directly to official RRA pages
+    // Handle hash navigation for direct links
     if (window.location.hash) {
       const hash = window.location.hash.slice(1);
       const service = taxServices.find(s => s.id === hash);
