@@ -195,6 +195,6 @@ const searchIndex = [
   { title: "Publications", desc: "Tax handbooks, reports and brochures", icon: "book-open", href: "https://www.rra.gov.rw/en/publications", category: "tax" },
   { title: "Tax Laws", desc: "Official tax legislation and regulations", icon: "scale", href: "https://www.rra.gov.rw/en/tax-laws", category: "tax" },
   { title: "Forms", desc: "Download tax and customs forms", icon: "file-down", href: "https://www.rra.gov.rw/en/forms", category: "tax" },
-  { title: "Business Registration", desc: "Register your business via RDB", icon: "building", href: "https://rdb.rw/", category: "tax" },
+  { title: "Business Registration", desc: "Register your business via RDB", icon: "building", href: "https://urs.rdb.rw/auth/register", category: "tax" },
   { title: "Contact RRA", desc: "Get in touch with RRA support", icon: "phone", href: "https://www.rra.gov.rw/en/contact-us", category: "tax" },
 ];

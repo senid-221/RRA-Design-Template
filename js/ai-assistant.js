@@ -148,7 +148,7 @@
     } else if (service.category === 'RDB') {
       actions.push({
         text: 'Go to RDB',
-        action: function() { window.open('https://rdb.rw/', '_blank', 'noopener'); }
+        action: function() { window.open('https://urs.rdb.rw/auth/register', '_blank', 'noopener'); }
       });
     } else if (service.category === 'RSSB') {
       actions.push({
@@ -253,7 +253,7 @@
       '- eTax (TIN registration): https://etax.rra.gov.rw/nidAssignedTIN/\n' +
       '- e-Single Window (customs): https://sw.gov.rw/\n' +
       '- Trade Portal (duties calculator): https://rwandatrade.rw/\n' +
-      '- RDB (business registration): https://rdb.rw/\n' +
+      '- RDB (business registration): https://urs.rdb.rw/auth/register\n' +
       '- RSSB (social security): https://www.rssb.gov.rw/\n' +
       '- RURA (licensing): https://www.rura.gov.rw/\n' +
       '- Non-Fiscal Revenue: https://nonfiscal.rra.gov.rw/\n\n' +
@@ -420,7 +420,7 @@
         if (lower.includes('tax') || lower.includes('vat') || lower.includes('paye') || lower.includes('ebm')) {
           actions.push({ text: 'Go to MyRRA', action: function() { window.open('https://myrra.rra.gov.rw/', '_blank', 'noopener'); } });
         } else if (lower.includes('business') || lower.includes('register') || lower.includes('company')) {
-          actions.push({ text: 'Go to RDB', action: function() { window.open('https://rdb.rw/', '_blank', 'noopener'); } });
+          actions.push({ text: 'Go to RDB', action: function() { window.open('https://urs.rdb.rw/auth/register', '_blank', 'noopener'); } });
         } else if (lower.includes('social') || lower.includes('pension') || lower.includes('rssb')) {
           actions.push({ text: 'Go to RSSB', action: function() { window.open('https://www.rssb.gov.rw/', '_blank', 'noopener'); } });
         } else if (lower.includes('license') || lower.includes('telecom') || lower.includes('rura')) {

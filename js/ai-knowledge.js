@@ -197,7 +197,7 @@ var aiKnowledge = {
       category: 'RDB',
       description: 'Register a new business or company in Rwanda.',
       platform: 'RDB Portal',
-      url: 'https://rdb.rw/',
+      url: 'https://urs.rdb.rw/auth/register',
       steps: [
         'Visit RDB portal (rdb.rw) or One Stop Center',
         'Choose business type (Sole proprietorship, Limited Company, etc.)',
@@ -217,7 +217,7 @@ var aiKnowledge = {
       category: 'RDB',
       description: 'Get a business permit/trading license to operate legally.',
       platform: 'RDB Portal',
-      url: 'https://rdb.rw/',
+      url: 'https://urs.rdb.rw/auth/register',
       steps: [
         'Log in to RDB portal',
         'Navigate to "Post Registration" → "Business Permit"',
@@ -237,7 +237,7 @@ var aiKnowledge = {
       category: 'RDB',
       description: 'Register as an investor in Rwanda (local or foreign).',
       platform: 'RDB Portal',
-      url: 'https://rdb.rw/',
+      url: 'https://urs.rdb.rw/auth/register',
       steps: [
         'Visit RDB portal or One Stop Center',
         'Go to "Investment Services" → "Register Investment"',
