@@ -96,10 +96,12 @@
     if (!list) return;
     list.innerHTML = announcements.map(a => `
       <li class="announcement-item">
-        ${a.tag ? `<span class="announcement-item__tag announcement-item__tag--${a.tag}">${a.tagText[currentLang] || a.tagText.en}</span>` : ''}
-        <h4>${a.title[currentLang] || a.title.en}</h4>
-        <p>${a.desc[currentLang] || a.desc.en}</p>
-        <span class="announcement-item__date">${formatDate(a.date)}</span>
+        <a href="news-detail.html?type=announcement&id=${a.id}" class="announcement-item__link">
+          ${a.tag ? `<span class="announcement-item__tag announcement-item__tag--${a.tag}">${a.tagText[currentLang] || a.tagText.en}</span>` : ''}
+          <h4>${a.title[currentLang] || a.title.en}</h4>
+          <p>${a.desc[currentLang] || a.desc.en}</p>
+          <span class="announcement-item__date">${formatDate(a.date)}</span>
+        </a>
       </li>
     `).join('');
   }
@@ -110,14 +112,16 @@
     if (!list) return;
     list.innerHTML = news.map(n => `
       <li class="news-item">
-        <div class="news-item__thumb">
-          <i class="lucide" data-lucide="newspaper"></i>
-        </div>
-        <div class="news-item__text">
-          <h4>${n.title[currentLang] || n.title.en}</h4>
-          <p>${n.desc[currentLang] || n.desc.en}</p>
-          <span class="news-item__date">${formatDate(n.date)}</span>
-        </div>
+        <a href="news-detail.html?type=news&id=${n.id}" class="news-item__link">
+          <div class="news-item__thumb">
+            <i class="lucide" data-lucide="newspaper"></i>
+          </div>
+          <div class="news-item__text">
+            <h4>${n.title[currentLang] || n.title.en}</h4>
+            <p>${n.desc[currentLang] || n.desc.en}</p>
+            <span class="news-item__date">${formatDate(n.date)}</span>
+          </div>
+        </a>
       </li>
     `).join('');
     lucide.createIcons();
