@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Registration & RDB Services — Rwanda Revenue Authority</title>
+  <meta name="description" content="Register your business in Rwanda through RDB. Step-by-step guide to business registration, investment opportunities, and investor services.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/rdb-services.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left"><span class="top-bar__label">Government of Rwanda</span></div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast"><i class="lucide" data-lucide="contrast"></i></button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode"><i class="lucide" data-lucide="moon"></i></button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;">
+          </div>
+        </a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+                  <a href="domestic-tax-services.html#vat">VAT</a>
+                  <a href="domestic-tax-services.html#paye">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="customs-services.html">Customs Services</a>
+                  <a href="trade-portal.html">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="ebm-services.html">EBM Services</a>
+                  <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+                  <a href="rdb-services.html">Business Registration</a>
+                  <a href="myrra.html">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a href="publications.html" class="nav-link">Publications</a></li>
+            <li class="nav-item"><a href="news.html" class="nav-link">News</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu"><i class="lucide" data-lucide="menu"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions">
+          <p class="search-suggestions__label">Popular searches</p>
+          <div class="search-tags">
+            <button class="search-tag" data-query="Register business">Register business</button>
+            <button class="search-tag" data-query="TIN number">TIN number</button>
+            <button class="search-tag" data-query="Investment">Investment</button>
+            <button class="search-tag" data-query="RDB">RDB</button>
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="rdb-hero">
+      <div class="container">
+        <div class="rdb-hero__inner">
+          <div class="rdb-hero__badge">
+            <i class="lucide" data-lucide="building"></i>
+            <span>In partnership with Rwanda Development Board</span>
+          </div>
+          <h1 class="rdb-hero__title">Business Registration & Investor Services</h1>
+          <p class="rdb-hero__subtitle">Start and grow your business in Rwanda. Register your company, explore investment opportunities, and access government services — all in one place.</p>
+          <div class="rdb-hero__actions">
+            <a href="https://rdb.rw/" class="btn btn--primary" target="_blank" rel="noopener"><i class="lucide" data-lucide="external-link"></i> Visit RDB Portal</a>
+            <a href="https://rdb.rw/e-services/" class="btn btn--outline" style="border-color:#fff;color:#fff;" target="_blank" rel="noopener"><i class="lucide" data-lucide="monitor"></i> E-Services</a>
+            <a href="#steps" class="btn btn--outline" style="border-color:#fff;color:#fff;"><i class="lucide" data-lucide="list-ordered"></i> How to Register</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="rdb-stats">
+      <div class="container">
+        <div class="rdb-stats__grid">
+          <div class="rdb-stat">
+            <div class="rdb-stat__icon"><i class="lucide" data-lucide="clock"></i></div>
+            <div class="rdb-stat__value">6 Hours</div>
+            <div class="rdb-stat__label">Average Registration Time</div>
+          </div>
+          <div class="rdb-stat">
+            <div class="rdb-stat__icon"><i class="lucide" data-lucide="dollar-sign"></i></div>
+            <div class="rdb-stat__value">Free</div>
+            <div class="rdb-stat__label">Business Registration Fee</div>
+          </div>
+          <div class="rdb-stat">
+            <div class="rdb-stat__icon"><i class="lucide" data-lucide="globe"></i></div>
+            <div class="rdb-stat__value">100%</div>
+            <div class="rdb-stat__label">Online Process</div>
+          </div>
+          <div class="rdb-stat">
+            <div class="rdb-stat__icon"><i class="lucide" data-lucide="shield-check"></i></div>
+            <div class="rdb-stat__value">#1</div>
+            <div class="rdb-stat__label">Ease of Doing Business in EAC</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registration Steps -->
+    <section class="rdb-steps" id="steps">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">How to Register a Business</h2>
+          <p class="section-subtitle">Follow these steps to register your business in Rwanda through RDB's One Stop Centre</p>
+        </div>
+        <div class="steps-timeline">
+          <div class="step-item">
+            <div class="step-item__number">1</div>
+            <div class="step-item__content">
+              <h3>Reserve Your Business Name</h3>
+              <p>Search and reserve your preferred business name through the RDB online portal or at the One Stop Centre. Name reservation is processed instantly.</p>
+              <div class="step-item__tip">
+                <i class="lucide" data-lucide="lightbulb"></i>
+                <span>Have 2-3 alternative names ready in case your first choice is already taken.</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-item__number">2</div>
+            <div class="step-item__content">
+              <h3>Prepare Required Documents</h3>
+              <p>Gather the necessary documents including your National ID or passport, proof of address, and business location details. For companies, prepare articles of association.</p>
+              <div class="step-item__docs">
+                <span class="doc-tag"><i class="lucide" data-lucide="file-text"></i> National ID / Passport</span>
+                <span class="doc-tag"><i class="lucide" data-lucide="file-text"></i> Proof of Address</span>
+                <span class="doc-tag"><i class="lucide" data-lucide="file-text"></i> Business Location Map</span>
+                <span class="doc-tag"><i class="lucide" data-lucide="file-text"></i> Articles of Association (companies)</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-item__number">3</div>
+            <div class="step-item__content">
+              <h3>Submit Registration Application</h3>
+              <p>Submit your application online through the RDB portal or visit the One Stop Centre. You'll receive your Certificate of Registration upon approval.</p>
+              <a href="https://rdb.rw/" class="step-item__link" target="_blank" rel="noopener">
+                <i class="lucide" data-lucide="external-link"></i> Apply on RDB Portal
+              </a>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-item__number">4</div>
+            <div class="step-item__content">
+              <h3>Get Your TIN Number</h3>
+              <p>After registration, obtain your Tax Identification Number (TIN) from RRA. This is required for all tax obligations and business transactions.</p>
+              <a href="tin-lookup.html" class="step-item__link">
+                <i class="lucide" data-lucide="search"></i> Look Up Your TIN
+              </a>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-item__number">5</div>
+            <div class="step-item__content">
+              <h3>Register for Taxes</h3>
+              <p>Register your business for applicable taxes on MyRRA portal — including VAT, Corporate Tax, and PAYE for your employees.</p>
+              <a href="https://myrra.rra.gov.rw/" class="step-item__link" target="_blank" rel="noopener">
+                <i class="lucide" data-lucide="external-link"></i> Register on MyRRA
+              </a>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-item__number">6</div>
+            <div class="step-item__content">
+              <h3>Get an EBM Machine</h3>
+              <p>Obtain an Electronic Billing Machine from RRA for issuing valid receipts and invoices to your customers. EBM compliance is mandatory for all VAT-registered businesses.</p>
+              <a href="ebm-services.html" class="step-item__link">
+                <i class="lucide" data-lucide="printer"></i> EBM Services
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RDB Services -->
+    <section class="rdb-services-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">RDB Services for Businesses</h2>
+          <p class="section-subtitle">The Rwanda Development Board provides comprehensive support for investors and businesses</p>
+        </div>
+        <div class="rdb-services-grid">
+          <a href="https://rdb.rw/" class="rdb-service-card" target="_blank" rel="noopener">
+            <div class="rdb-service-card__icon"><i class="lucide" data-lucide="file-check"></i></div>
+            <h3>Business Registration</h3>
+            <p>Register sole proprietorships, limited companies, branches, and other business entities through the One Stop Centre.</p>
+            <span class="rdb-service-card__link">Learn more <i class="lucide" data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://rdb.rw/investment-opportunities/" class="rdb-service-card" target="_blank" rel="noopener">
+            <div class="rdb-service-card__icon"><i class="lucide" data-lucide="trending-up"></i></div>
+            <h3>Investment Opportunities</h3>
+            <p>Explore priority sectors for investment in Rwanda including agriculture, ICT, tourism, manufacturing, energy, and more.</p>
+            <span class="rdb-service-card__link">Explore sectors <i class="lucide" data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://rdb.rw/hiring-in-rwanda/" class="rdb-service-card" target="_blank" rel="noopener">
+            <div class="rdb-service-card__icon"><i class="lucide" data-lucide="users"></i></div>
+            <h3>Hiring in Rwanda</h3>
+            <p>Access Rwanda's skilled workforce. Get guidance on employment regulations, work permits, and labor market information.</p>
+            <span class="rdb-service-card__link">View guide <i class="lucide" data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://rdb.rw/paying-taxes/" class="rdb-service-card" target="_blank" rel="noopener">
+            <div class="rdb-service-card__icon"><i class="lucide" data-lucide="calculator"></i></div>
+            <h3>Paying Taxes</h3>
+            <p>Understand your tax obligations as a business in Rwanda. Learn about corporate tax, VAT, withholding tax, and filing deadlines.</p>
+            <span class="rdb-service-card__link">Tax guide <i class="lucide" data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://rdb.rw/one-stop-centre/#visas-and-permits" class="rdb-service-card" target="_blank" rel="noopener">
+            <div class="rdb-service-card__icon"><i class="lucide" data-lucide="passport"></i></div>
+            <h3>Visas & Permits</h3>
+            <p>Apply for investor visas, work permits, and residency permits through RDB's One Stop Centre for foreign nationals.</p>
+            <span class="rdb-service-card__link">Visa info <i class="lucide" data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://rdb.rw/entering-rwanda/" class="rdb-service-card" target="_blank" rel="noopener">
+            <div class="rdb-service-card__icon"><i class="lucide" data-lucide="plane"></i></div>
+            <h3>Entering Rwanda</h3>
+            <p>Everything you need to know about traveling to Rwanda for business — visa requirements, airports, and travel logistics.</p>
+            <span class="rdb-service-card__link">Travel info <i class="lucide" data-lucide="arrow-right"></i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Investment Sectors -->
+    <section class="rdb-sectors">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Priority Investment Sectors</h2>
+          <p class="section-subtitle">Rwanda offers compelling investment opportunities across these high-growth sectors</p>
+        </div>
+        <div class="sectors-grid">
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="sprout"></i></div>
+            <h3>Agriculture & Agribusiness</h3>
+            <p>Fertile land, favorable climate, and growing demand for processed foods make Rwanda ideal for agricultural investment.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="monitor-smartphone"></i></div>
+            <h3>ICT & Innovation</h3>
+            <p>Rwanda is positioning itself as Africa's tech hub with fiber optic coverage, innovation funds, and a young digital-native workforce.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="mountain"></i></div>
+            <h3>Tourism & Hospitality</h3>
+            <p>Home to mountain gorillas, national parks, and a growing MICE (Meetings, Incentives, Conferences, Exhibitions) industry.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="factory"></i></div>
+            <h3>Manufacturing</h3>
+            <p>Special Economic Zones, affordable energy, and access to AfCFTA markets make Rwanda a manufacturing gateway to Africa.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="zap"></i></div>
+            <h3>Energy & Infrastructure</h3>
+            <p>Growing demand for renewable energy, real estate development, and modern infrastructure presents significant opportunities.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="landmark"></i></div>
+            <h3>Financial Services</h3>
+            <p>A stable regulatory environment, mobile money penetration, and financial inclusion initiatives create a thriving fintech ecosystem.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="heart-pulse"></i></div>
+            <h3>Health Services</h3>
+            <p>Investment in pharmaceuticals, medical equipment, and healthcare facilities to serve Rwanda and the wider East African market.</p>
+          </div>
+          <div class="sector-card">
+            <div class="sector-card__icon"><i class="lucide" data-lucide="graduation-cap"></i></div>
+            <h3>Education & Training</h3>
+            <p>Growing demand for quality education, vocational training, and e-learning platforms in Rwanda's knowledge economy.</p>
+          </div>
+        </div>
+        <div class="sectors-cta">
+          <a href="https://rdb.rw/investment-opportunities/" class="btn btn--primary" target="_blank" rel="noopener"><i class="lucide" data-lucide="external-link"></i> View All Investment Opportunities on RDB</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Business Types -->
+    <section class="rdb-types">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Types of Business Entities</h2>
+          <p class="section-subtitle">Choose the right legal structure for your business</p>
+        </div>
+        <div class="types-grid">
+          <div class="type-card">
+            <div class="type-card__header">
+              <i class="lucide" data-lucide="user"></i>
+              <h3>Sole Proprietorship</h3>
+            </div>
+            <p>A business owned and operated by one individual. Simple to set up with minimal requirements.</p>
+            <ul class="type-card__list">
+              <li><i class="lucide" data-lucide="check"></i> One owner, full control</li>
+              <li><i class="lucide" data-lucide="check"></i> Minimal documentation</li>
+              <li><i class="lucide" data-lucide="check"></i> Quick registration</li>
+              <li><i class="lucide" data-lucide="check"></i> Owner personally liable</li>
+            </ul>
+          </div>
+          <div class="type-card type-card--featured">
+            <div class="type-card__badge">Most Popular</div>
+            <div class="type-card__header">
+              <i class="lucide" data-lucide="building-2"></i>
+              <h3>Limited Liability Company</h3>
+            </div>
+            <p>A separate legal entity that protects shareholders' personal assets. Ideal for growing businesses.</p>
+            <ul class="type-card__list">
+              <li><i class="lucide" data-lucide="check"></i> 1-50 shareholders</li>
+              <li><i class="lucide" data-lucide="check"></i> Limited liability protection</li>
+              <li><i class="lucide" data-lucide="check"></i> Separate legal entity</li>
+              <li><i class="lucide" data-lucide="check"></i> Easier to raise capital</li>
+            </ul>
+          </div>
+          <div class="type-card">
+            <div class="type-card__header">
+              <i class="lucide" data-lucide="globe"></i>
+              <h3>Branch of Foreign Company</h3>
+            </div>
+            <p>Register a branch of an existing foreign company to operate in Rwanda.</p>
+            <ul class="type-card__list">
+              <li><i class="lucide" data-lucide="check"></i> Extension of parent company</li>
+              <li><i class="lucide" data-lucide="check"></i> 100% foreign ownership allowed</li>
+              <li><i class="lucide" data-lucide="check"></i> Parent company liable</li>
+              <li><i class="lucide" data-lucide="check"></i> Requires parent docs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RRA Services at the OSC -->
+    <section class="rdb-osc-rra">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">RRA Services at the One Stop Centre</h2>
+          <p class="section-subtitle">RRA provides these services directly at the RDB One Stop Centre for fast, integrated business support</p>
+        </div>
+        <div class="osc-rra-grid">
+          <div class="osc-rra-card">
+            <div class="osc-rra-card__header">
+              <i class="lucide" data-lucide="ship"></i>
+              <h3>Customs Services</h3>
+            </div>
+            <ul class="osc-rra-card__list">
+              <li>
+                <span>Customs Duty Exemptions</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="clock"></i> 24 hours</span>
+              </li>
+              <li>
+                <span>VAT Services</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="clock"></i> 24 hours</span>
+              </li>
+              <li>
+                <span>Tax Clearance Certificate</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="clock"></i> Instant</span>
+              </li>
+              <li>
+                <span>Non-Business TIN Registration</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="clock"></i> 24 hours</span>
+              </li>
+              <li>
+                <span>Deregistration Services</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="clock"></i> 5 days</span>
+              </li>
+              <li>
+                <span>Quitus Fiscal Service</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="clock"></i> 5 days</span>
+              </li>
+            </ul>
+            <p class="osc-rra-card__note">Also provides information on import procedures and cargo/warehouse management.</p>
+          </div>
+          <div class="osc-rra-card">
+            <div class="osc-rra-card__header">
+              <i class="lucide" data-lucide="calculator"></i>
+              <h3>Domestic Tax Services</h3>
+            </div>
+            <ul class="osc-rra-card__list">
+              <li>
+                <span>Tax Types Information & Calculation</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="info"></i> Guidance</span>
+              </li>
+              <li>
+                <span>Tax Refund Follow-up</span>
+                <span class="osc-rra-card__time"><i class="lucide" data-lucide="info"></i> Support</span>
+              </li>
+            </ul>
+            <p class="osc-rra-card__note">Get expert guidance on all domestic tax types and track your tax refund status.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RDB OSC Key Services & Timelines -->
+    <section class="rdb-osc-services">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Key RDB Services & Timelines</h2>
+          <p class="section-subtitle">Official service timelines from the RDB One Stop Center Service Charter</p>
+        </div>
+        <div class="osc-timeline-grid">
+          <div class="osc-timeline-card">
+            <div class="osc-timeline-card__badge osc-timeline-card__badge--fast">Fast</div>
+            <h3><i class="lucide" data-lucide="file-check"></i> Business Registration</h3>
+            <ul>
+              <li><span>Business Registration Certificate</span><strong>6 hours</strong></li>
+              <li><span>Shareholder Certificate</span><strong>24 hours</strong></li>
+              <li><span>Mortgage Clearance Certificate</span><strong>24 hours</strong></li>
+              <li><span>Business Notary Services</span><strong>Immediate</strong></li>
+            </ul>
+          </div>
+          <div class="osc-timeline-card">
+            <div class="osc-timeline-card__badge osc-timeline-card__badge--invest">Investment</div>
+            <h3><i class="lucide" data-lucide="trending-up"></i> Investment Services</h3>
+            <ul>
+              <li><span>Investment Certificate</span><strong>24 hours</strong></li>
+              <li><span>Tax Incentives Management</span><strong>24 hours</strong></li>
+              <li><span>Intellectual Property Certificate</span><strong>90 days</strong></li>
+            </ul>
+          </div>
+          <div class="osc-timeline-card">
+            <div class="osc-timeline-card__badge osc-timeline-card__badge--env">Environment</div>
+            <h3><i class="lucide" data-lucide="leaf"></i> Environmental Compliance</h3>
+            <ul>
+              <li><span>EIA Clearance</span><strong>15 days</strong></li>
+              <li><span>EIA Certificate</span><strong>45 days</strong></li>
+            </ul>
+          </div>
+          <div class="osc-timeline-card">
+            <div class="osc-timeline-card__badge osc-timeline-card__badge--tourism">Tourism</div>
+            <h3><i class="lucide" data-lucide="map-pin"></i> Tourism & Hospitality</h3>
+            <ul>
+              <li><span>Tourism License</span><strong>15 days</strong></li>
+              <li><span>Hotel Accreditation</span><strong>1-2 months</strong></li>
+            </ul>
+          </div>
+          <div class="osc-timeline-card">
+            <div class="osc-timeline-card__badge osc-timeline-card__badge--sez">SEZ</div>
+            <h3><i class="lucide" data-lucide="factory"></i> Special Economic Zones</h3>
+            <ul>
+              <li><span>SEZ User License</span><strong>24 hours</strong></li>
+              <li><span>SEZ Construction Permit</span><strong>10-15 days</strong></li>
+              <li><span>SEZ Developer License</span><strong>15 days</strong></li>
+              <li><span>SEZ Operator License</span><strong>15 days</strong></li>
+              <li><span>SEZ Occupational Permit</span><strong>10-15 days</strong></li>
+              <li><span>SEZ EPZ License</span><strong>10-15 days</strong></li>
+            </ul>
+          </div>
+          <div class="osc-timeline-card">
+            <div class="osc-timeline-card__badge osc-timeline-card__badge--immigration">Immigration</div>
+            <h3><i class="lucide" data-lucide="passport"></i> Immigration (DGIE)</h3>
+            <ul>
+              <li><span>Business Permits (Investors)</span><strong>3 days</strong></li>
+              <li><span>Work Permits (Employment)</span><strong>3 days</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="sectors-cta">
+          <a href="https://rdb.rw/e-services/" class="btn btn--primary" target="_blank" rel="noopener"><i class="lucide" data-lucide="external-link"></i> Access All E-Services Online</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- OSC Partner Institutions -->
+    <section class="rdb-partners">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">One Stop Centre Partner Institutions</h2>
+          <p class="section-subtitle">20+ government institutions working together under one roof at the RDB OSC</p>
+        </div>
+        <div class="partners-grid">
+          <div class="partner-item">
+            <i class="lucide" data-lucide="building-2"></i>
+            <span>RDB (Business Registration, Investment, Tourism, SEZ)</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="landmark"></i>
+            <span>RRA (Customs & Domestic Taxes)</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="passport"></i>
+            <span>Immigration (DGIE) — Visas & Work Permits</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="map"></i>
+            <span>City of Kigali — Building Permits</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="home"></i>
+            <span>National Lands Authority — Land Registration</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="trending-up"></i>
+            <span>National Bank of Rwanda — Financial Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="bar-chart-3"></i>
+            <span>Capital Market Authority — Securities Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="shopping-bag"></i>
+            <span>MINICOM — AfCFTA & Trade</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="sprout"></i>
+            <span>NAEB — Agricultural Export Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="heart-pulse"></i>
+            <span>Ministry of Health — Health Facility Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="pill"></i>
+            <span>Rwanda FDA — Food & Drugs</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="shield-check"></i>
+            <span>RICA — Consumer Protection & Standards</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="award"></i>
+            <span>Rwanda Standards Board (RSB) — S-MARK Certification</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="zap"></i>
+            <span>RURA — Utilities & Telecommunications Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="pickaxe"></i>
+            <span>RMB — Mining Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="plane"></i>
+            <span>Rwanda Civil Aviation — Drone & Aviation Permits</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="graduation-cap"></i>
+            <span>Higher Education Council — Private School Licensing</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="tree-pine"></i>
+            <span>Rwanda Forestry Authority — Forestry Permits</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="house"></i>
+            <span>Rwanda Housing Authority — Building Permits (outside Kigali)</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="droplets"></i>
+            <span>Rwanda Water Board — Water Use Permits</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="leaf"></i>
+            <span>REMA — Environmental Compliance</span>
+          </div>
+          <div class="partner-item">
+            <i class="lucide" data-lucide="globe"></i>
+            <span>Rwanda Finance — Kigali International Financial Centre</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RRA Tax Obligations After Registration -->
+    <section class="rdb-tax-obligations">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Your Tax Obligations After Registration</h2>
+          <p class="section-subtitle">Once your business is registered, here are your key tax responsibilities with RRA</p>
+        </div>
+        <div class="obligations-grid">
+          <div class="obligation-card">
+            <div class="obligation-card__icon"><i class="lucide" data-lucide="receipt"></i></div>
+            <h3>VAT Returns</h3>
+            <p>File monthly if turnover exceeds RWF 50M, or quarterly if between RWF 20M-50M. Rate: 18%.</p>
+            <a href="domestic-tax-services.html#vat" class="obligation-card__link">Learn about VAT</a>
+          </div>
+          <div class="obligation-card">
+            <div class="obligation-card__icon"><i class="lucide" data-lucide="building"></i></div>
+            <h3>Corporate Income Tax</h3>
+            <p>Annual tax on business profits. Standard rate: 30%. File within 4 months after year end.</p>
+            <a href="domestic-tax-services.html#income-tax" class="obligation-card__link">Learn about CIT</a>
+          </div>
+          <div class="obligation-card">
+            <div class="obligation-card__icon"><i class="lucide" data-lucide="users"></i></div>
+            <h3>PAYE</h3>
+            <p>Withhold tax from employee salaries monthly. Progressive rates from 0% to 30%.</p>
+            <a href="domestic-tax-services.html#paye" class="obligation-card__link">Learn about PAYE</a>
+          </div>
+          <div class="obligation-card">
+            <div class="obligation-card__icon"><i class="lucide" data-lucide="printer"></i></div>
+            <h3>EBM Compliance</h3>
+            <p>Issue EBM receipts for all sales. Submit daily EBM reports to RRA.</p>
+            <a href="ebm-services.html" class="obligation-card__link">EBM Services</a>
+          </div>
+          <div class="obligation-card">
+            <div class="obligation-card__icon"><i class="lucide" data-lucide="shield"></i></div>
+            <h3>NSSF Contributions</h3>
+            <p>Contribute 3% of gross salary for each employee. Employee also contributes 3%.</p>
+            <a href="https://www.nss.rw/" class="obligation-card__link" target="_blank" rel="noopener">Visit NSSF</a>
+          </div>
+          <div class="obligation-card">
+            <div class="obligation-card__icon"><i class="lucide" data-lucide="calendar"></i></div>
+            <h3>Withholding Tax</h3>
+            <p>15% WHT on payments to non-residents, 2% on certain local services. File monthly.</p>
+            <a href="domestic-tax-services.html" class="obligation-card__link">Learn about WHT</a>
+          </div>
+        </div>
+        <div class="obligations-cta">
+          <p>Use our tax calculator to estimate your tax obligations</p>
+          <a href="calculator.html" class="btn btn--primary"><i class="lucide" data-lucide="calculator"></i> Tax Calculator</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RDB Contact -->
+    <section class="rdb-contact">
+      <div class="container">
+        <div class="rdb-contact__card">
+          <div class="rdb-contact__info">
+            <h2>Contact Rwanda Development Board</h2>
+            <p>Get help with business registration, investment inquiries, and investor support services.</p>
+            <div class="rdb-contact__details">
+              <div class="rdb-contact__item">
+                <i class="lucide" data-lucide="phone"></i>
+                <div>
+                  <strong>Phone</strong>
+                  <a href="tel:1415">1415 (Toll Free)</a>
+                </div>
+              </div>
+              <div class="rdb-contact__item">
+                <i class="lucide" data-lucide="phone"></i>
+                <div>
+                  <strong>International</strong>
+                  <a href="tel:+250727775170">(+250) 727 775 170</a>
+                </div>
+              </div>
+              <div class="rdb-contact__item">
+                <i class="lucide" data-lucide="mail"></i>
+                <div>
+                  <strong>Email</strong>
+                  <a href="mailto:info@rdb.rw">info@rdb.rw</a>
+                </div>
+              </div>
+              <div class="rdb-contact__item">
+                <i class="lucide" data-lucide="mail"></i>
+                <div>
+                  <strong>OSC Feedback</strong>
+                  <a href="mailto:osc.feedback@rdb.rw">osc.feedback@rdb.rw</a>
+                </div>
+              </div>
+              <div class="rdb-contact__item">
+                <i class="lucide" data-lucide="map-pin"></i>
+                <div>
+                  <strong>Address</strong>
+                  <span>KN 69 Street, Kigali, Rwanda</span>
+                </div>
+              </div>
+              <div class="rdb-contact__item">
+                <i class="lucide" data-lucide="clock"></i>
+                <div>
+                  <strong>Working Hours</strong>
+                  <span>Mon - Fri: 9:00 AM - 5:00 PM</span>
+                </div>
+              </div>
+            </div>
+            <div class="rdb-contact__actions">
+              <a href="https://rdb.rw/" class="btn btn--primary" target="_blank" rel="noopener"><i class="lucide" data-lucide="external-link"></i> Visit RDB Website</a>
+              <a href="https://rdb.rw/e-services/" class="btn btn--outline" target="_blank" rel="noopener"><i class="lucide" data-lucide="monitor"></i> E-Services</a>
+              <a href="contact.html" class="btn btn--outline"><i class="lucide" data-lucide="message-circle"></i> Contact RRA</a>
+            </div>
+          </div>
+          <div class="rdb-contact__map">
+            <div class="rdb-contact__map-placeholder">
+              <i class="lucide" data-lucide="map"></i>
+              <p>RDB One Stop Centre</p>
+              <span>KN 69 Street, Kigali</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-card">
+          <h2>Ready to Start Your Business?</h2>
+          <p>Rwanda is one of the easiest places in Africa to start and run a business. Get registered today and join thousands of entrepreneurs building Rwanda's future.</p>
+          <div class="cta-card__actions">
+            <a href="https://rdb.rw/" class="btn btn--primary" target="_blank" rel="noopener"><i class="lucide" data-lucide="external-link"></i> Register on RDB</a>
+            <a href="https://myrra.rra.gov.rw/" class="btn btn--outline" style="border-color:#fff;color:#fff;" target="_blank" rel="noopener"><i class="lucide" data-lucide="log-in"></i> MyRRA Portal</a>
+            <a href="contact.html" class="btn btn--outline" style="border-color:#fff;color:#fff;"><i class="lucide" data-lucide="help-circle"></i> Get Help</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo logo--footer">
+            <div class="logo__mark">
+              <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="36" style="width:auto;">
+            </div>
+          </div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tax Services</h4>
+          <a href="domestic-tax-services.html#income-tax">Income Tax</a>
+          <a href="domestic-tax-services.html#vat">VAT</a>
+          <a href="domestic-tax-services.html#paye">PAYE</a>
+          <a href="myrra.html">MyRRA Portal</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="ebm-services.html">EBM Services</a>
+          <a href="non-fiscal.html">Non-Fiscal Revenue</a>
+          <a href="customs-services.html">Customs Services</a>
+          <a href="rdb-services.html">Business Registration</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="about.html">About Us</a>
+          <a href="news.html">News</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="publications.html">Publications</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay" id="mobileOverlay" hidden>
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="https://myrra.rra.gov.rw/" class="btn btn--primary btn--full" target="_blank" rel="noopener"><i class="lucide" data-lucide="log-in"></i> MyRRA Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/rdb-app.js"></script>
+</body>
+</html>

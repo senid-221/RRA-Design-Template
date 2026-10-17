@@ -1,0 +1,688 @@
+/* ===== RDB SERVICES PAGE ===== */
+
+/* Hero */
+.rdb-hero {
+  padding: 80px 0;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: #fff;
+}
+.rdb-hero__inner { max-width: 720px; }
+.rdb-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--radius-full);
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--gold-light);
+}
+.rdb-hero__badge .lucide { width: 16px; height: 16px; }
+.rdb-hero__title {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.rdb-hero__subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255,255,255,.85);
+  margin-bottom: 28px;
+}
+.rdb-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Quick Stats */
+.rdb-stats {
+  padding: 0;
+  margin-top: -40px;
+  position: relative;
+  z-index: 2;
+}
+.rdb-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+.rdb-stat {
+  padding: 28px 24px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.rdb-stat:last-child { border-right: none; }
+.rdb-stat__icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: var(--gold);
+  color: var(--navy);
+  margin: 0 auto 12px;
+}
+.rdb-stat__icon .lucide { width: 22px; height: 22px; }
+.rdb-stat__value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.rdb-stat__label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Registration Steps */
+.rdb-steps {
+  padding: 80px 0;
+}
+.steps-timeline {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.step-item {
+  display: flex;
+  gap: 24px;
+  padding-bottom: 40px;
+  position: relative;
+}
+.step-item:last-child { padding-bottom: 0; }
+.step-item::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 48px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.step-item:last-child::before { display: none; }
+.step-item__number {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+.step-item__content { flex: 1; padding-top: 4px; }
+.step-item__content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.step-item__content > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.step-item__tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--gold);
+  background: rgba(244, 197, 66, .12);
+  border: 1px solid rgba(244, 197, 66, .3);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.step-item__tip .lucide { width: 16px; height: 16px; min-width: 16px; color: var(--gold-dark); margin-top: 1px; }
+.step-item__docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.doc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.doc-tag .lucide { width: 14px; height: 14px; }
+.step-item__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.step-item__link:hover { color: var(--navy-light); }
+.step-item__link .lucide { width: 14px; height: 14px; }
+
+/* RDB Services Grid */
+.rdb-services-section {
+  padding: 80px 0;
+  background: var(--bg-alt);
+}
+.rdb-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.rdb-service-card {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.rdb-service-card:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+.rdb-service-card__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: rgba(18, 61, 112, .08);
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+.rdb-service-card__icon .lucide { width: 24px; height: 24px; }
+.rdb-service-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.rdb-service-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.rdb-service-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+}
+.rdb-service-card__link .lucide { width: 14px; height: 14px; }
+
+/* Investment Sectors */
+.rdb-sectors {
+  padding: 80px 0;
+}
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.sector-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  transition: all var(--transition);
+}
+.sector-card:hover {
+  border-color: var(--navy);
+  box-shadow: var(--shadow-md);
+}
+.sector-card__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(244, 197, 66, .12);
+  color: var(--gold-dark);
+  margin: 0 auto 14px;
+}
+.sector-card__icon .lucide { width: 22px; height: 22px; }
+.sector-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.sector-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.sectors-cta {
+  text-align: center;
+  margin-top: 32px;
+}
+
+/* Business Types */
+.rdb-types {
+  padding: 80px 0;
+  background: var(--bg-alt);
+}
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.type-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  position: relative;
+}
+.type-card--featured {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-lg);
+}
+.type-card__badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+}
+.type-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.type-card__header .lucide { width: 28px; height: 28px; color: var(--navy); }
+.type-card__header h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+.type-card > p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.type-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.type-card__list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.type-card__list .lucide { width: 16px; height: 16px; color: var(--green); }
+
+/* Tax Obligations */
+.rdb-tax-obligations {
+  padding: 80px 0;
+}
+.obligations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.obligation-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all var(--transition);
+}
+.obligation-card:hover {
+  border-color: var(--navy);
+  box-shadow: var(--shadow-md);
+}
+.obligation-card__icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: rgba(18, 61, 112, .08);
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.obligation-card__icon .lucide { width: 22px; height: 22px; }
+.obligation-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.obligation-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.obligation-card__link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+}
+.obligation-card__link:hover { text-decoration: underline; }
+.obligations-cta {
+  text-align: center;
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+}
+.obligations-cta p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+/* RDB Contact */
+.rdb-contact {
+  padding: 80px 0;
+  background: var(--bg-alt);
+}
+.rdb-contact__card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+}
+.rdb-contact__info h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.rdb-contact__info > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+.rdb-contact__details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.rdb-contact__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.rdb-contact__item .lucide {
+  width: 20px;
+  height: 20px;
+  color: var(--navy);
+  margin-top: 2px;
+  min-width: 20px;
+}
+.rdb-contact__item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.rdb-contact__item a,
+.rdb-contact__item span {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.rdb-contact__item a:hover { color: var(--navy); }
+.rdb-contact__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.rdb-contact__map {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rdb-contact__map-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray-100);
+  border-radius: var(--radius);
+  border: 2px dashed var(--gray-300);
+  color: var(--text-muted);
+  text-align: center;
+}
+.rdb-contact__map-placeholder .lucide { width: 40px; height: 40px; margin-bottom: 8px; }
+.rdb-contact__map-placeholder p { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
+.rdb-contact__map-placeholder span { font-size: 13px; }
+
+/* RRA Services at OSC */
+.rdb-osc-rra {
+  padding: 80px 0;
+}
+.osc-rra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.osc-rra-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.osc-rra-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.osc-rra-card__header .lucide { width: 28px; height: 28px; color: var(--navy); }
+.osc-rra-card__header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+.osc-rra-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+}
+.osc-rra-card__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text);
+}
+.osc-rra-card__list li:last-child { border-bottom: none; }
+.osc-rra-card__time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  background: rgba(18, 61, 112, .06);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+.osc-rra-card__time .lucide { width: 14px; height: 14px; }
+.osc-rra-card__note {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 12px;
+}
+
+/* RDB OSC Timelines */
+.rdb-osc-services {
+  padding: 80px 0;
+  background: var(--bg-alt);
+}
+.osc-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.osc-timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.osc-timeline-card__badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+.osc-timeline-card__badge--fast { background: rgba(34,197,94,.12); color: #16a34a; }
+.osc-timeline-card__badge--invest { background: rgba(18,61,112,.1); color: var(--navy); }
+.osc-timeline-card__badge--env { background: rgba(34,197,94,.12); color: #16a34a; }
+.osc-timeline-card__badge--tourism { background: rgba(244,197,66,.15); color: var(--gold-dark); }
+.osc-timeline-card__badge--sez { background: rgba(168,85,247,.1); color: #7c3aed; }
+.osc-timeline-card__badge--immigration { background: rgba(59,130,246,.1); color: #2563eb; }
+.osc-timeline-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  padding-right: 70px;
+}
+.osc-timeline-card h3 .lucide { width: 20px; height: 20px; color: var(--navy); }
+.osc-timeline-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.osc-timeline-card ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.osc-timeline-card ul li:last-child { border-bottom: none; }
+.osc-timeline-card ul li strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+/* Partner Institutions */
+.rdb-partners {
+  padding: 80px 0;
+}
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.partner-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+.partner-item:hover {
+  border-color: var(--navy);
+  box-shadow: var(--shadow-sm);
+}
+.partner-item .lucide { width: 20px; height: 20px; min-width: 20px; color: var(--navy); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .rdb-stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .rdb-stat:nth-child(2) { border-right: none; }
+  .rdb-stat:nth-child(1),
+  .rdb-stat:nth-child(2) { border-bottom: 1px solid var(--border); }
+  .rdb-services-grid { grid-template-columns: repeat(2, 1fr); }
+  .sectors-grid { grid-template-columns: repeat(2, 1fr); }
+  .types-grid { grid-template-columns: 1fr; }
+  .obligations-grid { grid-template-columns: repeat(2, 1fr); }
+  .osc-rra-grid { grid-template-columns: 1fr; }
+  .osc-timeline-grid { grid-template-columns: repeat(2, 1fr); }
+  .partners-grid { grid-template-columns: repeat(2, 1fr); }
+  .rdb-contact__card { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .rdb-hero { padding: 48px 0; }
+  .rdb-hero__title { font-size: 28px; }
+  .rdb-hero__subtitle { font-size: 16px; }
+  .rdb-stats__grid { grid-template-columns: 1fr; }
+  .rdb-stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .rdb-stat:last-child { border-bottom: none; }
+  .rdb-services-grid { grid-template-columns: 1fr; }
+  .sectors-grid { grid-template-columns: 1fr; }
+  .obligations-grid { grid-template-columns: 1fr; }
+  .osc-timeline-grid { grid-template-columns: 1fr; }
+  .partners-grid { grid-template-columns: 1fr; }
+  .step-item { gap: 16px; }
+  .step-item__number { width: 40px; height: 40px; min-width: 40px; font-size: 16px; }
+  .step-item::before { left: 19px; top: 40px; }
+  .rdb-contact__card { padding: 24px; }
+}

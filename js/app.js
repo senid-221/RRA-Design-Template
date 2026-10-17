@@ -378,29 +378,30 @@
     if (!list) return;
 
     const items = [
-      { text: t('nav_home'), href: '/' },
+      { text: t('nav_home'), href: 'index.html' },
       { text: t('nav_tax_services'), children: [
-        { text: t('nav_income_tax'), href: '#income-tax' },
-        { text: t('nav_vat'), href: '#vat' },
-        { text: t('nav_paye'), href: '#paye' },
-        { text: t('nav_excise'), href: '#excise' },
-        { text: t('nav_wht'), href: '#wht' },
+        { text: t('nav_income_tax'), href: 'domestic-tax-services.html#income-tax' },
+        { text: t('nav_vat'), href: 'domestic-tax-services.html#vat' },
+        { text: t('nav_paye'), href: 'domestic-tax-services.html#paye' },
+        { text: t('nav_excise'), href: 'domestic-tax-services.html#excise' },
+        { text: t('nav_wht'), href: 'domestic-tax-services.html#wht' },
       ]},
       { text: t('dropdown_customs'), children: [
-        { text: t('nav_customs_services'), href: '#customs' },
-        { text: t('nav_e_single_window'), href: '#esingle-window' },
-        { text: t('nav_trade_portal'), href: '#trade-portal' },
-        { text: t('nav_import_calc'), href: '#import-calc' },
+        { text: t('nav_customs_services'), href: 'customs-services.html' },
+        { text: t('nav_e_single_window'), href: 'https://sw.gov.rw/' },
+        { text: t('nav_trade_portal'), href: 'trade-portal.html' },
+        { text: t('nav_import_calc'), href: 'calculator.html' },
       ]},
-      { text: t('nav_ebm'), href: '#ebm' },
-      { text: t('nav_non_fiscal'), href: '#non-fiscal' },
+      { text: t('nav_ebm'), href: 'ebm-services.html' },
+      { text: t('nav_non_fiscal'), href: 'https://nonfiscal.rra.gov.rw/' },
+      { text: t('nav_rdb'), href: 'rdb-services.html' },
       { text: t('nav_resources'), children: [
-        { text: t('nav_publications'), href: '#publications' },
-        { text: t('nav_tax_laws'), href: '#tax-laws' },
-        { text: t('nav_forms'), href: '#forms' },
-        { text: t('nav_guides'), href: '#guides' },
+        { text: t('nav_publications'), href: 'publications.html' },
+        { text: t('nav_tax_laws'), href: 'publications.html#tax-laws' },
+        { text: t('nav_forms'), href: 'publications.html#forms' },
+        { text: t('nav_guides'), href: 'publications.html' },
       ]},
-      { text: t('nav_contact'), href: '#contact' },
+      { text: t('nav_contact'), href: 'contact.html' },
     ];
 
     list.innerHTML = items.map(item => {

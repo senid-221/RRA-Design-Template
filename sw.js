@@ -15,14 +15,17 @@ var ASSETS = [
   '/ebm-services.html',
   '/non-fiscal.html',
   '/publications.html',
+  '/rdb-services.html',
   '/css/styles.css',
   '/css/about.css',
   '/css/news.css',
   '/css/calculator.css',
   '/css/publications.css',
+  '/css/rdb-services.css',
   '/css/portal.css',
   '/css/services.css',
   '/js/i18n.js',
+  '/js/rdb-app.js',
   '/images/rra-logo.png'
 ];
 

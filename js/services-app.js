@@ -4,6 +4,34 @@
   let currentLang = 'en';
   let activeService = 'income-tax';
 
+  const officialPages = {
+    'income-tax': 'https://www.rra.gov.rw/en/taxes-fees/domestic-taxes/income-tax',
+    'vat': 'https://www.rra.gov.rw/en/domestic-tax-services/value-added-tax',
+    'paye': 'https://www.rra.gov.rw/en/domestic-tax-services/employment-tax-paye',
+    'wht': 'https://www.rra.gov.rw/en/domestic-tax-services/withholding-tax-wht',
+    'excise': 'https://www.rra.gov.rw/en/domestic-tax-services/excise-duty',
+    'local-tax': 'https://www.rra.gov.rw/en/domestic-tax-services/local-government-taxes',
+    'motor-vehicle': 'https://www.rra.gov.rw/en/domestic-tax-services/motor-vehicle-services',
+    'tcc': 'https://www.rra.gov.rw/en/domestic-tax-services/tax-clearance-certificate-tcc-tax-compliance-certificate/',
+    'rssb': 'https://www.rra.gov.rw/en/domestic-tax-services/rssb-contributions',
+    'investors-starter-pack': 'https://www.rra.gov.rw/en/domestic-tax-services/investors-starter-pack',
+    'registration': 'https://www.rra.gov.rw/en/domestic-tax-services/registration-de-registration'
+  };
+
+  const ctaUrls = {
+    'income-tax': 'https://myrra.rra.gov.rw/',
+    'vat': 'https://myrra.rra.gov.rw/',
+    'paye': 'https://myrra.rra.gov.rw/',
+    'wht': 'https://myrra.rra.gov.rw/',
+    'excise': 'https://myrra.rra.gov.rw/',
+    'local-tax': 'https://localgov.rra.gov.rw/login',
+    'motor-vehicle': 'https://etax.rra.gov.rw/mvLevyDeclaration',
+    'tcc': 'https://myrra.rra.gov.rw/',
+    'rssb': 'https://myrra.rra.gov.rw/',
+    'investors-starter-pack': 'https://www.rra.gov.rw/en/domestic-tax-services/investors-starter-pack',
+    'registration': 'https://myrra.rra.gov.rw/'
+  };
+
   function init() {
     lucide.createIcons();
     renderServiceNav();
@@ -174,7 +202,7 @@
                           <div class="form-item__size">${f.size}</div>
                         </div>
                       </div>
-                      <a href="#" class="form-item__download">
+                      <a href="${officialPages[s.id] || 'https://www.rra.gov.rw/en/publications'}" target="_blank" rel="noopener" class="form-item__download">
                         <i class="lucide" data-lucide="download"></i>
                         ${currentLang === 'rw' ? 'Kuramo' : 'Download'}
                       </a>
@@ -187,7 +215,7 @@
               <div class="cta-card">
                 <h3>${cta.title}</h3>
                 <p>${cta.desc}</p>
-                <a href="#myrra" class="btn btn--primary">
+                <a href="${ctaUrls[s.id] || 'https://myrra.rra.gov.rw/'}" target="_blank" rel="noopener" class="btn btn--primary">
                   <i class="lucide" data-lucide="arrow-right"></i> ${cta.btn}
                 </a>
               </div>
@@ -474,6 +502,13 @@
       text: s.title[currentLang] || s.title.en,
       href: `#${s.id}`
     }));
+
+    items.push(
+      { text: currentLang === 'rw' ? 'Iyandikishe ishoramari' : 'Business Registration', href: 'rdb-services.html' },
+      { text: 'MyRRA', href: 'myrra.html' },
+      { text: currentLang === 'rw' ? 'Inyandiko' : 'Publications', href: 'publications.html' },
+      { text: currentLang === 'rw' ? 'Twandikire' : 'Contact', href: 'contact.html' }
+    );
 
     list.innerHTML = items.map(item =>
       `<li><a href="${item.href}">${item.text} <i class="lucide" data-lucide="chevron-right"></i></a></li>`

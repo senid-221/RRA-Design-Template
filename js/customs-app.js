@@ -3,6 +3,22 @@
 
   let activeService = 'import';
 
+  const officialUrls = {
+    'import': 'https://www.rra.gov.rw/en/customs-services/importers',
+    'export': 'https://www.rra.gov.rw/en/customs-services/exporters',
+    'transit': 'https://www.rra.gov.rw/en/customs-services/transit-regime',
+    'travelers': 'https://www.rra.gov.rw/en/customs-services/travelers',
+    'esingle-window': 'https://sw.gov.rw/',
+    'ects': 'https://www.rra.gov.rw/en/customs-services/electronic-cargo-tracking-system',
+    'valuation': 'https://www.rra.gov.rw/en/customs-services/valuation-gateway',
+    'digital-stamp': 'https://www.rra.gov.rw/en/customs-services/digital-stamp-management',
+    'border-posts': 'https://www.rra.gov.rw/en/customs-services/border-posts',
+    'postal-services': 'https://www.rra.gov.rw/en/customs-services/postal-services',
+    'cargo-management': 'https://www.rra.gov.rw/en/customs-services/cargo-management',
+    'clearing-agents': 'https://www.rra.gov.rw/en/customs-services/customs-clearing-agents',
+    'eac-customs-union': 'https://www.rra.gov.rw/en/customs-services/eac-customs-union'
+  };
+
   function init() {
     lucide.createIcons();
     renderServiceNav();
@@ -119,7 +135,7 @@
                           <div class="form-item__size">${f.size}</div>
                         </div>
                       </div>
-                      <a href="#" class="form-item__download"><i class="lucide" data-lucide="download"></i> Download</a>
+                      <a href="${officialUrls[s.id] || 'https://www.rra.gov.rw/en/customs-services/forms'}" target="_blank" rel="noopener" class="form-item__download"><i class="lucide" data-lucide="download"></i> Download</a>
                     </li>
                   `).join('')}
                 </ul>
@@ -127,7 +143,7 @@
               <div class="cta-card">
                 <h3>${s.cta.title}</h3>
                 <p>${s.cta.desc}</p>
-                <a href="#" class="btn btn--primary"><i class="lucide" data-lucide="arrow-right"></i> ${s.cta.btn}</a>
+                <a href="${officialUrls[s.id] || 'https://www.rra.gov.rw/en/customs-services'}" target="_blank" rel="noopener" class="btn btn--primary"><i class="lucide" data-lucide="arrow-right"></i> ${s.cta.btn}</a>
               </div>
             </div>
           </div>

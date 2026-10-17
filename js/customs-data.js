@@ -253,6 +253,213 @@ const customsServices = [
       { date: "5 days", text: "Respond to valuation queries" }
     ],
     cta: { title: "Access Valuation Gateway", desc: "Check reference prices for customs valuation.", btn: "Go to Gateway" }
+  },
+  {
+    id: "digital-stamp",
+    icon: "stamp",
+    title: "Digital Stamp Management",
+    shortDesc: "Electronic stamping of excise goods",
+    description: "The Digital Stamp Management System replaces physical stamps with electronic stamps on excisable goods such as tobacco, alcoholic beverages and sugar. It allows RRA and consumers to verify the authenticity of products and confirm excise duty payment.",
+    requirements: [
+      "Valid excise duty license",
+      "Registered TIN with RRA",
+      "Manufacturer or importer registration",
+      "Access to the digital stamp portal",
+      "Product declarations with excise rates"
+    ],
+    steps: [
+      { title: "Register for digital stamps", desc: "Register your business for the Digital Stamp Management System through RRA." },
+      { title: "Order stamps", desc: "Request electronic stamps for your excisable products through the portal." },
+      { title: "Pay stamp fees", desc: "Pay the applicable stamp fees for the ordered quantities." },
+      { title: "Apply stamps", desc: "Affix or activate digital stamps on products before distribution." },
+      { title: "Verify compliance", desc: "Consumers and inspectors can verify stamps to confirm duty payment." }
+    ],
+    forms: [
+      { name: "Digital Stamp Order Form", size: "PDF, 150 KB" },
+      { name: "Excise License Application", size: "PDF, 170 KB" }
+    ],
+    rates: [
+      { bracket: "Stamp fee", rate: "Varies by product type" },
+      { bracket: "Portal registration", rate: "Free" }
+    ],
+    deadlines: [
+      { date: "Before distribution", text: "All excisable goods must carry valid stamps" },
+      { date: "Monthly", text: "Reconcile stamp usage with excise declarations" }
+    ],
+    cta: { title: "Digital Stamp Management", desc: "Order and manage electronic stamps for excisable goods.", btn: "Official RRA Page" }
+  },
+  {
+    id: "border-posts",
+    icon: "map-pin",
+    title: "Border Posts",
+    shortDesc: "Customs entry points across Rwanda",
+    description: "RRA operates customs border posts at all major entry and exit points of Rwanda. Each border post handles import, export and transit declarations, traveler clearance, and vehicle checks. Working hours and available services vary by post.",
+    requirements: [
+      "Valid travel documents (travelers)",
+      "Customs declaration (goods)",
+      "Supporting trade documents",
+      "Vehicle registration documents (vehicles)",
+      "Compliance with restricted/prohibited goods rules"
+    ],
+    steps: [
+      { title: "Arrive at border post", desc: "Present yourself or your goods at the designated border post." },
+      { title: "Submit declaration", desc: "Submit your customs declaration and supporting documents." },
+      { title: "Assessment and payment", desc: "Pay any applicable duties and taxes at the post." },
+      { title: "Inspection", desc: "Goods may be physically examined based on risk assessment." },
+      { title: "Release", desc: "Receive release confirmation and cross the border." }
+    ],
+    forms: [
+      { name: "Traveler Declaration Form", size: "PDF, 120 KB" },
+      { name: "Goods Declaration Form", size: "PDF, 140 KB" }
+    ],
+    rates: [
+      { bracket: "Traveler clearance", rate: "Free" },
+      { bracket: "Import duties", rate: "Per EAC Common External Tariff" }
+    ],
+    deadlines: [
+      { date: "On arrival", text: "Declare all goods and currency above thresholds" },
+      { date: "24/7", text: "Major posts operate around the clock" }
+    ],
+    cta: { title: "Border Posts", desc: "Find border post locations, hours and services.", btn: "Official RRA Page" }
+  },
+  {
+    id: "postal-services",
+    icon: "mail",
+    title: "Postal Services",
+    shortDesc: "Customs clearance of postal items",
+    description: "International postal items and courier parcels arriving in Rwanda are customs-cleared at designated postal handling centers. RRA assesses duties on taxable items while allowing duty-free entry for qualifying personal effects and documents.",
+    requirements: [
+      "Accurate customs declaration (CN22/CN23)",
+      "Proof of value (invoice or receipt)",
+      "Recipient identification details",
+      "Payment of applicable duties",
+      "Compliance with prohibited items list"
+    ],
+    steps: [
+      { title: "Item arrives", desc: "Postal or courier items arrive at the designated customs handling center." },
+      { title: "Declaration check", desc: "Customs reviews the attached declaration and value documents." },
+      { title: "Assessment", desc: "Duties and taxes are assessed on taxable items." },
+      { title: "Notification", desc: "Recipient is notified of any duties due or documents required." },
+      { title: "Collection", desc: "Pay duties (if any) and collect your item." }
+    ],
+    forms: [
+      { name: "CN23 Customs Declaration", size: "PDF, 110 KB" },
+      { name: "Parcel Clearance Request", size: "PDF, 130 KB" }
+    ],
+    rates: [
+      { bracket: "Documents", rate: "Duty-free" },
+      { bracket: "Gifts (low value)", rate: "Duty-free within limits" },
+      { bracket: "Commercial items", rate: "Standard import duties apply" }
+    ],
+    deadlines: [
+      { date: "On notification", text: "Collect items within the storage period" },
+      { date: "30 days", text: "Typical maximum storage before return" }
+    ],
+    cta: { title: "Postal Services", desc: "Learn how postal items are cleared through customs.", btn: "Official RRA Page" }
+  },
+  {
+    id: "cargo-management",
+    icon: "package",
+    title: "Cargo Management",
+    shortDesc: "Handling and warehousing of cargo",
+    description: "Cargo Management covers the handling, storage and movement of imported and transit goods within customs areas, including bonded warehouses, container depots and cargo handling facilities under RRA supervision.",
+    requirements: [
+      "Approved customs declaration",
+      "Cargo handling facility registration",
+      "Bonded warehouse license (where applicable)",
+      "Goods tracking documentation",
+      "Insurance for stored goods"
+    ],
+    steps: [
+      { title: "Cargo arrival", desc: "Goods arrive at the port, airport or inland container depot." },
+      { title: "Documentation", desc: "Submit arrival documentation and customs declaration." },
+      { title: "Storage or transit", desc: "Goods are placed in a warehouse, depot or under transit regime." },
+      { title: "Clearance", desc: "Complete clearance formalities and pay applicable duties." },
+      { title: "Release and exit", desc: "Collect goods or move them out of the customs area." }
+    ],
+    forms: [
+      { name: "Bonded Warehouse Application", size: "PDF, 180 KB" },
+      { name: "Cargo Handling Permit", size: "PDF, 150 KB" }
+    ],
+    rates: [
+      { bracket: "Warehousing fee", rate: "Per tariff schedule" },
+      { bracket: "Demurrage", rate: "Applies after free period" }
+    ],
+    deadlines: [
+      { date: "Free period", text: "Limited free storage days after arrival" },
+      { date: "On expiry", text: "Demurrage charges apply until clearance" }
+    ],
+    cta: { title: "Cargo Management", desc: "Understand cargo handling and warehousing under customs.", btn: "Official RRA Page" }
+  },
+  {
+    id: "clearing-agents",
+    icon: "user-check",
+    title: "Customs Clearing Agents",
+    shortDesc: "Licensing of customs agents",
+    description: "Customs Clearing Agents are licensed professionals who clear goods on behalf of importers and exporters. RRA licenses agents, maintains a register of authorized agents, and sets the professional standards they must follow.",
+    requirements: [
+      "Relevant professional qualification",
+      "Company registration with RDB",
+      "Valid TIN and tax compliance",
+      "Application for clearing agent license",
+      "Renewal of license as required"
+    ],
+    steps: [
+      { title: "Meet requirements", desc: "Obtain the required qualification and register your company." },
+      { title: "Apply for license", desc: "Submit your clearing agent license application to RRA." },
+      { title: "Assessment", desc: "RRA reviews your application and qualifications." },
+      { title: "Receive license", desc: "Licensed agents are added to the official register of agents." },
+      { title: "Operate and renew", desc: "Clear consignments on behalf of clients and renew the license as required." }
+    ],
+    forms: [
+      { name: "Clearing Agent License Application", size: "PDF, 160 KB" },
+      { name: "Agent License Renewal Form", size: "PDF, 130 KB" }
+    ],
+    rates: [
+      { bracket: "License application fee", rate: "Per official tariff" },
+      { bracket: "License renewal", rate: "Periodic" }
+    ],
+    deadlines: [
+      { date: "Before operating", text: "License required before clearing any consignment" },
+      { date: "Annually", text: "Verify license validity for renewals" }
+    ],
+    cta: { title: "Customs Clearing Agents", desc: "Licensing and register of authorized clearing agents.", btn: "Official RRA Page" }
+  },
+  {
+    id: "eac-customs-union",
+    icon: "globe",
+    title: "EAC Customs Union",
+    shortDesc: "East African Community customs framework",
+    description: "Rwanda is a member of the East African Community (EAC) Customs Union, which applies a Common External Tariff on goods imported from outside the region and duty-free movement for goods originating within EAC Partner States.",
+    requirements: [
+      "Certificate of Origin (intra-EAC trade)",
+      "Compliance with EAC rules of origin",
+      "Harmonized HS classification",
+      "EAC Common External Tariff assessment (external imports)",
+      "Compliance with EAC standards and procedures"
+    ],
+    steps: [
+      { title: "Classify goods", desc: "Determine the HS code and origin of your goods." },
+      { title: "Check tariff", desc: "Apply the EAC Common External Tariff for external imports or duty-free treatment for EAC-origin goods." },
+      { title: "Obtain Certificate of Origin", desc: "For intra-EAC trade, obtain a Certificate of Origin from the exporting state." },
+      { title: "Declare", desc: "Submit your declaration through the e-Single Window." },
+      { title: "Clear and move", desc: "Clear goods and benefit from simplified EAC cross-border movement." }
+    ],
+    forms: [
+      { name: "EAC Certificate of Origin", size: "PDF, 120 KB" },
+      { name: "EAC Customs Declaration (Single Administrative Document)", size: "PDF, 200 KB" }
+    ],
+    rates: [
+      { bracket: "Raw materials & capital goods", rate: "0%" },
+      { bracket: "Intermediate goods", rate: "10%" },
+      { bracket: "Finished goods", rate: "25%" },
+      { bracket: "EAC-origin goods", rate: "Duty-free" }
+    ],
+    deadlines: [
+      { date: "At declaration", text: "Origin documents required for preferential rates" },
+      { date: "Ongoing", text: "CET rates reviewed by EAC partner states" }
+    ],
+    cta: { title: "EAC Customs Union", desc: "Learn about the EAC Common External Tariff and rules of origin.", btn: "Official RRA Page" }
   }
 ];
 

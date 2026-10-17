@@ -607,6 +607,218 @@ const taxServices = [
       en: { title: "Apply for TCC", desc: "Get your Tax Clearance Certificate online.", btn: "Apply for TCC" },
       rw: { title: "Saba TCC", desc: "Bonera Icyemezo cy'Umusoro kuri internet.", btn: "Saba TCC" }
     }
+  },
+  {
+    id: "rssb",
+    icon: "shield-check",
+    title: { en: "RSSB Contributions", rw: "Imisanzu ya RSSB" },
+    shortDesc: { en: "Social security contributions via RRA", rw: "Imisanzu y'imiryango itegamiye kuri Leta" },
+    description: {
+      en: "Rwanda Social Security Board (RSSB) contributions — pensions, maternity leave, occupational hazards and CBHI — are declared and paid together with taxes through the MyRRA portal. Employers declare employee contributions monthly alongside PAYE.",
+      rw: "Imisanzu ya RSSB — irarugendo mu buzima, amahoro mu bwenge, ibyago by'umurimo na CBHI — itangazwa kandi yishyuwa hamwe n'imisoro biciye kuri portal ya MyRRA. Abakoresha batangaza imisanzu y'abakozi buri kwezi hamwe na PAYE."
+    },
+    requirements: {
+      en: [
+        "Active TIN registered with RRA",
+        "MyRRA portal account",
+        "Employee details (names and National ID)",
+        "Monthly salary records",
+        "RSSB registration number (for employers)"
+      ],
+      rw: [
+        "TIN ikora neza muri RRA",
+        "Konti ya MyRRA",
+        "Amakuru y'abakozi (amazina n'indangamuntu)",
+        "Inyandiko z'imishahara ya buri kwezi",
+        "Nimero y'iyandikisha rya RSSB (ku bakoresha)"
+      ]
+    },
+    steps: {
+      en: [
+        { title: "Register employees", desc: "Register all employees for RSSB schemes through MyRRA." },
+        { title: "Declare monthly", desc: "Declare contributions together with PAYE by the 15th of each month." },
+        { title: "Pay contributions", desc: "Pay the declared amounts through MyRRA payment channels." },
+        { title: "File the declaration", desc: "Submit the combined tax and RSSB declaration." },
+        { title: "Keep records", desc: "Retain payslips and contribution records for audit." }
+      ],
+      rw: [
+        { title: "Iyandikishe abakozi", desc: "Iyandikishe abakozi bose muri RSSB biciye kuri MyRRA." },
+        { title: "Tangaza buri kwezi", desc: "Tangaza imisanzu hamwe na PAYE mbere ya 15 y'ukwezi." },
+        { title: "Kwishyura imisanzu", desc: "Kwishyura amafaranga yatangajwe binyuze muri MyRRA." },
+        { title: "Tanga declaration", desc: "Ohereza declaration y'imisoro n'imisanzu ya RSSB." },
+        { title: "Bika inyandiko", desc: "Bika payslip n'inyandiko z'imisanzu ku igenzura." }
+      ]
+    },
+    forms: [
+      { name: { en: "RSSB Declaration Form", rw: "Ifishi ya Declaration ya RSSB" }, size: "PDF, 210 KB" }
+    ],
+    rates: {
+      en: [
+        { bracket: "Pension (employer)", rate: "6% of gross salary" },
+        { bracket: "Pension (employee)", rate: "3% of gross salary" },
+        { bracket: "Maternity leave", rate: "0.6% (0.3% each)" },
+        { bracket: "Occupational hazards", rate: "2% (employer)" },
+        { bracket: "CBHI", rate: "Per category" }
+      ],
+      rw: [
+        { bracket: "Irarugendo (ukoresha)", rate: "6% y'imishahara" },
+        { bracket: "Irarugendo (umukozi)", rate: "3% y'imishahara" },
+        { bracket: "Amahoro mu bwenge", rate: "0.6% (0.3% ku mugerekanwa)" },
+        { bracket: "Ibyago by'umurimo", rate: "2% (ukoresha)" },
+        { bracket: "CBHI", rate: "Hari ibyiciro" }
+      ]
+    },
+    deadlines: {
+      en: [
+        { date: "15th monthly", text: "Declare and pay RSSB contributions with PAYE" }
+      ],
+      rw: [
+        { date: "15 buri kwezi", text: "Tangaza kandi wishyure imisanzu ya RSSB hamwe na PAYE" }
+      ]
+    },
+    cta: {
+      en: { title: "Declare RSSB contributions", desc: "Declare and pay social security contributions via MyRRA.", btn: "Go to MyRRA" },
+      rw: { title: "Tangaza imisanzu ya RSSB", desc: "Tangaza kandi wishyure imisanzu y'imiryango kuri MyRRA.", btn: "Jya kuri MyRRA" }
+    }
+  },
+  {
+    id: "investors-starter-pack",
+    icon: "rocket",
+    title: { en: "Investors Starter Pack", rw: "Umuzingo w'Abashoramari" },
+    shortDesc: { en: "Tax onboarding for new investors", rw: "Kwiyandikisha ku bashoramari bashya" },
+    description: {
+      en: "The Investors Starter Pack helps new investors understand and meet their tax obligations from day one. It covers TIN registration, tax type registration, EBM setup, and guidance on incentives and exemptions available to registered investors.",
+      rw: "Umuzingo w'Abashoramari ufasha abashoramari bashya gusobanukirwa kandi bagahunga inshingano zabo z'umusoro ku munsi wa mbere. Harimo iyandikisha rya TIN, kwiyandikisha ubwoko bw'umusoro, gushyiraho EBM, n'imboga za incentives n'uburenganzira abashoramari batangajwe bafite."
+    },
+    requirements: {
+      en: [
+        "Certificate of registration from RDB",
+        "Company TIN",
+        "Investment registration certificate (if applicable)",
+        "Business location details",
+        "List of directors and shareholders"
+      ],
+      rw: [
+        "Icyemezo cy'iyandikisha kuri RDB",
+        "TIN y'ikigo",
+        "Icyemezo cy'iyandikisha ry'ishoramari (niba gihari)",
+        "Amakuru y'aho ibikorwa biherereye",
+        "Urutonde rw'abayobozi n'abanyamigendanwa"
+      ]
+    },
+    steps: {
+      en: [
+        { title: "Register business", desc: "Register your company with RDB to obtain a certificate of registration." },
+        { title: "Get TIN", desc: "Obtain your company TIN through MyRRA or at the One Stop Centre." },
+        { title: "Register tax types", desc: "Register for applicable taxes: CIT, VAT, PAYE and WHT." },
+        { title: "Set up EBM", desc: "Apply for and configure an EBM if you are VAT-registered." },
+        { title: "Review incentives", desc: "Meet with RRA taxpayer services to review applicable incentives and exemptions." }
+      ],
+      rw: [
+        { title: "Iyandikishe ishoramari", desc: "Iyandikishe ikigo kuri RDB kugira ngo ubone icyemezo cy'iyandikisha." },
+        { title: "Bona TIN", desc: "Bona TIN y'ikigo kuri MyRRA cyangwa muri One Stop Centre." },
+        { title: "Iyandikishe ubwoko bw'imisoro", desc: "Iyandikishe imisoro ihari: CIT, VAT, PAYE na WHT." },
+        { title: "Shyiraho EBM", desc: "Saba kandi utunganye EBM niba wiyandikishije VAT." },
+        { title: "Reba incentives", desc: "Hura na services z'abasora za RRA ngo muganire kuri incentives n'uburenganzira." }
+      ]
+    },
+    forms: [
+      { name: { en: "Investor Tax Registration Pack", rw: "Umuzingo w'iyandikisha ry'umushoramari" }, size: "PDF, 480 KB" }
+    ],
+    rates: {
+      en: [
+        { bracket: "Registration fee", rate: "Free" },
+        { bracket: "Supporting session", rate: "Free taxpayer education" },
+        { bracket: "Processing time", rate: "1-2 working days" }
+      ],
+      rw: [
+        { bracket: "Amafaranga y'iyandikisha", rate: "Ubuntu" },
+        { bracket: "Amahugurwa", rate: "Ubwigishwa ku masaha ubuntu" },
+        { bracket: "Igihe cyo gutunganya", rate: "iminsi 1-2 y'akazi" }
+      ]
+    },
+    deadlines: {
+      en: [
+        { date: "Before trading", text: "Complete all registrations before starting operations" }
+      ],
+      rw: [
+        { date: "Mbere y'ubucuruzi", text: "Kurangiza iyandikisha ryo se mbere y'uko utangira ibikorwa" }
+      ]
+    },
+    cta: {
+      en: { title: "Start with the Investors Starter Pack", desc: "Visit the official RRA page for full details on investor onboarding.", btn: "Official RRA Page" },
+      rw: { title: "Tangira na Umuzingo w'Abashoramari", desc: "Reba urupapuro rumwe rwa RRA ku makuru yuzuye.", btn: "Urupuro ndanga rubanza" }
+    }
+  },
+  {
+    id: "registration",
+    icon: "user-plus",
+    title: { en: "Registration & De-registration", rw: "Kwiyandikisha no Kwicika" },
+    shortDesc: { en: "Taxpayer registration services", rw: "Serivisi z'iyandikisha ry'abasora" },
+    description: {
+      en: "Register as a taxpayer, update your business details, add or remove tax types, or de-register when closing a business. Registration covers TIN issuance, VAT and PAYE registration, and amendments to taxpayer records.",
+      rw: "Iyandikisha nk'umusoreshwa, vugurura amakuru y'ubucuruzi bwawe, onge cyangwa ukureho ubwoko bw'umusoro, cyangwa kwicika iyo ufunga ubucuruzi. Iyandikisha ririmo gutanga TIN, kwiyandikisha VAT na PAYE, no guhindura amakuru y'umusoreshwa."
+    },
+    requirements: {
+      en: [
+        "National ID or passport",
+        "Certificate of registration (for businesses)",
+        "Proof of business address",
+        "TIN of the business (for amendments)",
+        "De-registration: final tax returns and clearance"
+      ],
+      rw: [
+        "Indangamuntu cyangwa pasiporo",
+        "Icyemezo cy'iyandikisha (ku bigo)",
+        "Icyemezo cy'aho ubucuruzi buherereye",
+        "TIN y'ikigo (ku bihindura)",
+        "Kwicika: declarations zanyuma n'ubwisanzure bw'umusoro"
+      ]
+    },
+    steps: {
+      en: [
+        { title: "Apply for TIN", desc: "Submit your registration application via MyRRA or eTax using your National ID." },
+        { title: "Register tax types", desc: "Add applicable tax types to your TIN (VAT, PAYE, CIT)." },
+        { title: "Update details", desc: "Amend business name, address or activities through MyRRA." },
+        { title: "File final returns", desc: "For de-registration, file all outstanding returns first." },
+        { title: "De-register", desc: "Submit the de-registration request and obtain clearance confirmation." }
+      ],
+      rw: [
+        { title: "Saba TIN", desc: "Ohereza gusaba kuri MyRRA cyangwa eTax ukoresheje indangamuntu." },
+        { title: "Iyandikishe ubwoko bw'imisoro", desc: "Ongeraho ubwoko bw'imisoro kuri TIN (VAT, PAYE, CIT)." },
+        { title: "Vugurura amakuru", desc: "Hindura izina, aho biherereye cyangwa ibikorwa binyuze kuri MyRRA." },
+        { title: "Tanga declarations zanyuma", desc: "Kwicika: tanga declarations zose zisigaye mbere y'ibindi." },
+        { title: "Kwicika", desc: "Ohereza gusaba kwicika kandi ubone icyemezo cy'ukwanduza." }
+      ]
+    },
+    forms: [
+      { name: { en: "Taxpayer Registration Form", rw: "Ifishi y'iyandikisha ry'umusoreshwa" }, size: "PDF, 280 KB" },
+      { name: { en: "De-registration Request Form", rw: "Ifishi yo Gusaba Kwicika" }, size: "PDF, 180 KB" }
+    ],
+    rates: {
+      en: [
+        { bracket: "TIN registration", rate: "Free" },
+        { bracket: "Non-business TIN (OSC)", rate: "Within 24 hours" },
+        { bracket: "De-registration processing", rate: "Up to 5 days" }
+      ],
+      rw: [
+        { bracket: "Iyandikisha rya TIN", rate: "Ubuntu" },
+        { bracket: "TIN idakoresha ubucuruzi (OSC)", rate: "Mu minsi 24" },
+        { bracket: "Igihe cyo kwicika", rate: "Kugeza ku minsi 5" }
+      ]
+    },
+    deadlines: {
+      en: [
+        { date: "Within 7 days", text: "Register for taxes after starting business operations" }
+      ],
+      rw: [
+        { date: "Mu minsi 7", text: "Iyandikishe imisoro nyuma yo gutangira ibikorwa" }
+      ]
+    },
+    cta: {
+      en: { title: "Register or update your taxpayer profile", desc: "Manage your registration details through MyRRA.", btn: "Go to MyRRA" },
+      rw: { title: "Iyandikishe cyangwa vugurura amakuru yawe", desc: "Cunga amakuru y'iyandikisha yawe kuri MyRRA.", btn: "Jya kuri MyRRA" }
+    }
   }
 ];
 

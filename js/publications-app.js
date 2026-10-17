@@ -86,7 +86,7 @@
               '<span class="pub-card__meta-item"><i class="lucide" data-lucide="calendar"></i> ' + formatDate(p.updated || p.date) + '</span>' +
               '<span class="pub-card__meta-item"><i class="lucide" data-lucide="hard-drive"></i> ' + p.size + '</span>' +
             '</div>' +
-            '<a href="#" class="pub-card__download"><i class="lucide" data-lucide="download"></i> PDF</a>' +
+            '<a href="' + (p.url || '#') + '" class="pub-card__download" target="_blank" rel="noopener"><i class="lucide" data-lucide="download"></i> PDF</a>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -117,7 +117,7 @@
         '<div class="annual-card__year">' + r.year + '</div>' +
         '<div class="annual-card__title">' + title + '</div>' +
         '<div class="annual-card__desc">' + desc + ' — ' + r.pages + ' pages</div>' +
-        '<a href="#" class="annual-card__link"><i class="lucide" data-lucide="download"></i> Download (' + r.size + ')</a>' +
+        '<a href="' + (r.url || '#') + '" class="annual-card__link" target="_blank" rel="noopener"><i class="lucide" data-lucide="download"></i> Download (' + r.size + ')</a>' +
       '</div>';
     }).join('');
     lucide.createIcons();
@@ -133,7 +133,7 @@
         '<div class="law-item__icon"><i class="lucide" data-lucide="scale"></i></div>' +
         '<div class="law-item__info"><h4>' + title + '</h4><p>' + l.desc + '</p></div>' +
         '<span class="law-item__date">' + formatDate(l.date) + '</span>' +
-        '<a href="#" class="law-item__download"><i class="lucide" data-lucide="download" style="width:14px;height:14px;"></i> PDF (' + l.size + ')</a>' +
+        '<a href="' + (l.url || '#') + '" class="law-item__download" target="_blank" rel="noopener"><i class="lucide" data-lucide="download" style="width:14px;height:14px;"></i> PDF (' + l.size + ')</a>' +
       '</div>';
     }).join('');
     lucide.createIcons();
@@ -148,7 +148,7 @@
       return '<div class="form-card">' +
         '<div class="form-card__icon"><i class="lucide" data-lucide="file-text"></i></div>' +
         '<div class="form-card__info"><h4>' + name + '</h4><p>' + f.desc + ' — ' + f.size + '</p></div>' +
-        '<a href="#" class="form-card__download"><i class="lucide" data-lucide="download" style="width:14px;height:14px;"></i></a>' +
+        '<a href="' + (f.url || '#') + '" class="form-card__download" target="_blank" rel="noopener"><i class="lucide" data-lucide="download" style="width:14px;height:14px;"></i></a>' +
       '</div>';
     }).join('');
     lucide.createIcons();
@@ -352,6 +352,7 @@
       '<li><a href="trade-portal.html">' + (currentLang === 'rw' ? 'Ubucuruzi' : 'Trade Portal') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="ebm-services.html">EBM <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="non-fiscal.html">' + (currentLang === 'rw' ? 'Ibinatari imisoro' : 'Non-Fiscal') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
+      '<li><a href="rdb-services.html">' + (currentLang === 'rw' ? 'Iyandikishe ishoramari' : 'Business Registration') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="myrra.html">MyRRA <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="publications.html" class="active">' + (currentLang === 'rw' ? 'Inyandiko' : 'Publications') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>';
     lucide.createIcons();

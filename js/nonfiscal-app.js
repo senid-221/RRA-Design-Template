@@ -235,6 +235,7 @@
       '<li><a href="trade-portal.html">' + (currentLang === 'rw' ? 'Ubucuruzi' : 'Trade Portal') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="ebm-services.html">EBM <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="non-fiscal.html" class="active">' + (currentLang === 'rw' ? 'Ibinatari imisoro' : 'Non-Fiscal') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
+      '<li><a href="rdb-services.html">' + (currentLang === 'rw' ? 'Iyandikishe ishoramari' : 'Business Registration') + ' <i class="lucide" data-lucide="chevron-right"></i></a></li>' +
       '<li><a href="myrra.html">MyRRA <i class="lucide" data-lucide="chevron-right"></i></a></li>';
     lucide.createIcons();
   }
