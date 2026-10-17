@@ -1,11 +1,11 @@
 /* ===== DESIGN TOKENS ===== */
 :root {
-  --navy: #123D70;
-  --navy-dark: #0D2B50;
-  --navy-light: #1A5298;
-  --gold: #F4C542;
-  --gold-dark: #D4A82E;
-  --gold-light: #F7D76A;
+  --navy: #1A4F8A;
+  --navy-dark: #12396A;
+  --navy-light: #2563A8;
+  --gold: #E8B930;
+  --gold-dark: #C99A20;
+  --gold-light: #F0CC5A;
   --white: #FFFFFF;
   --gray-50: #F8FAFC;
   --gray-100: #F1F5F9;
@@ -138,9 +138,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: var(--radius);
   transition: all var(--transition);
@@ -175,7 +175,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   color: var(--navy);
   background: var(--gray-50);
 }
-.btn--sm { padding: 8px 16px; font-size: 13px; }
+.btn--sm { padding: 6px 12px; font-size: 12px; }
 .btn--full { width: 100%; justify-content: center; }
 .btn .lucide, .btn [data-lucide] { width: 16px; height: 16px; }
 
@@ -503,7 +503,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 /* ===== HERO ===== */
 .hero {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
-  padding: 80px 0 64px;
+  padding: 64px 0 52px;
   position: relative;
   overflow: hidden;
 }
@@ -520,15 +520,15 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .hero__inner { position: relative; z-index: 1; }
 .hero__content { max-width: 600px; margin-bottom: 40px; }
 .hero__title {
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(26px, 4vw, 42px);
   font-weight: 800;
   color: var(--white);
   line-height: 1.1;
   letter-spacing: -0.03em;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .hero__subtitle {
-  font-size: clamp(16px, 2vw, 18px);
+  font-size: clamp(14px, 1.8vw, 16px);
   color: var(--gray-300);
   line-height: 1.6;
   max-width: 500px;
@@ -538,7 +538,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .service-finder {
   background: var(--bg-card);
   border-radius: var(--radius-xl);
-  padding: 24px;
+  padding: 18px;
   box-shadow: var(--shadow-xl);
   max-width: 720px;
 }
@@ -598,9 +598,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* ===== QUICK ACTIONS ===== */
 .quick-actions {
-  padding: 48px 0;
+  padding: 40px 0;
   background: var(--bg);
-  margin-top: -32px;
+  margin-top: -28px;
   position: relative;
   z-index: 2;
 }
@@ -612,8 +612,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .quick-action {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
+  gap: 14px;
+  padding: 16px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -628,8 +628,8 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   color: var(--text);
 }
 .quick-action__icon {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -637,7 +637,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   border-radius: var(--radius);
   flex-shrink: 0;
 }
-.quick-action__icon .lucide, .quick-action__icon [data-lucide] { width: 22px; height: 22px; color: var(--gold); }
+.quick-action__icon .lucide, .quick-action__icon [data-lucide] { width: 20px; height: 20px; color: var(--gold); }
 .quick-action__text h3 { font-size: 14px; font-weight: 600; line-height: 1.3; }
 .quick-action__text p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 .quick-action__arrow { margin-left: auto; flex-shrink: 0; }
@@ -647,23 +647,23 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 /* ===== SECTION HEADERS ===== */
 .section-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 .section-title {
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: clamp(20px, 2.5vw, 28px);
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.02em;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .section-subtitle {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
 /* ===== SERVICE DIRECTORY ===== */
 .service-directory {
-  padding: 64px 0;
+  padding: 48px 0;
   background: var(--bg-alt);
 }
 .directory-grid {
@@ -675,7 +675,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 20px;
   transition: all var(--transition);
 }
 .directory-card:hover {
@@ -684,24 +684,24 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   transform: translateY(-2px);
 }
 .directory-card__icon {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--gray-100);
   border-radius: var(--radius);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 [data-theme="dark"] .directory-card__icon { background: var(--gray-700); }
 .directory-card__icon .lucide, .directory-card__icon [data-lucide] { width: 22px; height: 22px; color: var(--navy); }
 [data-theme="dark"] .directory-card__icon .lucide,
 [data-theme="dark"] .directory-card__icon [data-lucide] { color: var(--gold); }
 .directory-card__title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .directory-card__desc {
   font-size: 14px;
@@ -730,7 +730,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* ===== NOTICES SECTION ===== */
 .notices-section {
-  padding: 64px 0;
+  padding: 48px 0;
   background: var(--bg);
 }
 .notices-grid {
@@ -742,18 +742,18 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
 }
 .notices-card__header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
-.notices-card__header .lucide, .notices-card__header [data-lucide] { width: 22px; height: 22px; color: var(--gold-dark); }
-.notices-card__title { font-size: 18px; font-weight: 700; color: var(--text); }
+.notices-card__header .lucide, .notices-card__header [data-lucide] { width: 20px; height: 20px; color: var(--gold-dark); }
+.notices-card__title { font-size: 16px; font-weight: 700; color: var(--text); }
 .notices-card__footer {
   display: block;
   text-align: center;
@@ -867,7 +867,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 /* ===== HELP SECTION ===== */
 .help-section {
-  padding: 64px 0;
+  padding: 48px 0;
   background: var(--bg-alt);
 }
 .help-grid {
@@ -877,7 +877,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 .help-card {
   text-align: center;
-  padding: 32px 20px;
+  padding: 24px 16px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -889,17 +889,17 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   transform: translateY(-2px);
 }
 .help-card__icon {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--navy), var(--navy-light));
   border-radius: var(--radius-lg);
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
 }
-.help-card__icon .lucide, .help-card__icon [data-lucide] { width: 24px; height: 24px; color: var(--gold); }
-.help-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.help-card__icon .lucide, .help-card__icon [data-lucide] { width: 22px; height: 22px; color: var(--gold); }
+.help-card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
 .help-card__detail { font-size: 15px; font-weight: 600; color: var(--navy); }
 [data-theme="dark"] .help-card__detail { color: var(--gold); }
 .help-card__link { display: inline-block; }
@@ -910,13 +910,13 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .site-footer {
   background: var(--navy-dark);
   color: var(--gray-300);
-  padding: 64px 0 0;
+  padding: 48px 0 0;
 }
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 40px;
-  padding-bottom: 48px;
+  gap: 32px;
+  padding-bottom: 36px;
 }
 .footer-brand__desc {
   font-size: 14px;
