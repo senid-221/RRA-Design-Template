@@ -16,8 +16,10 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 const DATABASE_URL = process.env.DATABASE_URL || '';
 
-// Initialize database on startup
-initDatabase();
+// Initialize database on startup (non-blocking)
+initDatabase().catch(err => {
+  console.error('Database initialization failed:', err.message);
+});
 
 // AI Chat endpoint
 app.post('/api/ai-chat', async (req, res) => {
