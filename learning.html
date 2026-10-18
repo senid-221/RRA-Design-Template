@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Learning — Tangira Wige | Rwanda Revenue Authority</title>
+  <meta name="description" content="Free video tutorials for IT Admins. Learn how to use RRA, Irembo, RDB, RURA, RIB, BK, MIFOTRA platforms and IT equipment like PCs and printers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/services.css">
+  <style>
+    .learn-hero {
+      padding: 80px 0; background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 50%, var(--navy-light) 100%); color: #fff;
+      position: relative; overflow: hidden;
+    }
+    .learn-hero::before {
+      content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(244,197,66,0.08) 0%, transparent 70%); border-radius: 50%;
+    }
+    .learn-hero__inner { max-width: 720px; position: relative; z-index: 1; }
+    .learn-hero__badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px;
+      background: rgba(244,197,66,0.15); border: 1px solid rgba(244,197,66,0.3); border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .learn-hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; line-height: 1.15; }
+    .learn-hero__subtitle-kiny { font-size: 20px; color: var(--gold); font-weight: 600; margin-bottom: 16px; }
+    .learn-hero p { font-size: 18px; opacity: 0.9; line-height: 1.6; margin-bottom: 32px; }
+    .learn-hero__stats { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 24px; }
+    .learn-hero__stat { text-align: center; }
+    .learn-hero__stat-num { font-size: 28px; font-weight: 800; color: var(--gold); }
+    .learn-hero__stat-label { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+
+    .learn-filters {
+      padding: 24px 0; background: var(--bg-secondary, #f8f9fb); border-bottom: 1px solid var(--border, #e5e7eb);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .learn-filters__inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .learn-filters__label { font-size: 14px; font-weight: 600; color: var(--text-secondary, #6b7280); margin-right: 4px; }
+    .learn-filter-btn {
+      padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border, #e5e7eb);
+      background: #fff; font-size: 13px; font-weight: 500; color: var(--text-secondary, #6b7280);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .learn-filter-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .learn-filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    .learn-section { padding: 60px 0; }
+    .learn-section:nth-child(even) { background: var(--bg-secondary, #f8f9fb); }
+    .learn-section__header { margin-bottom: 32px; }
+    .learn-section__icon {
+      width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .learn-section__icon--platforms { background: rgba(26,58,92,0.1); color: var(--navy); }
+    .learn-section__icon--it { background: rgba(244,197,66,0.15); color: #b8860b; }
+    .learn-section__icon--advanced { background: rgba(16,185,129,0.1); color: #059669; }
+    .learn-section h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .learn-section__desc { font-size: 16px; color: var(--text-secondary, #6b7280); max-width: 600px; }
+
+    .learn-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;
+    }
+
+    .video-card {
+      background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--border, #e5e7eb);
+      transition: all 0.3s; cursor: pointer; position: relative;
+    }
+    .video-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: var(--navy); }
+    .video-card__thumb {
+      position: relative; height: 180px; overflow: hidden;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .video-card__thumb-icon { font-size: 48px; opacity: 0.3; }
+    .video-card__play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.95);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2); transition: all 0.3s;
+    }
+    .video-card:hover .video-card__play { transform: translate(-50%, -50%) scale(1.1); background: var(--gold); }
+    .video-card__play svg { width: 24px; height: 24px; color: var(--navy); margin-left: 2px; }
+    .video-card:hover .video-card__play svg { color: #fff; }
+    .video-card__badge {
+      position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 6px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+    }
+    .video-card__badge--beginner { background: #dcfce7; color: #166534; }
+    .video-card__badge--intermediate { background: #fef3c7; color: #92400e; }
+    .video-card__badge--advanced { background: #ede9fe; color: #5b21b6; }
+    .video-card__duration {
+      position: absolute; bottom: 12px; right: 12px; padding: 4px 8px; border-radius: 4px;
+      background: rgba(0,0,0,0.7); color: #fff; font-size: 11px; font-weight: 500;
+    }
+    .video-card__platform-tag {
+      position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.9); font-size: 11px; font-weight: 600; color: var(--navy);
+    }
+    .video-card__body { padding: 20px; }
+    .video-card__title { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; color: var(--text, #111827); }
+    .video-card__desc { font-size: 14px; color: var(--text-secondary, #6b7280); line-height: 1.5; margin-bottom: 16px; }
+    .video-card__meta { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--text-secondary, #9ca3af); }
+    .video-card__meta-item { display: flex; align-items: center; gap: 4px; }
+
+    .learning-path {
+      padding: 60px 0; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff;
+    }
+    .learning-path h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; text-align: center; }
+    .learning-path__desc { text-align: center; opacity: 0.8; margin-bottom: 40px; font-size: 16px; }
+    .path-steps { display: flex; gap: 0; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+    .path-step {
+      flex: 1; min-width: 180px; text-align: center; padding: 24px 16px; position: relative;
+    }
+    .path-step__num {
+      width: 40px; height: 40px; border-radius: 50%; background: var(--gold); color: var(--navy);
+      font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .path-step__title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+    .path-step__desc { font-size: 13px; opacity: 0.7; line-height: 1.4; }
+    .path-step:not(:last-child)::after {
+      content: ''; position: absolute; top: 44px; right: -20px; width: 40px; height: 2px;
+      background: rgba(244,197,66,0.4);
+    }
+
+    .video-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center;
+    }
+    .video-modal.active { display: flex; }
+    .video-modal__inner {
+      background: #fff; border-radius: 16px; max-width: 800px; width: 90%; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    }
+    .video-modal__player {
+      width: 100%; aspect-ratio: 16/9; background: #000;
+      display: flex; align-items: center; justify-content: center; color: #fff;
+    }
+    .video-modal__body { padding: 24px; }
+    .video-modal__title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .video-modal__desc { font-size: 14px; color: var(--text-secondary, #6b7280); line-height: 1.6; margin-bottom: 16px; }
+    .video-modal__close {
+      position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.9); border: none; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; z-index: 1;
+    }
+    .video-modal__close:hover { background: #fff; }
+
+    .coming-soon-overlay {
+      position: relative;
+    }
+    .coming-soon-overlay::after {
+      content: 'Coming Soon'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
+      font-size: 24px; font-weight: 800; color: var(--gold); background: rgba(26,58,92,0.9);
+      padding: 8px 24px; border-radius: 8px; border: 2px solid var(--gold); white-space: nowrap;
+      pointer-events: none; z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .learn-hero h1 { font-size: 28px; }
+      .learn-hero__subtitle-kiny { font-size: 16px; }
+      .learn-grid { grid-template-columns: 1fr; }
+      .path-steps { flex-direction: column; align-items: center; }
+      .path-step:not(:last-child)::after { display: none; }
+      .learn-hero__stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="header" id="header">
+
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="index.html" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;">
+          </div>
+        </a>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">Tax Services <i class="lucide" data-lucide="chevron-down"></i></button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">Income Tax</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">VAT</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">PAYE</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="https://sw.gov.rw/" target="_blank" rel="noopener">Customs Services</a>
+                  <a href="https://rwandatrade.rw/" target="_blank" rel="noopener">Trade Portal</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">EBM Services</a>
+                  <a href="https://nonfiscal.rra.gov.rw/" target="_blank" rel="noopener">Non-Fiscal Revenue</a>
+                  <a href="https://urs.rdb.rw/auth/register" target="_blank" rel="noopener">Business Registration</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">MyRRA Portal</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="faq.html" class="nav-link">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a href="learning.html" class="nav-link active" style="color: var(--gold); font-weight: 600;">
+                <i class="lucide" data-lucide="graduation-cap" style="width:16px;height:16px;vertical-align:-2px;margin-right:2px;"></i> Start Learning
+              </a>
+            </li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search"><i class="lucide" data-lucide="search"></i></button>
+          <a href="https://myrra.rra.gov.rw/" class="btn btn--primary btn--sm" target="_blank" rel="noopener">
+            <i class="lucide" data-lucide="user-circle"></i> MyRRA
+          </a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu">
+            <i class="lucide" data-lucide="menu"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search" hidden>
+      <div class="container search-overlay__inner">
+        <div class="search-input-wrap">
+          <i class="lucide" data-lucide="search"></i>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search tutorials, platforms..." autocomplete="off" aria-label="Search">
+          <button class="search-close" id="searchClose" aria-label="Close search"><i class="lucide" data-lucide="x"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-overlay" id="mobileNavOverlay">
+    <nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <div class="mobile-nav__header">
+        <span class="logo__title">RRA</span>
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close menu"><i class="lucide" data-lucide="x"></i></button>
+      </div>
+      <ul class="mobile-nav__list" id="mobileNavList"></ul>
+      <div class="mobile-nav__footer">
+        <a href="https://myrra.rra.gov.rw/" class="btn btn--primary btn--full" target="_blank" rel="noopener"><i class="lucide" data-lucide="log-in"></i> Login to MyRRA</a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="main-content">
+
+    <section class="learn-hero">
+      <div class="container learn-hero__inner">
+        <div class="learn-hero__badge">
+          <i class="lucide" data-lucide="play-circle" style="width:14px;height:14px;"></i> Free Video Tutorials
+        </div>
+        <h1>Start Learning</h1>
+        <div class="learn-hero__subtitle-kiny">Tangira Wige</div>
+        <p>Free step-by-step video tutorials for IT Admins. Master government platforms (RRA, Irembo, RDB, RURA, RIB, BK, Equity Bank, MIFOTRA) and essential IT skills — from using a PC to managing printers and more.</p>
+        <div class="learn-hero__stats">
+          <div class="learn-hero__stat">
+            <div class="learn-hero__stat-num">50+</div>
+            <div class="learn-hero__stat-label">Video Lessons</div>
+          </div>
+          <div class="learn-hero__stat">
+            <div class="learn-hero__stat-num">10+</div>
+            <div class="learn-hero__stat-label">Platforms Covered</div>
+          </div>
+          <div class="learn-hero__stat">
+            <div class="learn-hero__stat-num">3</div>
+            <div class="learn-hero__stat-label">Learning Tracks</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="learn-filters">
+      <div class="container learn-filters__inner">
+        <span class="learn-filters__label">Filter:</span>
+        <button class="learn-filter-btn active" data-filter="all">All Tutorials</button>
+        <button class="learn-filter-btn" data-filter="platforms">Platform Tutorials</button>
+        <button class="learn-filter-btn" data-filter="it-skills">IT Skills</button>
+        <button class="learn-filter-btn" data-filter="advanced">Advanced</button>
+        <button class="learn-filter-btn" data-filter="beginner">Beginner</button>
+      </div>
+    </section>
+
+    <section class="learning-path">
+      <div class="container">
+        <h2>Your Learning Path</h2>
+        <p class="learning-path__desc">Follow this step-by-step journey to become a confident IT Admin</p>
+        <div class="path-steps">
+          <div class="path-step">
+            <div class="path-step__num">1</div>
+            <div class="path-step__title">IT Fundamentals</div>
+            <div class="path-step__desc">PC basics, internet, email setup, file management</div>
+          </div>
+          <div class="path-step">
+            <div class="path-step__num">2</div>
+            <div class="path-step__title">Platform Access</div>
+            <div class="path-step__desc">Create accounts on RRA, Irembo, RDB, RURA & more</div>
+          </div>
+          <div class="path-step">
+            <div class="path-step__num">3</div>
+            <div class="path-step__title">Platform Mastery</div>
+            <div class="path-step__desc">File taxes, register business, apply for permits</div>
+          </div>
+          <div class="path-step">
+            <div class="path-step__num">4</div>
+            <div class="path-step__title">IT Equipment</div>
+            <div class="path-step__desc">Printer setup, scanner, EBM machine, networking</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="learn-section" id="platform-tutorials">
+      <div class="container">
+        <div class="learn-section__header">
+          <div class="learn-section__icon learn-section__icon--platforms">
+            <i class="lucide" data-lucide="globe" style="width:24px;height:24px;"></i>
+          </div>
+          <h2>Government Platform Tutorials</h2>
+          <p class="learn-section__desc">Learn how to navigate and use Rwanda's key government and financial platforms step by step.</p>
+        </div>
+        <div class="learn-grid" id="platformGrid">
+
+          <div class="video-card" data-category="platforms" data-level="beginner" onclick="openVideo(this)" data-title="RRA: MyRRA Portal Full Tutorial" data-desc="Complete guide to registering on MyRRA, filing tax returns, checking TIN status, and managing your tax obligations online." data-duration="25:30">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #1a3a5c 0%, #2d5a8e 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">RRA</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">25:30</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">MyRRA Portal — Full Tutorial</div>
+              <div class="video-card__desc">Register, file returns, check TIN, and manage tax obligations on MyRRA portal.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 8 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 2h 30min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="beginner" onclick="openVideo(this)" data-title="RRA: EBM Setup & Configuration" data-desc="Learn how to set up your Electronic Billing Machine (EBM), issue receipts, and submit daily EBM reports to RRA." data-duration="18:45">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #0f4c3a 0%, #1a7a5c 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">RRA</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">18:45</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">EBM Setup & Configuration</div>
+              <div class="video-card__desc">Set up Electronic Billing Machine, issue receipts, submit daily reports.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 6 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 45min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="beginner" onclick="openVideo(this)" data-title="Irembo: Government Services Portal" data-desc="How to access and use Irembo.gov.rw for civil status documents, land registration, driving permits, and other citizen services." data-duration="20:15">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">Irembo</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">20:15</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Irembo — Government Services Portal</div>
+              <div class="video-card__desc">Access civil documents, land registration, driving permits, and citizen services.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 7 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 2h 00min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="beginner" onclick="openVideo(this)" data-title="RDB: Business Registration on URS" data-desc="Step-by-step guide to registering a business on the RDB URS portal, obtaining TIN, and completing post-registration obligations." data-duration="22:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">RDB</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">22:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">RDB — Business Registration (URS)</div>
+              <div class="video-card__desc">Register a business, obtain TIN, and complete post-registration obligations.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 5 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 50min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="intermediate" onclick="openVideo(this)" data-title="RURA: Licensing & Regulatory Compliance" data-desc="Navigate RURA's portal for telecommunications licensing, spectrum management, and regulatory compliance for businesses." data-duration="16:30">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #dc2626 0%, #f87171 100%);">
+              <span class="video-card__badge video-card__badge--intermediate">Intermediate</span>
+              <span class="video-card__platform-tag">RURA</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">16:30</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">RURA — Licensing & Compliance</div>
+              <div class="video-card__desc">Telecommunications licensing, spectrum management, and regulatory compliance.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 4 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 15min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="intermediate" onclick="openVideo(this)" data-title="RIB: Investigation & Reporting Portal" data-desc="How to file reports and use RIB's online services for case tracking and compliance with investigation requirements." data-duration="14:20">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #374151 0%, #6b7280 100%);">
+              <span class="video-card__badge video-card__badge--intermediate">Intermediate</span>
+              <span class="video-card__platform-tag">RIB</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">14:20</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">RIB — Investigation & Reporting</div>
+              <div class="video-card__desc">File reports, track cases, and comply with investigation requirements online.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 3 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 55min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="beginner" onclick="openVideo(this)" data-title="BK Bank: Online Banking for Business" data-desc="Set up and use Bank of Kigali's online banking platform for business accounts, transfers, loan applications, and mobile banking." data-duration="19:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #0369a1 0%, #38bdf8 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">BK</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">19:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">BK Bank — Online Banking for Business</div>
+              <div class="video-card__desc">Set up business accounts, transfers, loan applications, and mobile banking.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 5 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 30min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="beginner" onclick="openVideo(this)" data-title="Equity Bank: Business Account & Digital Services" data-desc="Learn to use Equity Bank's digital platform for business banking, mobile banking (Equity Mobile), and online transactions." data-duration="17:45">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">Equity</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">17:45</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Equity Bank — Digital Banking</div>
+              <div class="video-card__desc">Business banking, Equity Mobile app, and online transactions made simple.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 4 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 20min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="intermediate" onclick="openVideo(this)" data-title="MIFOTRA: Social Security & Employee Registration" data-desc="How to register employees on MIFOTRA, make monthly contributions, and manage social security compliance for your organization." data-duration="15:10">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #047857 0%, #34d399 100%);">
+              <span class="video-card__badge video-card__badge--intermediate">Intermediate</span>
+              <span class="video-card__platform-tag">MIFOTRA</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">15:10</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">MIFOTRA — Social Security Portal</div>
+              <div class="video-card__desc">Register employees, make monthly contributions, manage social security compliance.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 4 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 10min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="platforms" data-level="intermediate" onclick="openVideo(this)" data-title="RSSB: Employee Registration & Contributions" data-desc="Navigate RSSB's portal for employee registration, monthly contributions, and managing health insurance and pension schemes." data-duration="16:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #4338ca 0%, #818cf8 100%);">
+              <span class="video-card__badge video-card__badge--intermediate">Intermediate</span>
+              <span class="video-card__platform-tag">RSSB</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">16:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">RSSB — Employee & Contributions</div>
+              <div class="video-card__desc">Employee registration, monthly contributions, health insurance and pension management.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 5 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 25min</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="learn-section" id="it-skills">
+      <div class="container">
+        <div class="learn-section__header">
+          <div class="learn-section__icon learn-section__icon--it">
+            <i class="lucide" data-lucide="monitor" style="width:24px;height:24px;"></i>
+          </div>
+          <h2>IT Skills & Equipment</h2>
+          <p class="learn-section__desc">Essential hands-on skills for IT Admins — from basic computer use to printer setup and networking.</p>
+        </div>
+        <div class="learn-grid" id="itSkillsGrid">
+
+          <div class="video-card" data-category="it-skills" data-level="beginner" onclick="openVideo(this)" data-title="PC Basics: Getting Started with Windows" data-desc="Complete beginner guide to using a Windows PC — file management, settings, installing software, and keyboard shortcuts." data-duration="30:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #1e3a5f 0%, #4a90d9 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">PC</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">30:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">PC Basics — Windows Getting Started</div>
+              <div class="video-card__desc">File management, settings, installing software, and keyboard shortcuts.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 10 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 3h 00min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="it-skills" data-level="beginner" onclick="openVideo(this)" data-title="Printer Setup & Maintenance" data-desc="How to install, configure, and troubleshoot printers — including network printers, scanner setup, and toner replacement." data-duration="22:30">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #5b21b6 0%, #8b5cf6 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">Printer</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">22:30</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Printer Setup & Maintenance</div>
+              <div class="video-card__desc">Install, configure, troubleshoot printers — network printers, scanners, toner.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 6 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 2h 00min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="it-skills" data-level="beginner" onclick="openVideo(this)" data-title="Email Setup: Gmail & Outlook for Business" data-desc="Set up professional email accounts, configure signatures, manage contacts, and use email effectively for business communication." data-duration="18:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #dc2626 0%, #fb923c 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">Email</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">18:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Email Setup — Gmail & Outlook</div>
+              <div class="video-card__desc">Professional email accounts, signatures, contacts, and business communication.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 5 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 30min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="it-skills" data-level="intermediate" onclick="openVideo(this)" data-title="Network Setup: WiFi, Router & Internet" data-desc="Configure office WiFi networks, set up routers, manage IP addresses, and troubleshoot common internet connectivity issues." data-duration="25:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #0f766e 0%, #2dd4bf 100%);">
+              <span class="video-card__badge video-card__badge--intermediate">Intermediate</span>
+              <span class="video-card__platform-tag">Network</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">25:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Network Setup — WiFi & Router Config</div>
+              <div class="video-card__desc">Office WiFi, router setup, IP management, and internet troubleshooting.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 7 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 2h 15min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="it-skills" data-level="beginner" onclick="openVideo(this)" data-title="Microsoft Office: Word, Excel & PowerPoint" data-desc="Essential Microsoft Office skills — create documents in Word, build spreadsheets in Excel, and design presentations in PowerPoint." data-duration="35:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #c2410c 0%, #fb923c 100%);">
+              <span class="video-card__badge video-card__badge--beginner">Beginner</span>
+              <span class="video-card__platform-tag">Office</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">35:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Microsoft Office — Word, Excel, PowerPoint</div>
+              <div class="video-card__desc">Create documents, build spreadsheets, and design presentations like a pro.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 12 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 4h 00min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card" data-category="it-skills" data-level="advanced" onclick="openVideo(this)" data-title="Cybersecurity Basics for IT Admins" data-desc="Protect your organization from cyber threats — password management, phishing awareness, data backup, and secure browsing practices." data-duration="20:00">
+            <div class="video-card__thumb" style="background: linear-gradient(135deg, #991b1b 0%, #ef4444 100%);">
+              <span class="video-card__badge video-card__badge--advanced">Advanced</span>
+              <span class="video-card__platform-tag">Security</span>
+              <div class="video-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="video-card__duration">20:00</span>
+            </div>
+            <div class="video-card__body">
+              <div class="video-card__title">Cybersecurity Basics for IT Admins</div>
+              <div class="video-card__desc">Password management, phishing awareness, data backup, and secure browsing.</div>
+              <div class="video-card__meta">
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="play-circle" style="width:12px;height:12px;"></i> 6 lessons</span>
+                <span class="video-card__meta-item"><i class="lucide" data-lucide="clock" style="width:12px;height:12px;"></i> 1h 45min</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="learn-section" id="request-tutorial">
+      <div class="container">
+        <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+          <div class="learn-section__icon learn-section__icon--advanced" style="margin: 0 auto 16px;">
+            <i class="lucide" data-lucide="message-circle" style="width:24px;height:24px;"></i>
+          </div>
+          <h2>Need a Specific Tutorial?</h2>
+          <p class="learn-section__desc" style="margin: 0 auto 24px; text-align: center;">Can't find what you're looking for? Request a custom video tutorial and our team will create it for you.</p>
+          <a href="contact.html" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 8px;">
+            <i class="lucide" data-lucide="send" style="width:16px;height:16px;"></i> Request a Tutorial
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal__inner" style="position:relative;">
+      <button class="video-modal__close" id="videoModalClose" aria-label="Close"><i class="lucide" data-lucide="x" style="width:20px;height:20px;"></i></button>
+      <div class="video-modal__player" id="videoPlayer">
+        <div style="text-align:center; padding: 40px;">
+          <i class="lucide" data-lucide="play-circle" style="width:64px;height:64px;opacity:0.5;margin-bottom:16px;"></i>
+          <p style="font-size:14px;opacity:0.7;">Video player — connect your video hosting (YouTube, Vimeo, or self-hosted)</p>
+        </div>
+      </div>
+      <div class="video-modal__body">
+        <h3 class="video-modal__title" id="videoModalTitle">Tutorial Title</h3>
+        <p class="video-modal__desc" id="videoModalDesc">Tutorial description goes here.</p>
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn--primary" style="flex:1;"><i class="lucide" data-lucide="play" style="width:14px;height:14px;"></i> Start Lesson</button>
+          <button class="btn btn--outline"><i class="lucide" data-lucide="bookmark" style="width:14px;height:14px;"></i> Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo logo--footer"><div class="logo__mark"><img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="36" style="width:auto;"></div></div>
+          <p class="footer-brand__desc">Collecting revenue on behalf of the Government of Rwanda to fund national development.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Learning</h4>
+          <a href="#platform-tutorials">Platform Tutorials</a>
+          <a href="#it-skills">IT Skills</a>
+          <a href="#request-tutorial">Request Tutorial</a>
+        </div>
+        <div class="footer-links">
+          <h4>Platforms</h4>
+          <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">MyRRA Portal</a>
+          <a href="https://www.irembo.gov.rw/" target="_blank" rel="noopener">Irembo</a>
+          <a href="https://urs.rdb.rw/auth/register" target="_blank" rel="noopener">RDB</a>
+          <a href="https://www.rura.gov.rw/" target="_blank" rel="noopener">RURA</a>
+        </div>
+      </div>
+      <div class="footer-social">
+        <a href="https://api.whatsapp.com/send?phone=+250739008010&text=Talk%21%20to%21%20us" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+        <a href="https://twitter.com/rrainfo" target="_blank" rel="noopener" aria-label="X (Twitter)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://web.facebook.com/RwandaRevenueAuthority" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/rwandarevenue/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/channel/UCO4zbegoG2MuTGj6qj8wApQ/" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@rwandarevenue" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </a>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+        <div class="footer-bottom__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Use</a>
+          <a href="#accessibility-statement">Accessibility</a>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/ai-knowledge.js"></script>
+  <script src="js/ai-assistant.js?v=6"></script>
+  <script>
+    (function() {
+      var filterBtns = document.querySelectorAll('.learn-filter-btn');
+      var cards = document.querySelectorAll('.video-card');
+
+      filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filterBtns.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          var filter = btn.getAttribute('data-filter');
+          cards.forEach(function(card) {
+            var cat = card.getAttribute('data-category');
+            var lvl = card.getAttribute('data-level');
+            if (filter === 'all' || cat === filter || lvl === filter) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    })();
+
+    function openVideo(el) {
+      var title = el.getAttribute('data-title') || '';
+      var desc = el.getAttribute('data-desc') || '';
+      document.getElementById('videoModalTitle').textContent = title;
+      document.getElementById('videoModalDesc').textContent = desc;
+      document.getElementById('videoModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    document.getElementById('videoModalClose').addEventListener('click', function() {
+      document.getElementById('videoModal').classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    document.getElementById('videoModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>

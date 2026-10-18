@@ -436,6 +436,40 @@ var aiKnowledge = {
         'Start making monthly contributions',
         'Build your pension even as self-employed'
       ]
+    },
+    {
+      id: 'learning-tutorials',
+      keywords: ['learn', 'tutorial', 'video', 'training', 'start learning', 'tangira wige', 'how to use', 'guide', 'it admin', 'pc', 'printer', 'ireambo tutorial', 'rra tutorial'],
+      title: 'Start Learning — Free Video Tutorials',
+      category: 'Learning',
+      description: 'Free video tutorials for IT Admins covering government platforms (RRA, Irembo, RDB, RURA, RIB, BK, Equity Bank, MIFOTRA) and IT skills (PC, Printer, Network, Office, Cybersecurity).',
+      platform: 'RRA Learning Hub',
+      url: 'learning.html',
+      steps: [
+        'Go to learning.html or click "Start Learning" in the navigation',
+        'Choose a learning track: Platform Tutorials or IT Skills',
+        'Browse available video lessons by platform (RRA, Irembo, RDB, RURA, RIB, BK, Equity, MIFOTRA)',
+        'Click on a video card to start the lesson',
+        'Follow the step-by-step video guidance',
+        'Practice on the actual platform after watching',
+        'Request custom tutorials if you need specific topics'
+      ]
+    },
+    {
+      id: 'faq-general',
+      keywords: ['faq', 'help', 'question', 'frequently asked', 'common questions', 'support'],
+      title: 'FAQ & Help Center',
+      category: 'Support',
+      description: 'Find answers to common questions about taxes, declarations, payments, EBM, customs, and more.',
+      platform: 'RRA Website',
+      url: 'faq.html',
+      steps: [
+        'Visit faq.html or click "FAQ" in the navigation',
+        'Use the search bar to find specific questions',
+        'Browse by category (TIN, Declarations, Payments, EBM, Customs, VAT, Income Tax)',
+        'Click on questions to expand answers',
+        'Contact support via phone, email, or WhatsApp if you need more help'
+      ]
     }
   ],
 
@@ -445,6 +479,7 @@ var aiKnowledge = {
     { text: 'Register business', query: 'business registration' },
     { text: 'Pay taxes', query: 'tax payment' },
     { text: 'Customs declaration', query: 'customs declaration' },
+    { text: 'FAQ & Help', query: 'faq' },
     { text: 'EBM invoice', query: 'ebm invoice' }
   ],
 
