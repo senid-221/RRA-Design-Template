@@ -767,6 +767,8 @@
 
   function getSystemPrompt() {
     return 'You are the RRA AI Agent, a live voice conversation assistant for Rwanda Revenue Authority. You speak both English and Kinyarwanda fluently.\n\n' +
+      'INTRODUCTION RULE:\n' +
+      'When this is the FIRST message in a conversation (conversationHistory is empty), you MUST start by introducing yourself. Say: "Muraho! Ndi RRA AI Agent, nakozwe na IRAGUHA Vincent, umwe mu ba web developers beza u Rwanda rufite. Nshobora kugufasha ibibazo by\'imisoro, customs, na business registration. Niki nakufasha?" (Hello! I am RRA AI Agent, made by IRAGUHA Vincent, one of the best web developers Rwanda has. I can help you with taxes, customs, and business registration questions. What can I help you with?)\n\n' +
       'CRITICAL RULES - YOU MUST FOLLOW THESE:\n' +
       '1. ALWAYS USE WEB SEARCH FIRST: Before answering ANY question about RRA services, taxes, deadlines, or procedures, use the web_search tool to get current information. This ensures you provide accurate, up-to-date information.\n' +
       '2. STAY ON TOPIC: Only answer questions about RRA services (taxes, customs, business registration, social security, licensing). If asked about unrelated topics (weather, sports, politics, personal advice, etc.), politely redirect: "I can only help with RRA services. Would you like to know about taxes, business registration, or customs?"\n' +
@@ -867,44 +869,73 @@
     });
     messages.push({ role: 'user', content: userMessage });
 
-    var response = await fetch('/api/ai-agent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        provider: AI_CONFIG.provider,
-        model: AI_CONFIG.model,
-        messages: messages
-      })
-    });
+    // Add timeout to prevent hanging connections
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function() { controller.abort(); }, 30000); // 30 second timeout
 
-    if (!response.ok) {
-      throw new Error('API request failed: ' + response.status);
+    try {
+      var response = await fetch('/api/ai-agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          provider: AI_CONFIG.provider,
+          model: AI_CONFIG.model,
+          messages: messages
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error('API request failed: ' + response.status);
+      }
+
+      var data = await response.json();
+      return data;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        throw new Error('Request timeout - server took too long to respond');
+      }
+      throw error;
     }
-
-    var data = await response.json();
-    return data;
   }
 
   async function executeTool(toolName, args) {
-    var response = await fetch('/api/ai-agent/execute-tool', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        tool: toolName,
-        args: args
-      })
-    });
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function() { controller.abort(); }, 15000); // 15 second timeout
 
-    if (!response.ok) {
-      throw new Error('Tool execution failed');
+    try {
+      var response = await fetch('/api/ai-agent/execute-tool', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tool: toolName,
+          args: args
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error('Tool execution failed');
+      }
+
+      var data = await response.json();
+      return data.result;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        throw new Error('Tool execution timeout');
+      }
+      throw error;
     }
-
-    var data = await response.json();
-    return data.result;
   }
 
   function parseAIResponse(response) {
@@ -1031,31 +1062,46 @@
           }
         });
 
-        var finalResponse = await fetch('/api/ai-agent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            provider: AI_CONFIG.provider,
-            model: AI_CONFIG.model,
-            messages: followUpMessages
-          })
-        });
+        var finalController = new AbortController();
+        var finalTimeoutId = setTimeout(function() { finalController.abort(); }, 30000);
 
-        var finalData = await finalResponse.json();
-        var finalMessage = finalData.choices[0].message.content;
+        try {
+          var finalResponse = await fetch('/api/ai-agent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              provider: AI_CONFIG.provider,
+              model: AI_CONFIG.model,
+              messages: followUpMessages
+            }),
+            signal: finalController.signal
+          });
 
-        removeThinking();
-        conversationHistory.push({ role: 'assistant', content: finalMessage });
+          clearTimeout(finalTimeoutId);
 
-        if (conversationHistory.length > 20) {
-          conversationHistory = conversationHistory.slice(-20);
+          var finalData = await finalResponse.json();
+          var finalMessage = finalData.choices[0].message.content;
+
+          removeThinking();
+          conversationHistory.push({ role: 'assistant', content: finalMessage });
+
+          if (conversationHistory.length > 20) {
+            conversationHistory = conversationHistory.slice(-20);
+          }
+
+          var parsed = parseAIResponse(finalMessage);
+          var actions = getActionButtons(parsed.urls, text);
+          var toolNames = toolCalls.map(function(tc) { return tc.function.name; }).join(', ');
+
+          addBotMessage(parsed.html, actions, toolNames);
+
+        } catch (error) {
+          clearTimeout(finalTimeoutId);
+          if (error.name === 'AbortError') {
+            throw new Error('Request timeout - server took too long to respond');
+          }
+          throw error;
         }
-
-        var parsed = parseAIResponse(finalMessage);
-        var actions = getActionButtons(parsed.urls, text);
-        var toolNames = toolCalls.map(function(tc) { return tc.function.name; }).join(', ');
-
-        addBotMessage(parsed.html, actions, toolNames);
 
       } else {
         var responseText = message.content;
