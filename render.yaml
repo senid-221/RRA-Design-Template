@@ -12,6 +12,6 @@ services:
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: DATABASE_URL
-        value: postgresql://rra_database_user:8JNxwdYyxy4ZP5HOZOIRn8xq1yHyLWqD@dpg-dba6culg1s2s73av0eq0-a/rra_database
+        value: postgresql://rra_database_user:8JNxwdYyxy4ZP5HOZOIRn8xq1yHyLWqD@dpg-dba6culg1s2s73av0eq0-a/rra_database?sslmode=require
       - key: PORT
         value: 10000
