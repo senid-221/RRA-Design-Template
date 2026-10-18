@@ -1287,5 +1287,7 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`OpenAI API: ${OPENAI_API_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`Anthropic API: ${ANTHROPIC_API_KEY ? 'Configured' : 'Not configured'}`);
+  console.log(`ElevenLabs API: ${ELEVENLABS_API_KEY ? 'Configured' : 'Not configured'}`);
+  console.log(`SerpAPI: ${SERPAPI_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`Database: ${DATABASE_URL ? 'Configured' : 'Not configured'}`);
 });
