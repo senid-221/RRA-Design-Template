@@ -96,8 +96,8 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Serve all static files
-app.get('*', (req, res) => {
+// Serve index.html for root route only
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
