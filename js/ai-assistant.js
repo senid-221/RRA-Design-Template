@@ -451,7 +451,7 @@
       recordStartTime = Date.now();
       document.getElementById('aiVoiceIndicator').classList.add('recording');
       document.getElementById('aiVoiceBtn').classList.add('active');
-      document.querySelector('.ai-voice-indicator__text').textContent = 'Listening... (English/Kinyarwanda)';
+      document.querySelector('.ai-voice-indicator__text').textContent = 'Listening...';
       updateRecordTimer();
     };
 
@@ -476,7 +476,7 @@
         var detectedLang = detectLanguage(transcript);
         if (detectedLang !== recognition.lang) {
           recognition.lang = detectedLang;
-          document.querySelector('.ai-voice-indicator__text').textContent = detectedLang === 'rw-RW' ? 'Listening... (Kinyarwanda)' : 'Listening... (English)';
+          document.querySelector('.ai-voice-indicator__text').textContent = 'Listening...';
         }
       }
 
