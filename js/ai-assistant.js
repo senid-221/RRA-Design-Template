@@ -142,7 +142,7 @@
     renderQuickActions();
     renderEmojiPicker();
     renderGifPicker();
-    addBotMessage('Hello! I\'m your RRA AI Agent with advanced capabilities. I can help you with tax services, business registration, customs, social security, and more. I can also calculate taxes, check deadlines, analyze documents, and guide you through complex processes. What would you like to do today?', []);
+    addBotMessage('Muraho! Hello! I\'m your RRA AI Agent. I can help you with taxes, business registration, customs, and social security. You can type or use voice input - I speak both English and Kinyarwanda. What would you like to know today?', []);
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
@@ -294,6 +294,16 @@
     }
   }
 
+  function detectLanguage(text) {
+    var kinWords = ['muraho', 'murakoze', 'ndashaka', 'ubwoko', 'imitsi', 'sosiyete', 'kwandikisha', 'uburyo', 'iki', 'ikihe', 'n\'iki', 'wowe', 'jye', 'we', 'bose', 'rimwe', 'kabiri', 'gatatu', 'kane', 'gatanu'];
+    var lower = text.toLowerCase();
+    var kinScore = 0;
+    kinWords.forEach(function(word) {
+      if (lower.indexOf(word) !== -1) kinScore++;
+    });
+    return kinScore >= 1 ? 'rw-RW' : 'en-US';
+  }
+
   function startVoiceRecording() {
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -305,22 +315,40 @@
     recognition.lang = 'en-US';
     recognition.interimResults = true;
     recognition.continuous = true;
+    recognition.maxAlternatives = 1;
 
     recognition.onstart = function() {
       isRecording = true;
       recordStartTime = Date.now();
       document.getElementById('aiVoiceIndicator').classList.add('recording');
       document.getElementById('aiVoiceBtn').classList.add('active');
+      document.querySelector('.ai-voice-indicator__text').textContent = 'Listening... (English/Kinyarwanda)';
       updateRecordTimer();
     };
 
     recognition.onresult = function(event) {
       var transcript = '';
+      var isFinal = false;
       for (var i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
+        if (event.results[i].isFinal) isFinal = true;
       }
       inputEl.value = transcript;
       autoResize();
+
+      if (transcript.length > 10) {
+        var detectedLang = detectLanguage(transcript);
+        if (detectedLang !== recognition.lang) {
+          recognition.lang = detectedLang;
+          document.querySelector('.ai-voice-indicator__text').textContent = detectedLang === 'rw-RW' ? 'Listening... (Kinyarwanda)' : 'Listening... (English)';
+        }
+      }
+
+      if (isFinal && transcript.trim().length > 0) {
+        setTimeout(function() {
+          stopVoiceRecording();
+        }, 1500);
+      }
     };
 
     recognition.onerror = function(event) {
@@ -328,12 +356,19 @@
       stopVoiceRecording();
       if (event.error === 'not-allowed') {
         addBotMessage('Microphone access was denied. Please allow microphone access in your browser settings to use voice input.', []);
+      } else if (event.error === 'no-speech') {
+        document.querySelector('.ai-voice-indicator__text').textContent = 'No speech detected. Try again...';
+        setTimeout(function() {
+          if (isRecording) recognition.start();
+        }, 1000);
       }
     };
 
     recognition.onend = function() {
-      if (isRecording) {
-        stopVoiceRecording();
+      if (isRecording && inputEl.value.trim().length === 0) {
+        setTimeout(function() {
+          if (isRecording) recognition.start();
+        }, 500);
       }
     };
 
@@ -350,9 +385,12 @@
     document.getElementById('aiVoiceIndicator').classList.remove('recording');
     document.getElementById('aiVoiceBtn').classList.remove('active');
     document.getElementById('aiVoiceTime').textContent = '0:00';
+    document.querySelector('.ai-voice-indicator__text').textContent = 'Listening...';
 
     if (inputEl.value.trim()) {
-      handleSend();
+      setTimeout(function() {
+        handleSend();
+      }, 300);
     }
   }
 
@@ -579,44 +617,52 @@
   }
 
   function getSystemPrompt() {
-    return 'You are the RRA AI Agent, an intelligent assistant for Rwanda Revenue Authority. You have advanced capabilities including:\n\n' +
-      '- Tool calling: You can use tools to look up services, calculate taxes, check deadlines, and navigate users to pages\n' +
-      '- Multi-step reasoning: You can break down complex queries into steps\n' +
-      '- Context awareness: You remember the conversation history\n' +
-      '- File analysis: You can analyze attached documents and images\n\n' +
+    return 'You are the RRA AI Agent, a live voice conversation assistant for Rwanda Revenue Authority. You speak both English and Kinyarwanda fluently.\n\n' +
+      'CRITICAL RULES - YOU MUST FOLLOW THESE:\n' +
+      '1. STAY ON TOPIC: Only answer questions about RRA services (taxes, customs, business registration, social security, licensing). If asked about unrelated topics (weather, sports, politics, personal advice, etc.), politely redirect: "I can only help with RRA services. Would you like to know about taxes, business registration, or customs?"\n' +
+      '2. ASK CLARIFYING QUESTIONS: When a user\'s question is vague or incomplete, ask 1-2 specific questions to understand better. Examples:\n' +
+      '   - If user says "I want to register" → Ask: "Are you registering a business, for TIN, or for VAT?"\n' +
+      '   - If user says "How much tax?" → Ask: "What type of tax? VAT, PAYE, or income tax? And what is your income amount?"\n' +
+      '   - If user says "I need help" → Ask: "What do you need help with? Tax filing, business registration, or customs?"\n' +
+      '3. LANGUAGE DETECTION: Detect if user speaks English or Kinyarwanda and respond in the same language. Common Kinyarwanda phrases: "muraho" (hello), "murakoze" (thank you), "ndashaka" (I want), "ubwoko" (type), "imitsi" (taxes).\n' +
+      '4. VOICE CONVERSATION STYLE: Speak naturally and conversationally. Use short, clear sentences. Avoid long paragraphs. Ask follow-up questions to keep the conversation going.\n' +
+      '5. PROACTIVE HELP: After answering, suggest related actions. Example: After explaining VAT, ask "Would you like me to help you calculate your VAT or guide you to file your return?"\n\n' +
       'YOUR KNOWLEDGE BASE:\n' +
-      'Tax Services: VAT (18%), Income Tax (0-30%), PAYE, Excise Duty, Withholding Tax, EBM\n' +
-      'Customs: Import/Export, e-Single Window, Trade Portal, Duties Calculator\n' +
-      'Business Registration: Company registration, TIN, Trade License (via RDB)\n' +
-      'Social Security: Pension, Medical Insurance, Voluntary Contributions (via RSSB)\n' +
-      'Licensing: Various business licenses (via RURA)\n\n' +
+      'Tax Services: VAT (18%), Income Tax (0-30% graduated), PAYE (Pay As You Earn), Excise Duty, Withholding Tax (2-15%), EBM (Electronic Billing Machine)\n' +
+      'Customs: Import/Export declarations, e-Single Window, Trade Portal, Duties Calculator, Transit goods\n' +
+      'Business Registration: Company registration (sole trader, limited, cooperative), TIN registration, Trade License (via RDB)\n' +
+      'Social Security: Pension (3% employer + 3% employee), Medical Insurance (MMI), Voluntary Contributions (min 5,000 RWF/month) via RSSB\n' +
+      'Licensing: Various business licenses via RURA\n\n' +
       'OFFICIAL PLATFORMS:\n' +
-      '- MyRRA (tax filing): https://myrra.rra.gov.rw/\n' +
+      '- MyRRA (tax filing, returns, payments): https://myrra.rra.gov.rw/\n' +
       '- eTax (TIN registration): https://etax.rra.gov.rw/nidAssignedTIN/\n' +
-      '- e-Single Window (customs): https://sw.gov.rw/\n' +
-      '- Trade Portal: https://rwandatrade.rw/\n' +
+      '- e-Single Window (customs clearance): https://sw.gov.rw/\n' +
+      '- Trade Portal (trade info, duties calculator): https://rwandatrade.rw/\n' +
       '- RDB (business registration): https://urs.rdb.rw/auth/register\n' +
       '- RSSB (social security): https://www.rssb.gov.rw/\n' +
       '- RURA (licensing): https://www.rura.gov.rw/\n\n' +
       'AVAILABLE TOOLS:\n' +
-      '- lookup_tax_service: Get info about tax services\n' +
-      '- lookup_customs_service: Get info about customs services\n' +
-      '- lookup_business_registration: Get info about business registration\n' +
-      '- lookup_social_security: Get info about RSSB services\n' +
+      '- lookup_tax_service: Get detailed info about tax services\n' +
+      '- lookup_customs_service: Get customs and trade service info\n' +
+      '- lookup_business_registration: Get business registration steps\n' +
+      '- lookup_social_security: Get RSSB service info\n' +
       '- get_platform_url: Get official platform URLs\n' +
-      '- calculate_tax_estimate: Calculate VAT, PAYE, income tax, corporate tax\n' +
-      '- get_deadline_info: Get tax filing deadlines\n' +
+      '- calculate_tax_estimate: Calculate VAT (18%), PAYE (graduated 0-30%), income tax, corporate tax (30%)\n' +
+      '- get_deadline_info: Get tax filing deadlines (VAT/PAYE: 15th monthly, Income Tax: March 31 annual)\n' +
       '- navigate_to_page: Navigate to website pages\n\n' +
-      'BEHAVIOR RULES:\n' +
-      '1. Use tools when appropriate to provide accurate, up-to-date information\n' +
-      '2. Provide step-by-step guidance for complex processes\n' +
-      '3. Always include official platform URLs when relevant\n' +
-      '4. Be concise but comprehensive\n' +
-      '5. Respond in the same language the user uses (English or Kinyarwanda)\n' +
-      '6. Format responses clearly with numbered steps when appropriate\n' +
-      '7. Offer to help with related tasks after answering\n' +
-      '8. If unsure, guide users to contact RRA directly or visit the FAQ page\n' +
-      '9. When users attach files, acknowledge them and provide relevant guidance based on the file context';
+      'RESPONSE FORMAT:\n' +
+      '- Keep responses under 3-4 sentences for voice conversation\n' +
+      '- Use numbered steps only when explaining processes\n' +
+      '- Always end with a question or suggestion to continue the conversation\n' +
+      '- Include platform URLs when directing users to take action\n' +
+      '- If you don\'t know something, say: "I\'m not sure about that. Let me connect you with RRA directly or you can visit our FAQ page."\n\n' +
+      'EXAMPLES:\n' +
+      'User: "How do I pay VAT?"\n' +
+      'You: "To pay VAT, you need to file your return on MyRRA by the 15th of each month. VAT rate is 18%. Would you like me to help you calculate your VAT or guide you through the filing process?"\n\n' +
+      'User: "Ndashaka kwandikisha sosiyete"\n' +
+      'You: "Muraho! Kugirango wandikishe sosiyete, ujye kuri RDB website: urs.rdb.rw. Ukeneye documents ziki? Mbese ni sosiyete y\'ubwoko kihe - sole trader cyangwa limited company?"\n\n' +
+      'User: "What\'s the weather today?"\n' +
+      'You: "I can only help with RRA services like taxes, business registration, and customs. Would you like to know about any of these?"';
   }
 
   async function callAIAgent(userMessage) {
