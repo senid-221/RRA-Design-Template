@@ -575,7 +575,7 @@ app.post('/api/ai-chat', async (req, res) => {
   }
 });
 
-// Text-to-Speech endpoint using ElevenLabs
+// Text-to-Speech endpoint using OpenAI TTS
 app.post('/api/tts', async (req, res) => {
   try {
     const { text, language } = req.body;
@@ -584,62 +584,57 @@ app.post('/api/tts', async (req, res) => {
       return res.status(400).json({ error: 'Text is required' });
     }
 
-    if (!ELEVENLABS_API_KEY) {
-      console.error('ElevenLabs API key not configured');
-      return res.status(500).json({ error: 'ElevenLabs API key not configured' });
+    if (!OPENAI_API_KEY) {
+      console.error('OpenAI API key not configured');
+      return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
 
-    console.log('TTS request:', { textLength: text.length, language, apiKeySet: ELEVENLABS_API_KEY.substring(0, 8) + '...' });
+    console.log('TTS request:', { textLength: text.length, language });
 
-    // Use a stable voice ID (Rachel - female, clear voice)
-    const voiceId = '21m00Tcm4TlvDq8ikWAM';
+    // OpenAI TTS voices: alloy, echo, fable, onyx, nova, shimmer
+    // For Kinyarwanda/Bantu languages, 'nova' or 'shimmer' work well
+    let voice = 'nova';
+    let model = 'tts-1'; // tts-1 for standard quality, tts-1-hd for HD
 
-    // For Kinyarwanda, try to use Swahili model (Bantu language, closer pronunciation)
-    let modelId = 'eleven_multilingual_v2';
-    let stability = 0.5;
-    let similarityBoost = 0.75;
-
-    // If Kinyarwanda, adjust settings for better Bantu language pronunciation
+    // For Kinyarwanda, use HD model for better pronunciation
     if (language === 'rw-RW') {
-      stability = 0.6;
-      similarityBoost = 0.8;
+      voice = 'nova';
+      model = 'tts-1-hd';
     }
 
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
       headers: {
-        'Accept': 'audio/mpeg',
-        'Content-Type': 'application/json',
-        'xi-api-key': ELEVENLABS_API_KEY
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        text: text,
-        model_id: modelId,
-        voice_settings: {
-          stability: stability,
-          similarity_boost: similarityBoost,
-          style: 0.0,
-          use_speaker_boost: true
-        }
+        model: model,
+        input: text,
+        voice: voice,
+        response_format: 'mp3',
+        speed: 1.0
       })
     });
 
     if (!response.ok) {
       const error = await response.text();
-      console.error('ElevenLabs API error:', response.status, error);
-      return res.status(response.status).json({ error: `ElevenLabs API error: ${error}` });
+      console.error('OpenAI TTS API error:', response.status, error);
+      return res.status(response.status).json({ error: `OpenAI TTS API error: ${error}` });
     }
 
     // Convert audio to base64
     const audioBuffer = await response.arrayBuffer();
     const audioBase64 = Buffer.from(audioBuffer).toString('base64');
 
-    console.log('TTS success:', { audioSize: audioBase64.length });
+    console.log('TTS success:', { audioSize: audioBase64.length, voice, model });
 
     res.json({
       success: true,
       audioContent: audioBase64,
-      language: language || 'en-US'
+      language: language || 'en-US',
+      provider: 'openai',
+      voice: voice
     });
 
   } catch (error) {
@@ -1287,7 +1282,6 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`OpenAI API: ${OPENAI_API_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`Anthropic API: ${ANTHROPIC_API_KEY ? 'Configured' : 'Not configured'}`);
-  console.log(`ElevenLabs API: ${ELEVENLABS_API_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`SerpAPI: ${SERPAPI_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`Database: ${DATABASE_URL ? 'Configured' : 'Not configured'}`);
 });
