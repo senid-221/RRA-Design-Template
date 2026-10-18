@@ -95,18 +95,22 @@ app.post('/api/ai-chat', async (req, res) => {
 // Health check
 app.get('/api/health', async (req, res) => {
   let dbStatus = 'disconnected';
+  let dbError = null;
   try {
     await pool.query('SELECT 1');
     dbStatus = 'connected';
   } catch (error) {
     dbStatus = 'error';
+    dbError = error.message;
+    console.error('Database health check error:', error.message);
   }
   
   res.json({
     status: 'ok',
     openai: !!OPENAI_API_KEY,
     anthropic: !!ANTHROPIC_API_KEY,
-    database: dbStatus
+    database: dbStatus,
+    databaseError: dbError
   });
 });
 

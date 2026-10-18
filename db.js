@@ -18,6 +18,14 @@ pool.on('error', (err) => {
 // Initialize database tables
 const initDatabase = async () => {
   try {
+    console.log('Attempting to connect to database...');
+    console.log('Database URL:', process.env.DATABASE_URL ? 'Configured' : 'Not configured');
+    
+    // Test connection first
+    const client = await pool.connect();
+    console.log('✓ Database connection successful');
+    client.release();
+    
     // Create contacts table for FAQ contact form submissions
     await pool.query(`
       CREATE TABLE IF NOT EXISTS contacts (
@@ -46,7 +54,8 @@ const initDatabase = async () => {
 
     console.log('✓ Database tables initialized');
   } catch (error) {
-    console.error('✗ Error initializing database:', error);
+    console.error('✗ Error initializing database:', error.message);
+    console.error('Error details:', error);
   }
 };
 
