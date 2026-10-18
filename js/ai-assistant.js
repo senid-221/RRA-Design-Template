@@ -371,7 +371,7 @@
       var data = await response.json();
       console.log('TTS response data:', { success: data.success, hasAudio: !!data.audioContent, audioSize: data.audioContent ? data.audioContent.length : 0 });
 
-      if (data.success && data.audioContent) {
+      if (data.audioContent) {
         var audio = new Audio('data:audio/mp3;base64,' + data.audioContent);
         audio.onended = function() {
           console.log('Speech finished');
@@ -384,8 +384,8 @@
             }, 1000);
           }
         };
-        audio.onerror = function() {
-          console.error('Audio playback error');
+        audio.onerror = function(e) {
+          console.error('Audio playback error:', e);
           if (isLiveVoiceMode) {
             setTimeout(function() {
               if (isLiveVoiceMode && !isRecording) {
@@ -394,19 +394,19 @@
             }, 500);
           }
         };
-        await audio.play();
+        await audio.play().catch(function(playError) {
+          console.error('Audio play() failed:', playError);
+          throw playError;
+        });
         console.log('Audio playing');
+      } else {
+        console.error('No audio content in response');
+        throw new Error('No audio content received');
       }
 
     } catch (error) {
       console.error('TTS Error:', error);
       console.log('Falling back to browser speech synthesis');
-      
-      // Show notification to user
-      var errorMsg = error.message || '';
-      if (errorMsg.includes('402') || errorMsg.includes('payment_required')) {
-        console.warn('ElevenLabs requires paid plan. Using browser TTS instead.');
-      }
       
       // Fallback to browser speech synthesis
       if ('speechSynthesis' in window) {
