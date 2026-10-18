@@ -954,7 +954,7 @@
     sendBtn.disabled = true;
 
     conversationHistory.push({ role: 'user', content: text });
-    showThinking('Analyzing your request...');
+    showThinking('Thinking...');
 
     try {
       var responseData = await callAIAgent(text);
@@ -964,7 +964,7 @@
       var toolCalls = message.tool_calls;
 
       if (toolCalls && toolCalls.length > 0) {
-        showThinking('Using tools to gather information...');
+        showThinking('Searching for information...');
 
         var toolResults = [];
         for (var i = 0; i < toolCalls.length; i++) {
@@ -972,6 +972,7 @@
           var toolName = toolCall.function.name;
           var toolArgs = JSON.parse(toolCall.function.arguments);
 
+          showThinking('Gathering information...');
           var toolResult = await executeTool(toolName, toolArgs);
           toolResults.push({
             tool_call_id: toolCall.id,
@@ -1058,6 +1059,18 @@
     } catch (error) {
       console.error('AI Agent Error:', error);
       removeThinking();
+      
+      // Show user-friendly error message
+      var errorMsg = 'Sorry, I\'m having trouble connecting right now. ';
+      if (error.message && error.message.includes('timeout')) {
+        errorMsg += 'The request took too long. Please try again or rephrase your question.';
+      } else {
+        errorMsg += 'Please try again in a moment.';
+      }
+      
+      addBotMessage(errorMsg, []);
+      
+      // Still try local fallback as backup
       processQueryLocal(text);
     }
 
