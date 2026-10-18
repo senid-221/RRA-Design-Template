@@ -348,6 +348,7 @@
     var lang = detectLanguage(text);
 
     try {
+      console.log('Calling /api/tts with:', { textLength: text.length, language: lang });
       var response = await fetch('/api/tts', {
         method: 'POST',
         headers: {
@@ -359,11 +360,16 @@
         })
       });
 
+      console.log('TTS response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('TTS API failed: ' + response.status);
+        var errorData = await response.json().catch(function() { return { error: 'Unknown error' }; });
+        console.error('TTS API error:', errorData);
+        throw new Error('TTS API failed: ' + response.status + ' - ' + (errorData.error || 'Unknown'));
       }
 
       var data = await response.json();
+      console.log('TTS response data:', { success: data.success, hasAudio: !!data.audioContent, audioSize: data.audioContent ? data.audioContent.length : 0 });
 
       if (data.success && data.audioContent) {
         var audio = new Audio('data:audio/mp3;base64,' + data.audioContent);
@@ -389,10 +395,12 @@
           }
         };
         await audio.play();
+        console.log('Audio playing');
       }
 
     } catch (error) {
       console.error('TTS Error:', error);
+      console.log('Falling back to browser speech synthesis');
       // Fallback to browser speech synthesis
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();

@@ -585,8 +585,11 @@ app.post('/api/tts', async (req, res) => {
     }
 
     if (!ELEVENLABS_API_KEY) {
+      console.error('ElevenLabs API key not configured');
       return res.status(500).json({ error: 'ElevenLabs API key not configured' });
     }
+
+    console.log('TTS request:', { textLength: text.length, language, apiKeySet: ELEVENLABS_API_KEY.substring(0, 8) + '...' });
 
     // Use a stable voice ID (Rachel - female, clear voice)
     const voiceId = '21m00Tcm4TlvDq8ikWAM';
@@ -623,12 +626,15 @@ app.post('/api/tts', async (req, res) => {
 
     if (!response.ok) {
       const error = await response.text();
+      console.error('ElevenLabs API error:', response.status, error);
       return res.status(response.status).json({ error: `ElevenLabs API error: ${error}` });
     }
 
     // Convert audio to base64
     const audioBuffer = await response.arrayBuffer();
     const audioBase64 = Buffer.from(audioBuffer).toString('base64');
+
+    console.log('TTS success:', { audioSize: audioBase64.length });
 
     res.json({
       success: true,
