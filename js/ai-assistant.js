@@ -695,8 +695,8 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
     scrollToBottom();
 
-    // Text-to-speech only in live voice mode
-    if (isLiveVoiceMode) {
+    // Text-to-speech in live voice mode or when recording was active
+    if (isLiveVoiceMode || isRecording) {
       var plainText = html.replace(/<[^>]*>/g, '').replace(/https?:\/\/[^\s]+/g, 'link');
       speakText(plainText);
     }
