@@ -497,6 +497,186 @@ app.post('/api/newsletter', async (req, res) => {
   }
 });
 
+// Streaming AI Agent endpoint - real-time response streaming
+app.post('/api/ai-agent/stream', async (req, res) => {
+  try {
+    const { messages, provider, model } = req.body;
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+
+    if (provider === 'openai' || !provider) {
+      if (!OPENAI_API_KEY) {
+        res.write(`data: ${JSON.stringify({ error: 'OpenAI API key not configured' })}\n\n`);
+        return res.end();
+      }
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: model || 'gpt-4o',
+          messages: messages,
+          tools: AGENT_TOOLS,
+          tool_choice: 'auto',
+          max_tokens: 2000,
+          temperature: 0.7,
+          stream: true
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        res.write(`data: ${JSON.stringify({ error: `OpenAI API error: ${error}` })}\n\n`);
+        return res.end();
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+              return res.end();
+            }
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                res.write(`data: ${JSON.stringify({ content })}\n\n`);
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+
+    } else if (provider === 'anthropic') {
+      if (!ANTHROPIC_API_KEY) {
+        res.write(`data: ${JSON.stringify({ error: 'Anthropic API key not configured' })}\n\n`);
+        return res.end();
+      }
+
+      const systemMessage = messages.find(m => m.role === 'system');
+      const chatMessages = messages.filter(m => m.role !== 'system');
+
+      const anthropicTools = AGENT_TOOLS.map(t => ({
+        name: t.function.name,
+        description: t.function.description,
+        input_schema: t.function.parameters
+      }));
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: model || 'claude-sonnet-4-20250514',
+          max_tokens: 2000,
+          system: systemMessage ? systemMessage.content : '',
+          messages: chatMessages,
+          tools: anthropicTools,
+          stream: true
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        res.write(`data: ${JSON.stringify({ error: `Anthropic API error: ${error}` })}\n\n`);
+        return res.end();
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                res.write(`data: ${JSON.stringify({ content: parsed.delta.text })}\n\n`);
+              } else if (parsed.type === 'message_stop') {
+                res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+                return res.end();
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+
+    } else {
+      res.write(`data: ${JSON.stringify({ error: 'Invalid provider' })}\n\n`);
+      res.end();
+    }
+
+  } catch (error) {
+    console.error('Streaming AI Agent Error:', error);
+    res.write(`data: ${JSON.stringify({ error: 'Internal server error' })}\n\n`);
+    res.end();
+  }
+});
+
+// File upload endpoint for AI analysis
+app.post('/api/ai-agent/upload', async (req, res) => {
+  try {
+    const { file, type, name } = req.body;
+
+    if (!file || !type) {
+      return res.status(400).json({ error: 'File data and type are required' });
+    }
+
+    // For now, return file metadata - actual processing would use AI vision API
+    const fileInfo = {
+      name: name || 'uploaded-file',
+      type: type,
+      size: file.length,
+      uploaded_at: new Date().toISOString()
+    };
+
+    res.json({
+      success: true,
+      file: fileInfo,
+      message: 'File received. AI agent will analyze the content.'
+    });
+
+  } catch (error) {
+    console.error('File upload error:', error);
+    res.status(500).json({ error: 'Failed to process file upload' });
+  }
+});
+
 // Serve index.html for root route only
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

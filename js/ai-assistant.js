@@ -12,6 +12,45 @@
   var messagesEl, inputEl, sendBtn, fabBtn, chatEl, quickActionsEl;
   var conversationHistory = [];
   var isProcessing = false;
+  var attachedFiles = [];
+  var isRecording = false;
+  var recognition = null;
+  var recordStartTime = 0;
+  var recordTimer = null;
+  var emojiPickerOpen = false;
+  var gifPickerOpen = false;
+
+  var EMOJIS = [
+    '😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃',
+    '😉','😊','😇','🥰','','🤩','😘','😗','😚','😙',
+    '','😋','😛','😜','🤪','😝','','🤗','🤭','',
+    '🤔','','🤐','🤨','','😑','😶','','😏','😒',
+    '🙄','😬','🤥','','😔','😪','','😴','😷','',
+    '🤕','','🤮','','🥶','🥴','😵','🤯','🤠','',
+    '🥸','😎','🤓','🧐','😕','','😟','🙁','','😯',
+    '😲','','🥺','🥹','','😧','😨','😰','','😢',
+    '','😱','😖','😣','😞','😓','😩','😫','🥱','',
+    '😡','😠','','😈','👿','','☠️','💩','','👹',
+    '👍','👎','👊','','🤛','🤜','','🙌','🫶','👐',
+    '🤲','','🙏','✌️','','🫰','🤟','','👌','',
+    '👈','','👆','','☝️','🫵','','🤚','️','✋',
+    '❤️','🧡','💛','','💙','💜','','🤍','🤎','💔',
+    '❣️','','💞','💓','💗','💖','💘','💝','','☮️',
+    '','⭐','🌟','✨','💫','🎉','','🎈','🎁','🏆',
+    '','📎','📁','📂','📄','📋','📊','📈','📉','📝',
+    '✅','','⭕','🚫','','💢','💥','💬','👁️','🗨️'
+  ];
+
+  var GIF_PLACEHOLDERS = [
+    { url: 'https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif', query: 'thinking' },
+    { url: 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif', query: 'yes' },
+    { url: 'https://media.giphy.com/media/l3q2KddjinuxguI7m/giphy.gif', query: 'no' },
+    { url: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif', query: 'excited' },
+    { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif', query: 'celebrate' },
+    { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif', query: 'thumbs up' },
+    { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif', query: 'clap' },
+    { url: 'https://media.giphy.com/media/3o7abAHdYvZdBNnGZq/giphy.gif', query: 'wave' }
+  ];
 
   function init() {
     var fabHtml = '<button class="ai-fab" id="aiFab" aria-label="Open AI Agent">' +
@@ -30,13 +69,30 @@
       '</div>' +
       '<div class="ai-chat__messages" id="aiMessages"></div>' +
       '<div class="ai-chat__quick-actions" id="aiQuickActions"></div>' +
-      '<div class="ai-chat__input-area">' +
-        '<div class="ai-chat__input-wrap">' +
-          '<textarea class="ai-chat__input" id="aiInput" placeholder="Ask me anything about RRA services..." rows="1"></textarea>' +
-        '</div>' +
-        '<button class="ai-chat__send" id="aiSend" aria-label="Send"><i class="lucide" data-lucide="send" class="ai-chat__send-icon"></i></button>' +
+      '<div class="ai-voice-indicator" id="aiVoiceIndicator">' +
+        '<div class="ai-voice-indicator__dot"></div>' +
+        '<span class="ai-voice-indicator__text">Listening...</span>' +
+        '<span class="ai-voice-indicator__time" id="aiVoiceTime">0:00</span>' +
+        '<button class="ai-voice-indicator__cancel" id="aiVoiceCancel" aria-label="Cancel recording"><i class="lucide" data-lucide="x" style="width:14px;height:14px;"></i></button>' +
       '</div>' +
-    '</div>';
+      '<div class="ai-chat__attachment-bar" id="aiAttachmentBar"></div>' +
+      '<div class="ai-chat__input-area">' +
+        '<div class="ai-chat__input-row">' +
+          '<div class="ai-chat__input-tools">' +
+            '<button class="ai-chat__tool-btn" id="aiAttachBtn" aria-label="Attach file" title="Attach file"><i class="lucide" data-lucide="paperclip"></i></button>' +
+            '<button class="ai-chat__tool-btn" id="aiEmojiBtn" aria-label="Emoji" title="Emoji"><i class="lucide" data-lucide="smile"></i></button>' +
+            '<button class="ai-chat__tool-btn" id="aiGifBtn" aria-label="GIF" title="GIF"><i class="lucide" data-lucide="image"></i></button>' +
+            '<button class="ai-chat__tool-btn" id="aiVoiceBtn" aria-label="Voice input" title="Voice input"><i class="lucide" data-lucide="mic"></i></button>' +
+          '</div>' +
+          '<div class="ai-chat__input-wrap">' +
+            '<textarea class="ai-chat__input" id="aiInput" placeholder="Ask me anything about RRA services..." rows="1"></textarea>' +
+            '<div class="ai-emoji-picker" id="aiEmojiPicker"></div>' +
+            '<div class="ai-gif-picker" id="aiGifPicker"></div>' +
+          '</div>' +
+          '<button class="ai-chat__send" id="aiSend" aria-label="Send"><i class="lucide" data-lucide="arrow-up" class="ai-chat__send-icon"></i></button>' +
+        '</div>' +
+      '</div>' +
+      '<input type="file" id="aiFileInput" style="display:none" multiple accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xlsx">';
 
     document.body.insertAdjacentHTML('beforeend', fabHtml);
     document.body.insertAdjacentHTML('beforeend', chatHtml);
@@ -59,8 +115,34 @@
     });
     inputEl.addEventListener('input', autoResize);
 
+    document.getElementById('aiAttachBtn').addEventListener('click', function() {
+      document.getElementById('aiFileInput').click();
+    });
+    document.getElementById('aiFileInput').addEventListener('change', handleFileSelect);
+
+    document.getElementById('aiEmojiBtn').addEventListener('click', toggleEmojiPicker);
+    document.getElementById('aiGifBtn').addEventListener('click', toggleGifPicker);
+    document.getElementById('aiVoiceBtn').addEventListener('click', toggleVoiceRecording);
+    document.getElementById('aiVoiceCancel').addEventListener('click', stopVoiceRecording);
+
+    document.addEventListener('click', function(e) {
+      var emojiBtn = document.getElementById('aiEmojiBtn');
+      var emojiPicker = document.getElementById('aiEmojiPicker');
+      var gifBtn = document.getElementById('aiGifBtn');
+      var gifPicker = document.getElementById('aiGifPicker');
+
+      if (emojiPickerOpen && !emojiBtn.contains(e.target) && !emojiPicker.contains(e.target)) {
+        closeEmojiPicker();
+      }
+      if (gifPickerOpen && !gifBtn.contains(e.target) && !gifPicker.contains(e.target)) {
+        closeGifPicker();
+      }
+    });
+
     renderQuickActions();
-    addBotMessage('Hello! I\'m your RRA AI Agent with advanced capabilities. I can help you with tax services, business registration, customs, social security, and more. I can also calculate taxes, check deadlines, and guide you through complex processes. What would you like to do today?', []);
+    renderEmojiPicker();
+    renderGifPicker();
+    addBotMessage('Hello! I\'m your RRA AI Agent with advanced capabilities. I can help you with tax services, business registration, customs, social security, and more. I can also calculate taxes, check deadlines, analyze documents, and guide you through complex processes. What would you like to do today?', []);
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
@@ -108,14 +190,254 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
+  function renderEmojiPicker() {
+    var picker = document.getElementById('aiEmojiPicker');
+    var html = '<div class="ai-emoji-picker__search"><input type="text" placeholder="Search emoji..." id="emojiSearch"></div>';
+    html += '<div class="ai-emoji-picker__grid" id="emojiGrid">';
+    EMOJIS.forEach(function(emoji) {
+      html += '<button class="ai-emoji-picker__emoji" data-emoji="' + emoji + '">' + emoji + '</button>';
+    });
+    html += '</div>';
+    picker.innerHTML = html;
+
+    picker.querySelectorAll('.ai-emoji-picker__emoji').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var emoji = btn.getAttribute('data-emoji');
+        inputEl.value += emoji;
+        inputEl.focus();
+        closeEmojiPicker();
+      });
+    });
+
+    var searchInput = document.getElementById('emojiSearch');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        var query = searchInput.value.toLowerCase();
+        picker.querySelectorAll('.ai-emoji-picker__emoji').forEach(function(btn) {
+          btn.style.display = btn.getAttribute('data-emoji').includes(query) || !query ? '' : 'none';
+        });
+      });
+    }
+  }
+
+  function renderGifPicker() {
+    var picker = document.getElementById('aiGifPicker');
+    var html = '<div class="ai-gif-picker__search"><input type="text" placeholder="Search GIFs..." id="gifSearch"><button id="gifSearchBtn">Search</button></div>';
+    html += '<div class="ai-gif-picker__grid" id="gifGrid">';
+    GIF_PLACEHOLDERS.forEach(function(gif) {
+      html += '<div class="ai-gif-picker__gif" data-url="' + gif.url + '" data-query="' + gif.query + '">' +
+        '<img src="' + gif.url + '" alt="' + gif.query + '" loading="lazy"></div>';
+    });
+    html += '</div>';
+    picker.innerHTML = html;
+
+    picker.querySelectorAll('.ai-gif-picker__gif').forEach(function(el) {
+      el.addEventListener('click', function() {
+        var url = el.getAttribute('data-url');
+        var query = el.getAttribute('data-query');
+        inputEl.value += ' [GIF: ' + query + ']';
+        inputEl.focus();
+        closeGifPicker();
+      });
+    });
+
+    var searchBtn = document.getElementById('gifSearchBtn');
+    if (searchBtn) {
+      searchBtn.addEventListener('click', function() {
+        var query = document.getElementById('gifSearch').value.trim();
+        if (query) {
+          inputEl.value += ' [GIF: ' + query + ']';
+          inputEl.focus();
+          closeGifPicker();
+        }
+      });
+    }
+  }
+
+  function toggleEmojiPicker() {
+    emojiPickerOpen = !emojiPickerOpen;
+    document.getElementById('aiEmojiPicker').classList.toggle('open', emojiPickerOpen);
+    document.getElementById('aiEmojiBtn').classList.toggle('active', emojiPickerOpen);
+    if (gifPickerOpen) closeGifPicker();
+    if (emojiPickerOpen) {
+      document.getElementById('emojiSearch').focus();
+    }
+  }
+
+  function closeEmojiPicker() {
+    emojiPickerOpen = false;
+    document.getElementById('aiEmojiPicker').classList.remove('open');
+    document.getElementById('aiEmojiBtn').classList.remove('active');
+  }
+
+  function toggleGifPicker() {
+    gifPickerOpen = !gifPickerOpen;
+    document.getElementById('aiGifPicker').classList.toggle('open', gifPickerOpen);
+    document.getElementById('aiGifBtn').classList.toggle('active', gifPickerOpen);
+    if (emojiPickerOpen) closeEmojiPicker();
+    if (gifPickerOpen) {
+      document.getElementById('gifSearch').focus();
+    }
+  }
+
+  function closeGifPicker() {
+    gifPickerOpen = false;
+    document.getElementById('aiGifPicker').classList.remove('open');
+    document.getElementById('aiGifBtn').classList.remove('active');
+  }
+
+  function toggleVoiceRecording() {
+    if (isRecording) {
+      stopVoiceRecording();
+    } else {
+      startVoiceRecording();
+    }
+  }
+
+  function startVoiceRecording() {
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      addBotMessage('Voice input is not supported in your browser. Please use Chrome or Edge for voice features.', []);
+      return;
+    }
+
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+    recognition.continuous = true;
+
+    recognition.onstart = function() {
+      isRecording = true;
+      recordStartTime = Date.now();
+      document.getElementById('aiVoiceIndicator').classList.add('recording');
+      document.getElementById('aiVoiceBtn').classList.add('active');
+      updateRecordTimer();
+    };
+
+    recognition.onresult = function(event) {
+      var transcript = '';
+      for (var i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      inputEl.value = transcript;
+      autoResize();
+    };
+
+    recognition.onerror = function(event) {
+      console.error('Speech recognition error:', event.error);
+      stopVoiceRecording();
+      if (event.error === 'not-allowed') {
+        addBotMessage('Microphone access was denied. Please allow microphone access in your browser settings to use voice input.', []);
+      }
+    };
+
+    recognition.onend = function() {
+      if (isRecording) {
+        stopVoiceRecording();
+      }
+    };
+
+    recognition.start();
+  }
+
+  function stopVoiceRecording() {
+    if (recognition) {
+      recognition.stop();
+      recognition = null;
+    }
+    isRecording = false;
+    clearInterval(recordTimer);
+    document.getElementById('aiVoiceIndicator').classList.remove('recording');
+    document.getElementById('aiVoiceBtn').classList.remove('active');
+    document.getElementById('aiVoiceTime').textContent = '0:00';
+
+    if (inputEl.value.trim()) {
+      handleSend();
+    }
+  }
+
+  function updateRecordTimer() {
+    recordTimer = setInterval(function() {
+      var elapsed = Math.floor((Date.now() - recordStartTime) / 1000);
+      var minutes = Math.floor(elapsed / 60);
+      var seconds = elapsed % 60;
+      document.getElementById('aiVoiceTime').textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    }, 1000);
+  }
+
+  function handleFileSelect(event) {
+    var files = Array.from(event.target.files);
+    files.forEach(function(file) {
+      if (file.size > 10 * 1024 * 1024) {
+        addBotMessage('File "' + file.name + '" is too large. Maximum size is 10MB.', []);
+        return;
+      }
+      attachedFiles.push(file);
+    });
+    renderAttachmentBar();
+    event.target.value = '';
+  }
+
+  function renderAttachmentBar() {
+    var bar = document.getElementById('aiAttachmentBar');
+    if (attachedFiles.length === 0) {
+      bar.classList.remove('has-files');
+      bar.innerHTML = '';
+      return;
+    }
+
+    bar.classList.add('has-files');
+    var html = '';
+    attachedFiles.forEach(function(file, index) {
+      var icon = 'file';
+      if (file.type.startsWith('image/')) icon = 'image';
+      else if (file.type.includes('pdf')) icon = 'file-text';
+      else if (file.type.includes('word') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) icon = 'file-text';
+      else if (file.type.includes('sheet') || file.name.endsWith('.xlsx') || file.name.endsWith('.csv')) icon = 'table';
+
+      var size = file.size < 1024 * 1024
+        ? (file.size / 1024).toFixed(1) + ' KB'
+        : (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+      html += '<div class="ai-chat__attachment-chip">' +
+        '<i class="lucide" data-lucide="' + icon + '" style="width:14px;height:14px;color:var(--navy);"></i>' +
+        '<span class="ai-chat__attachment-chip-name">' + escapeHtml(file.name) + '</span>' +
+        '<span style="color:var(--text-muted);font-size:11px;">' + size + '</span>' +
+        '<button class="ai-chat__attachment-chip-remove" data-index="' + index + '" aria-label="Remove file"><i class="lucide" data-lucide="x" style="width:10px;height:10px;"></i></button>' +
+        '</div>';
+    });
+    bar.innerHTML = html;
+
+    bar.querySelectorAll('.ai-chat__attachment-chip-remove').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var idx = parseInt(btn.getAttribute('data-index'));
+        attachedFiles.splice(idx, 1);
+        renderAttachmentBar();
+      });
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
   function handleSend() {
     if (isProcessing) return;
     var text = inputEl.value.trim();
-    if (!text) return;
-    addUserMessage(text);
+    if (!text && attachedFiles.length === 0) return;
+
+    var messageText = text;
+    var files = attachedFiles.slice();
+
+    if (files.length > 0) {
+      var fileNames = files.map(function(f) { return f.name; }).join(', ');
+      messageText = (messageText ? messageText + '\n\n' : '') + '[Attached: ' + fileNames + ']';
+    }
+
+    addUserMessage(messageText, files);
     inputEl.value = '';
     inputEl.style.height = 'auto';
-    processQuery(text);
+    attachedFiles = [];
+    renderAttachmentBar();
+    processQuery(messageText, files);
   }
 
   function handleQuery(query) {
@@ -124,12 +446,38 @@
     processQuery(query);
   }
 
-  function addUserMessage(text) {
+  function addUserMessage(text, files) {
     var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    var fileHtml = '';
+
+    if (files && files.length > 0) {
+      fileHtml = '<div class="ai-message__attachment">';
+      fileHtml += '<i class="lucide ai-message__attachment-icon" data-lucide="paperclip"></i>';
+      fileHtml += '<span class="ai-message__attachment-name">' + files.map(function(f) { return escapeHtml(f.name); }).join(', ') + '</span>';
+      fileHtml += '</div>';
+
+      files.forEach(function(file) {
+        if (file.type.startsWith('image/')) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var previewEl = document.createElement('div');
+            previewEl.className = 'ai-message__attachment-preview';
+            previewEl.innerHTML = '<img src="' + e.target.result + '" alt="' + escapeHtml(file.name) + '">';
+            var lastMsg = messagesEl.lastElementChild;
+            if (lastMsg) {
+              var bubble = lastMsg.querySelector('.ai-message__bubble');
+              if (bubble) bubble.appendChild(previewEl);
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
     var html = '<div class="ai-message ai-message--user">' +
       '<div class="ai-message__avatar"><i class="lucide" data-lucide="user" class="ai-message__avatar-icon"></i></div>' +
       '<div class="ai-message__content">' +
-        '<div class="ai-message__bubble">' + escapeHtml(text) + '</div>' +
+        '<div class="ai-message__bubble">' + escapeHtml(text) + fileHtml + '</div>' +
         '<span class="ai-message__time">' + time + '</span>' +
       '</div>' +
     '</div>';
@@ -234,7 +582,8 @@
     return 'You are the RRA AI Agent, an intelligent assistant for Rwanda Revenue Authority. You have advanced capabilities including:\n\n' +
       '- Tool calling: You can use tools to look up services, calculate taxes, check deadlines, and navigate users to pages\n' +
       '- Multi-step reasoning: You can break down complex queries into steps\n' +
-      '- Context awareness: You remember the conversation history\n\n' +
+      '- Context awareness: You remember the conversation history\n' +
+      '- File analysis: You can analyze attached documents and images\n\n' +
       'YOUR KNOWLEDGE BASE:\n' +
       'Tax Services: VAT (18%), Income Tax (0-30%), PAYE, Excise Duty, Withholding Tax, EBM\n' +
       'Customs: Import/Export, e-Single Window, Trade Portal, Duties Calculator\n' +
@@ -266,12 +615,13 @@
       '5. Respond in the same language the user uses (English or Kinyarwanda)\n' +
       '6. Format responses clearly with numbered steps when appropriate\n' +
       '7. Offer to help with related tasks after answering\n' +
-      '8. If unsure, guide users to contact RRA directly or visit the FAQ page';
+      '8. If unsure, guide users to contact RRA directly or visit the FAQ page\n' +
+      '9. When users attach files, acknowledge them and provide relevant guidance based on the file context';
   }
 
   async function callAIAgent(userMessage) {
     var messages = [{ role: 'system', content: getSystemPrompt() }];
-    
+
     conversationHistory.forEach(function(msg) {
       messages.push({ role: msg.role, content: msg.content });
     });
@@ -389,11 +739,11 @@
     return actions;
   }
 
-  async function processQuery(text) {
+  async function processQuery(text, files) {
     if (isProcessing) return;
     isProcessing = true;
     sendBtn.disabled = true;
-    
+
     conversationHistory.push({ role: 'user', content: text });
     showThinking('Analyzing your request...');
 
@@ -406,13 +756,13 @@
 
       if (toolCalls && toolCalls.length > 0) {
         showThinking('Using tools to gather information...');
-        
+
         var toolResults = [];
         for (var i = 0; i < toolCalls.length; i++) {
           var toolCall = toolCalls[i];
           var toolName = toolCall.function.name;
           var toolArgs = JSON.parse(toolCall.function.arguments);
-          
+
           var toolResult = await executeTool(toolName, toolArgs);
           toolResults.push({
             tool_call_id: toolCall.id,
@@ -521,7 +871,7 @@
         '2. Go to <a href="https://myrra.rra.gov.rw/" target="_blank" style="color:var(--navy);font-weight:600;">MyRRA</a> for tax services\n' +
         '3. Contact RRA directly for assistance\n\n' +
         'Would you like me to help you with something specific?';
-      
+
       addBotMessage(fallback, [
         { text: 'Go to MyRRA', action: function() { window.open('https://myrra.rra.gov.rw/', '_blank', 'noopener'); }, primary: true },
         { text: 'View FAQ', action: function() { window.location.href = 'faq.html'; } }
