@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB Template Shop — Digital Products & Solutions</title>
+  <meta name="description" content="Premium web templates, coding projects, AI models, AI agents, full web designs, frontend systems, backend solutions and modern web applications.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/css/lucide.min.css" integrity="sha512-1KHR/wEeICnMqFCkBmzXGCBmJnDOIRJGfCpEMBM+VBEAx0VfBaJxMfCkFwGEMfTfQGEQgEjBBEMDBmILQLGdQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .shop-hero {
+      padding: 100px 0 80px;
+      background: linear-gradient(135deg, #123D70 0%, #1a3a5c 50%, #2563eb 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .shop-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(244,197,66,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .shop-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .shop-hero__inner {
+      max-width: 800px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin: 0 auto;
+    }
+    .shop-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: rgba(244,197,66,0.15);
+      border: 1px solid rgba(244,197,66,0.3);
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #f4c542;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .shop-hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .shop-hero__subtitle {
+      font-size: 20px;
+      opacity: 0.95;
+      line-height: 1.6;
+      margin-bottom: 32px;
+      color: rgba(255,255,255,0.9);
+    }
+    .shop-hero__stats {
+      display: flex;
+      gap: 48px;
+      justify-content: center;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .shop-hero__stat {
+      text-align: center;
+    }
+    .shop-hero__stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: #f4c542;
+      display: block;
+    }
+    .shop-hero__stat-label {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+    .shop-categories {
+      padding: 80px 0;
+      background: #f8f9fa;
+    }
+    .shop-categories__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .category-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      border-color: #2563eb;
+    }
+    .category-card__icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #2563eb 0%, #123D70 100%);
+      color: #fff;
+    }
+    .category-card__title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #123D70;
+    }
+    .category-card__desc {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .category-card__count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #f0f4ff;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2563eb;
+    }
+    .featured-products {
+      padding: 80px 0;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-header h2 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #123D70;
+    }
+    .section-header p {
+      font-size: 18px;
+      color: #666;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+    .product-card__image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      color: rgba(255,255,255,0.3);
+    }
+    .product-card__body {
+      padding: 24px;
+    }
+    .product-card__category {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #f0f4ff;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #2563eb;
+      margin-bottom: 12px;
+    }
+    .product-card__title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #123D70;
+    }
+    .product-card__desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .product-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .product-card__price {
+      font-size: 24px;
+      font-weight: 800;
+      color: #123D70;
+    }
+    .product-card__btn {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+    .product-card__btn:hover {
+      background: #123D70;
+    }
+    .cta-section {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #123D70 0%, #2563eb 100%);
+      color: #fff;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-size: 16px;
+    }
+    .cta-btn--primary {
+      background: #f4c542;
+      color: #123D70;
+    }
+    .cta-btn--primary:hover {
+      background: #fff;
+    }
+    .cta-btn--secondary {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .cta-btn--secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    @media (max-width: 768px) {
+      .shop-hero h1 {
+        font-size: 36px;
+      }
+      .shop-hero__subtitle {
+        font-size: 16px;
+      }
+      .shop-hero__stats {
+        gap: 24px;
+      }
+      .shop-categories__grid {
+        grid-template-columns: 1fr;
+      }
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header" role="banner">
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="container top-bar__inner">
+        <div class="top-bar__left">
+          <span class="top-bar__label">Government of Rwanda</span>
+        </div>
+        <div class="top-bar__right">
+          <button class="a11y-btn" id="contrastBtn" aria-label="Toggle high contrast" title="High contrast">
+            <i class="lucide" data-lucide="contrast"></i>
+          </button>
+          <button class="a11y-btn" id="darkModeBtn" aria-label="Toggle dark mode" title="Dark mode">
+            <i class="lucide" data-lucide="moon"></i>
+          </button>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" data-lang="rw">KY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main nav -->
+    <div class="header-main">
+      <div class="container header-main__inner">
+        <a href="/" class="logo" aria-label="Rwanda Revenue Authority — Home">
+          <div class="logo__mark">
+            <img src="images/rra-logo.png" alt="Rwanda Revenue Authority Logo" height="40" style="width:auto;">
+          </div>
+        </a>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">
+                Home <i class="lucide" data-lucide="chevron-down"></i>
+              </button>
+              <div class="dropdown">
+                <a href="news.html#announcements">Announcements</a>
+                <a href="news.html#deadlines">Deadlines</a>
+                <a href="news.html">News & Updates</a>
+              </div>
+            </li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">
+                Tax Services <i class="lucide" data-lucide="chevron-down"></i>
+              </button>
+              <div class="dropdown dropdown--mega">
+                <div class="dropdown__section">
+                  <h4>Domestic Taxes</h4>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">Income Tax</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">VAT</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">PAYE</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">Excise Duty</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">Withholding Tax</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Customs & Trade</h4>
+                  <a href="https://sw.gov.rw/" target="_blank" rel="noopener">Customs Services</a>
+                  <a href="https://sw.gov.rw/" target="_blank" rel="noopener">e-Single Window</a>
+                  <a href="https://rwandatrade.rw/" target="_blank" rel="noopener">Trade Portal</a>
+                  <a href="https://rwandatrade.rw/" target="_blank" rel="noopener">Import Duties Calculator</a>
+                </div>
+                <div class="dropdown__section">
+                  <h4>Other Services</h4>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">EBM Services</a>
+                  <a href="https://nonfiscal.rra.gov.rw/" target="_blank" rel="noopener">Non-Fiscal Revenue</a>
+                  <a href="https://urs.rdb.rw/auth/register" target="_blank" rel="noopener">Business Registration</a>
+                  <a href="https://myrra.rra.gov.rw/" target="_blank" rel="noopener">Motor Vehicle Tax</a>
+                  <a href="https://www.rra.gov.rw/en/tcc" target="_blank" rel="noopener">Tax Clearance Certificate</a>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item has-dropdown">
+              <button class="nav-link" aria-expanded="false">
+                Resources <i class="lucide" data-lucide="chevron-down"></i>
+              </button>
+              <div class="dropdown">
+                <a href="https://www.rra.gov.rw/en/publications" target="_blank" rel="noopener">Publications</a>
+                <a href="https://www.rra.gov.rw/en/tax-laws" target="_blank" rel="noopener">Tax Laws</a>
+                <a href="https://www.rra.gov.rw/en/forms" target="_blank" rel="noopener">Forms</a>
+                <a href="https://www.rra.gov.rw/en/guides" target="_blank" rel="noopener">Guides & Handbooks</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="faq.html" class="nav-link">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a href="learning.html" class="nav-link" style="font-weight: 600;">
+                <i class="lucide" data-lucide="graduation-cap" style="width:16px;height:16px;vertical-align:-2px;margin-right:2px;"></i> Start Learning
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link" style="font-weight: 600; color: #2563eb;">
+                <i class="lucide" data-lucide="shopping-bag" style="width:16px;height:16px;vertical-align:-2px;margin-right:2px;"></i> WEB Template Shop
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.rra.gov.rw/en/contact-us" class="nav-link" target="_blank" rel="noopener">Contact</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button class="search-toggle" id="searchToggle" aria-label="Open search" aria-expanded="false">
+            <i class="lucide" data-lucide="search"></i>
+          </button>
+          <a href="https://myrra.rra.gov.rw/" class="btn btn--primary btn--sm" target="_blank" rel="noopener">
+            <i class="lucide" data-lucide="user-circle"></i> MyRRA
+          </a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu" aria-expanded="false">
+            <i class="lucide" data-lucide="menu"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="shop-hero">
+      <div class="container">
+        <div class="shop-hero__inner">
+          <div class="shop-hero__badge">
+            <i class="lucide" data-lucide="sparkles"></i>
+            Premium Digital Products
+          </div>
+          <h1>WEB Template Shop</h1>
+          <p class="shop-hero__subtitle">
+            Your one-stop marketplace for premium web templates, coding projects, AI solutions, and modern web applications. Build faster, launch smarter.
+          </p>
+          <div class="shop-hero__stats">
+            <div class="shop-hero__stat">
+              <span class="shop-hero__stat-value">150+</span>
+              <span class="shop-hero__stat-label">Web Templates</span>
+            </div>
+            <div class="shop-hero__stat">
+              <span class="shop-hero__stat-value">80+</span>
+              <span class="shop-hero__stat-label">Coding Projects</span>
+            </div>
+            <div class="shop-hero__stat">
+              <span class="shop-hero__stat-value">50+</span>
+              <span class="shop-hero__stat-label">AI Solutions</span>
+            </div>
+            <div class="shop-hero__stat">
+              <span class="shop-hero__stat-value">24/7</span>
+              <span class="shop-hero__stat-label">Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="shop-categories">
+      <div class="container">
+        <div class="section-header">
+          <h2>Browse by Category</h2>
+          <p>Explore our comprehensive collection of digital products and solutions</p>
+        </div>
+        <div class="shop-categories__grid">
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="layout"></i>
+            </div>
+            <h3 class="category-card__title">Web Templates</h3>
+            <p class="category-card__desc">Professional, responsive HTML/CSS templates for websites, landing pages, portfolios, and business sites.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              150+ Templates
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="code"></i>
+            </div>
+            <h3 class="category-card__title">Coding Projects</h3>
+            <p class="category-card__desc">Complete source code projects in various languages: JavaScript, Python, PHP, Node.js, React, and more.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              80+ Projects
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="brain"></i>
+            </div>
+            <h3 class="category-card__title">AI Models</h3>
+            <p class="category-card__desc">Pre-trained AI models for machine learning, natural language processing, computer vision, and data analysis.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              30+ Models
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="bot"></i>
+            </div>
+            <h3 class="category-card__title">AI Agents</h3>
+            <p class="category-card__desc">Intelligent AI agents and chatbots for customer service, automation, task management, and business workflows.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              20+ Agents
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="palette"></i>
+            </div>
+            <h3 class="category-card__title">Full Web Designs</h3>
+            <p class="category-card__desc">Complete website design packages including UI/UX design, wireframes, prototypes, and design systems.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              45+ Designs
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="monitor"></i>
+            </div>
+            <h3 class="category-card__title">Frontend Systems</h3>
+            <p class="category-card__desc">Modern frontend architectures with React, Vue, Angular, and Next.js. Component libraries and design systems.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              35+ Systems
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="server"></i>
+            </div>
+            <h3 class="category-card__title">Backend Solutions</h3>
+            <p class="category-card__desc">Robust backend APIs, database schemas, authentication systems, and server architectures in Node.js, Python, PHP.</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              40+ Solutions
+            </span>
+          </div>
+
+          <div class="category-card">
+            <div class="category-card__icon">
+              <i class="lucide" data-lucide="smartphone"></i>
+            </div>
+            <h3 class="category-card__title">Modern Web Apps</h3>
+            <p class="category-card__desc">Full-stack web applications, SaaS platforms, e-commerce solutions, and progressive web apps (PWAs).</p>
+            <span class="category-card__count">
+              <i class="lucide" data-lucide="package"></i>
+              25+ Apps
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+      <div class="container">
+        <div class="section-header">
+          <h2>Featured Products</h2>
+          <p>Hand-picked premium products to accelerate your development</p>
+        </div>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-card__image">
+              <i class="lucide" data-lucide="layout"></i>
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__category">Web Template</span>
+              <h3 class="product-card__title">Corporate Business Template</h3>
+              <p class="product-card__desc">Professional multi-page template with modern design, responsive layout, and all essential business sections.</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">$49</span>
+                <button class="product-card__btn">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card__image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+              <i class="lucide" data-lucide="shopping-cart"></i>
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__category">Full Web App</span>
+              <h3 class="product-card__title">E-Commerce Platform</h3>
+              <p class="product-card__desc">Complete e-commerce solution with product management, cart, checkout, payment integration, and admin dashboard.</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">$199</span>
+                <button class="product-card__btn">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card__image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+              <i class="lucide" data-lucide="bot"></i>
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__category">AI Agent</span>
+              <h3 class="product-card__title">Customer Service AI Bot</h3>
+              <p class="product-card__desc">Intelligent chatbot with NLP capabilities, multi-language support, and seamless integration with popular platforms.</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">$149</span>
+                <button class="product-card__btn">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card__image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+              <i class="lucide" data-lucide="dashboard"></i>
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__category">Frontend System</span>
+              <h3 class="product-card__title">Admin Dashboard Pro</h3>
+              <p class="product-card__desc">Modern React-based admin dashboard with charts, tables, forms, and 50+ UI components. Fully customizable.</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">$79</span>
+                <button class="product-card__btn">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card__image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+              <i class="lucide" data-lucide="server"></i>
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__category">Backend Solution</span>
+              <h3 class="product-card__title">REST API Boilerplate</h3>
+              <p class="product-card__desc">Production-ready Node.js API with authentication, database integration, validation, and comprehensive documentation.</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">$89</span>
+                <button class="product-card__btn">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-card__image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+              <i class="lucide" data-lucide="brain"></i>
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__category">AI Model</span>
+              <h3 class="product-card__title">Image Classification Model</h3>
+              <p class="product-card__desc">Pre-trained deep learning model for image recognition with 95% accuracy. Includes training code and dataset.</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">$129</span>
+                <button class="product-card__btn">View Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to Build Something Amazing?</h2>
+        <p>Browse our complete collection or contact us for custom development solutions tailored to your needs.</p>
+        <div class="cta-buttons">
+          <a href="#featured" class="cta-btn cta-btn--primary">Browse All Products</a>
+          <a href="faq.html" class="cta-btn cta-btn--secondary">Request Custom Solution</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>About RRA</h4>
+          <p>Rwanda Revenue Authority — Efficient, transparent, and taxpayer-friendly revenue collection.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="learning.html">Start Learning</a></li>
+            <li><a href="shop.html">WEB Template Shop</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="https://myrra.rra.gov.rw/" target="_blank">MyRRA Portal</a></li>
+            <li><a href="https://sw.gov.rw/" target="_blank">e-Single Window</a></li>
+            <li><a href="https://urs.rdb.rw/auth/register" target="_blank">Business Registration</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <div class="social-links">
+            <a href="https://twitter.com/RRA_Rwanda" target="_blank" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/RwandaRevenueAuthority" target="_blank" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/rwanda-revenue-authority" target="_blank" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rwanda Revenue Authority. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
