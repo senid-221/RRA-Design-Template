@@ -344,59 +344,78 @@
     return kinScore >= 1 ? 'rw-RW' : 'en-US';
   }
 
-  function speakText(text) {
-    if (!('speechSynthesis' in window)) {
-      if (isLiveVoiceMode) {
-        setTimeout(function() {
-          startVoiceRecording();
-        }, 500);
-      }
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-
+  async function speakText(text) {
     var lang = detectLanguage(text);
-    var utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
 
-    var voices = window.speechSynthesis.getVoices();
-    var matchingVoice = voices.find(function(v) {
-      return v.lang.startsWith(lang.substring(0, 2));
-    });
+    try {
+      var response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text: text,
+          language: lang
+        })
+      });
 
-    if (matchingVoice) {
-      utterance.voice = matchingVoice;
-    }
-
-    currentUtterance = utterance;
-
-    utterance.onend = function() {
-      currentUtterance = null;
-      if (isLiveVoiceMode) {
-        setTimeout(function() {
-          if (isLiveVoiceMode && !isRecording) {
-            startVoiceRecording();
-          }
-        }, 800);
+      if (!response.ok) {
+        throw new Error('TTS API failed: ' + response.status);
       }
-    };
 
-    utterance.onerror = function() {
-      currentUtterance = null;
-      if (isLiveVoiceMode) {
+      var data = await response.json();
+
+      if (data.success && data.audioContent) {
+        var audio = new Audio('data:audio/mp3;base64,' + data.audioContent);
+        audio.onended = function() {
+          console.log('Speech finished');
+          if (isLiveVoiceMode) {
+            setTimeout(function() {
+              if (isLiveVoiceMode && !isRecording) {
+                console.log('Restarting voice recording...');
+                startVoiceRecording();
+              }
+            }, 1000);
+          }
+        };
+        audio.onerror = function() {
+          console.error('Audio playback error');
+          if (isLiveVoiceMode) {
+            setTimeout(function() {
+              if (isLiveVoiceMode && !isRecording) {
+                startVoiceRecording();
+              }
+            }, 500);
+          }
+        };
+        await audio.play();
+      }
+
+    } catch (error) {
+      console.error('TTS Error:', error);
+      // Fallback to browser speech synthesis
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        var utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang === 'rw-RW' ? 'en-US' : lang;
+        utterance.onend = function() {
+          if (isLiveVoiceMode) {
+            setTimeout(function() {
+              if (isLiveVoiceMode && !isRecording) {
+                startVoiceRecording();
+              }
+            }, 1000);
+          }
+        };
+        window.speechSynthesis.speak(utterance);
+      } else if (isLiveVoiceMode) {
         setTimeout(function() {
           if (isLiveVoiceMode && !isRecording) {
             startVoiceRecording();
           }
         }, 500);
       }
-    };
-
-    window.speechSynthesis.speak(utterance);
+    }
   }
 
   function startVoiceRecording() {
@@ -676,9 +695,11 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
     scrollToBottom();
 
-    // Text-to-speech for voice conversation
-    var plainText = html.replace(/<[^>]*>/g, '').replace(/https?:\/\/[^\s]+/g, 'link');
-    speakText(plainText);
+    // Text-to-speech only in live voice mode
+    if (isLiveVoiceMode) {
+      var plainText = html.replace(/<[^>]*>/g, '').replace(/https?:\/\/[^\s]+/g, 'link');
+      speakText(plainText);
+    }
   }
 
   function showThinking(text) {

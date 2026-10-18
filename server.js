@@ -15,7 +15,9 @@ app.use(express.static(path.join(__dirname, '.')));
 // Environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 const SERPAPI_KEY = process.env.SERPAPI_KEY || '';
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
 const DATABASE_URL = process.env.DATABASE_URL || '';
 
 // Initialize database on startup (non-blocking)
@@ -274,6 +276,35 @@ app.post('/api/ai-agent', async (req, res) => {
       if (!response.ok) {
         const error = await response.text();
         return res.status(response.status).json({ error: `Anthropic API error: ${error}` });
+      }
+
+      const data = await response.json();
+      res.json(data);
+
+    } else if (provider === 'deepseek') {
+      if (!DEEPSEEK_API_KEY) {
+        return res.status(500).json({ error: 'DeepSeek API key not configured' });
+      }
+
+      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: model || 'deepseek-chat',
+          messages: messages,
+          tools: AGENT_TOOLS,
+          tool_choice: 'auto',
+          max_tokens: 2000,
+          temperature: 0.7
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        return res.status(response.status).json({ error: `DeepSeek API error: ${error}` });
       }
 
       const data = await response.json();
@@ -541,6 +572,73 @@ app.post('/api/ai-chat', async (req, res) => {
   } catch (error) {
     console.error('AI Chat Error:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Text-to-Speech endpoint using ElevenLabs
+app.post('/api/tts', async (req, res) => {
+  try {
+    const { text, language } = req.body;
+
+    if (!text) {
+      return res.status(400).json({ error: 'Text is required' });
+    }
+
+    if (!ELEVENLABS_API_KEY) {
+      return res.status(500).json({ error: 'ElevenLabs API key not configured' });
+    }
+
+    // Use a stable voice ID (Rachel - female, clear voice)
+    const voiceId = '21m00Tcm4TlvDq8ikWAM';
+
+    // For Kinyarwanda, try to use Swahili model (Bantu language, closer pronunciation)
+    let modelId = 'eleven_multilingual_v2';
+    let stability = 0.5;
+    let similarityBoost = 0.75;
+
+    // If Kinyarwanda, adjust settings for better Bantu language pronunciation
+    if (language === 'rw-RW') {
+      stability = 0.6;
+      similarityBoost = 0.8;
+    }
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'audio/mpeg',
+        'Content-Type': 'application/json',
+        'xi-api-key': ELEVENLABS_API_KEY
+      },
+      body: JSON.stringify({
+        text: text,
+        model_id: modelId,
+        voice_settings: {
+          stability: stability,
+          similarity_boost: similarityBoost,
+          style: 0.0,
+          use_speaker_boost: true
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      return res.status(response.status).json({ error: `ElevenLabs API error: ${error}` });
+    }
+
+    // Convert audio to base64
+    const audioBuffer = await response.arrayBuffer();
+    const audioBase64 = Buffer.from(audioBuffer).toString('base64');
+
+    res.json({
+      success: true,
+      audioContent: audioBase64,
+      language: language || 'en-US'
+    });
+
+  } catch (error) {
+    console.error('TTS Error:', error);
+    res.status(500).json({ error: 'Text-to-speech failed' });
   }
 });
 
