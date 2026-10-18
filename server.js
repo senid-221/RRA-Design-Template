@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const { pool, initDatabase } = require('./db');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, '.')));
 // Environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+const SERPAPI_KEY = process.env.SERPAPI_KEY || '';
 const DATABASE_URL = process.env.DATABASE_URL || '';
 
 // Initialize database on startup (non-blocking)
@@ -89,9 +91,23 @@ const AGENT_TOOLS = [
       parameters: {
         type: 'object',
         properties: {
-          platform: { type: 'string', description: 'Platform name (myrra, etax, single_window, trade_portal, rdb, rssb, rura, non_fiscal)' }
+          platform: { type: 'string', description: 'Platform name (myrra, etax, rlgms, single_window, trade_portal, rdb, rssb, rura, non_fiscal, data_science)' }
         },
         required: ['platform']
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'get_login_portal',
+      description: 'Get the correct login portal for a specific RRA service',
+      parameters: {
+        type: 'object',
+        properties: {
+          service: { type: 'string', description: 'Service type (tax_filing, tin_registration, ebm_purchase_code, local_tax, vat_reward, staff)' }
+        },
+        required: ['service']
       }
     }
   },
@@ -137,18 +153,47 @@ const AGENT_TOOLS = [
         required: ['page']
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'web_search',
+      description: 'Search the web for current information about RRA services, tax laws, deadlines, or any Rwanda tax-related topics. Use this to get the most up-to-date information before answering.',
+      parameters: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Search query (e.g., "RRA VAT filing deadline 2026", "Rwanda tax rates", "EBM requirements")' },
+          max_results: { type: 'number', description: 'Maximum number of results to return (default: 5)' }
+        },
+        required: ['query']
+      }
+    }
   }
 ];
 
 const PLATFORM_URLS = {
   myrra: 'https://myrra.rra.gov.rw/',
-  etax: 'https://etax.rra.gov.rw/nidAssignedTIN/',
+  myrra_login: 'https://myrra.rra.gov.rw/login',
+  myrra_tin_login: 'https://myrra.rra.gov.rw/tin-login',
+  myrra_vat_reward: 'https://myrra.rra.gov.rw/vat-reward',
+  myrra_create_account: 'https://myrra.rra.gov.rw/register',
+  myrra_purchase_code: 'https://myrra.rra.gov.rw/purchase-code',
+  etax: 'https://etax.rra.gov.rw/',
+  etax_login: 'https://etax.rra.gov.rw/taxPayerLogin',
+  tin_registration: 'https://myrra.rra.gov.rw/register',
+  rlgms: 'https://rlgms.rra.gov.rw/',
+  rlgms_login: 'https://rlgms.rra.gov.rw/login',
   single_window: 'https://sw.gov.rw/',
   trade_portal: 'https://rwandatrade.rw/',
   rdb: 'https://urs.rdb.rw/auth/register',
-  rssb: 'https://www.rssb.gov.rw/',
+  rdb_login: 'https://urs.rdb.rw/',
+  rssb: 'https://www.rssb.rw/',
+  rssb_member: 'https://imisanzu.rssb.rw/',
   rura: 'https://www.rura.gov.rw/',
-  non_fiscal: 'https://nonfiscal.rra.gov.rw/'
+  non_fiscal: 'https://nonfiscal.rra.gov.rw/',
+  ebm: 'https://www.rra.gov.rw/en/ebm-electronic-billing-machine',
+  data_science: 'https://data.rra.gov.rw/',
+  staff_portal: 'https://staff.rra.gov.rw/'
 };
 
 const PAGE_URLS = {
@@ -245,7 +290,7 @@ app.post('/api/ai-agent', async (req, res) => {
 });
 
 // Tool execution endpoint - executes agent tools server-side
-app.post('/api/ai-agent/execute-tool', (req, res) => {
+app.post('/api/ai-agent/execute-tool', async (req, res) => {
   try {
     const { tool, args } = req.body;
     let result = {};
@@ -253,49 +298,62 @@ app.post('/api/ai-agent/execute-tool', (req, res) => {
     switch (tool) {
       case 'lookup_tax_service':
         const taxServices = {
-          vat: { name: 'Value Added Tax (VAT)', rate: '18%', deadline: '15th of every month', platform: 'MyRRA', url: PLATFORM_URLS.myrra, steps: ['Log in to MyRRA', 'Go to "Returns"', 'Select VAT return period', 'Fill in sales and purchases', 'Submit and pay'] },
-          income_tax: { name: 'Income Tax (PAYE)', rate: '0%-30% graduated', deadline: '15th of every month', platform: 'MyRRA', url: PLATFORM_URLS.myrra, steps: ['Log in to MyRRA', 'Go to "Returns"', 'Select PAYE return', 'Enter employee details', 'Submit and pay'] },
-          paye: { name: 'PAYE (Pay As You Earn)', rate: '0%-30% graduated', deadline: '15th of every month', platform: 'MyRRA', url: PLATFORM_URLS.myrra, steps: ['Log in to MyRRA', 'Navigate to PAYE section', 'Enter employee salaries', 'Calculate tax', 'Submit return'] },
-          excise: { name: 'Excise Duty', rate: 'Varies by product', deadline: '15th of every month', platform: 'MyRRA', url: PLATFORM_URLS.myrra, steps: ['Log in to MyRRA', 'Go to Excise section', 'Declare excisable goods', 'Calculate duty', 'Submit and pay'] },
-          wht: { name: 'Withholding Tax', rate: '2%-15%', deadline: '15th of every month', platform: 'MyRRA', url: PLATFORM_URLS.myrra, steps: ['Log in to MyRRA', 'Go to WHT section', 'Declare withheld amounts', 'Submit return'] },
-          ebm: { name: 'Electronic Billing Machine', rate: 'N/A', deadline: 'N/A', platform: 'MyRRA', url: PLATFORM_URLS.myrra, steps: ['Register for EBM on MyRRA', 'Download EBM app or use web', 'Issue receipts for every transaction', 'Sync data regularly', 'File monthly returns'] }
+          vat: { name: 'Value Added Tax (VAT)', rate: '18%', deadline: '15th of every month', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login, steps: ['Log in to E-Tax Services portal', 'Navigate to "Returns" section', 'Select VAT return for the period', 'Fill in sales and purchases details', 'Submit return and make payment'] },
+          income_tax: { name: 'Income Tax (Individual)', rate: '0%-30% graduated', deadline: 'March 31 (annual)', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login, steps: ['Log in to E-Tax Services portal', 'Go to "Returns" section', 'Select Annual Income Tax return', 'Declare all income sources', 'Submit and pay any tax due'] },
+          paye: { name: 'PAYE (Pay As You Earn)', rate: '0%-30% graduated', deadline: '15th of every month', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login, steps: ['Log in to E-Tax Services portal', 'Navigate to PAYE section', 'Enter employee salary details', 'Calculate PAYE tax', 'Submit monthly return and pay'] },
+          excise: { name: 'Excise Duty', rate: 'Varies by product', deadline: '15th of every month', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login, steps: ['Log in to E-Tax Services portal', 'Go to Excise Duty section', 'Declare excisable goods produced/imported', 'Calculate duty owed', 'Submit return and pay'] },
+          wht: { name: 'Withholding Tax', rate: '2%-15%', deadline: '15th of every month', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login, steps: ['Log in to E-Tax Services portal', 'Navigate to WHT section', 'Declare withheld amounts from payments', 'Submit monthly WHT return', 'Pay tax withheld'] },
+          ebm: { name: 'Electronic Billing Machine (EBM)', rate: 'N/A', deadline: 'N/A', platform: 'MyRRA Portal', url: PLATFORM_URLS.myrra_purchase_code, steps: ['Log in to MyRRA Portal', 'Request EBM purchase code', 'Protect your business TIN from misuse', 'Purchase EBM from authorized supplier', 'Install and configure EBM', 'Register EBM on RRA system', 'Issue receipts for all transactions'] },
+          local_tax: { name: 'Local Government Taxes', rate: 'Varies by district', deadline: 'Varies', platform: 'RLGMS', url: PLATFORM_URLS.rlgms_login, steps: ['Log in to RLGMS (Local Government Tax System)', 'Select your district', 'View property/tax obligations', 'Make payment for local taxes', 'Receive receipt'] }
         };
         result = taxServices[args.service] || { error: 'Service not found' };
         break;
 
       case 'lookup_customs_service':
         const customsServices = {
-          import: { name: 'Import Services', platform: 'e-Single Window', url: PLATFORM_URLS.single_window, steps: ['Register on e-Single Window', 'Submit import declaration', 'Pay duties and taxes', 'Clear goods at customs'] },
-          export: { name: 'Export Services', platform: 'e-Single Window', url: PLATFORM_URLS.single_window, steps: ['Register on e-Single Window', 'Submit export declaration', 'Obtain export permits if needed', 'Clear goods'] },
-          single_window: { name: 'e-Single Window', platform: 'e-Single Window', url: PLATFORM_URLS.single_window, steps: ['Visit sw.gov.rw', 'Create account', 'Submit trade declarations', 'Track clearance status'] },
-          trade_portal: { name: 'Rwanda Trade Portal', platform: 'Trade Portal', url: PLATFORM_URLS.trade_portal, steps: ['Visit rwandatrade.rw', 'Search for trade information', 'Access trade resources'] },
-          duties_calc: { name: 'Import Duties Calculator', platform: 'Trade Portal', url: PLATFORM_URLS.trade_portal, steps: ['Visit rwandatrade.rw', 'Open duties calculator', 'Enter product details', 'Get estimated duties'] }
+          import: { name: 'Import Services', platform: 'e-Single Window', url: PLATFORM_URLS.single_window, steps: ['Register on e-Single Window (sw.gov.rw)', 'Submit import declaration', 'Upload required documents', 'Pay duties and taxes', 'Track clearance status', 'Collect goods after clearance'] },
+          export: { name: 'Export Services', platform: 'e-Single Window', url: PLATFORM_URLS.single_window, steps: ['Register on e-Single Window', 'Submit export declaration', 'Obtain necessary permits/certificates', 'Present goods for inspection', 'Clear goods for export'] },
+          single_window: { name: 'e-Single Window', platform: 'e-Single Window', url: PLATFORM_URLS.single_window, steps: ['Visit sw.gov.rw', 'Create account or log in', 'Submit trade declarations (import/export)', 'Track clearance status in real-time', 'Access trade documentation'] },
+          trade_portal: { name: 'Rwanda Trade Portal', platform: 'Trade Portal', url: PLATFORM_URLS.trade_portal, steps: ['Visit rwandatrade.rw', 'Search for trade information', 'Access trade resources and guides', 'View tariff information', 'Contact trade support'] },
+          duties_calc: { name: 'Import Duties Calculator', platform: 'Trade Portal', url: PLATFORM_URLS.trade_portal, steps: ['Visit rwandatrade.rw', 'Open duties calculator tool', 'Enter product description/code', 'Select country of origin', 'Get estimated duties and taxes'] }
         };
         result = customsServices[args.service] || { error: 'Service not found' };
         break;
 
       case 'lookup_business_registration':
         const regServices = {
-          company: { name: 'Company Registration', platform: 'RDB', url: PLATFORM_URLS.rdb, steps: ['Visit urs.rdb.rw', 'Create account', 'Reserve company name', 'Fill registration form', 'Upload required documents', 'Pay registration fee', 'Receive certificate'] },
-          tin: { name: 'TIN Registration', platform: 'eTax', url: PLATFORM_URLS.etax, steps: ['Visit etax.rra.gov.rw', 'Click "Register for TIN"', 'Fill in personal/business details', 'Upload ID document', 'Submit and receive TIN instantly'] },
-          trade_license: { name: 'Trade License', platform: 'RDB', url: PLATFORM_URLS.rdb, steps: ['Visit urs.rdb.rw', 'Apply for trade license', 'Select business activity', 'Pay license fee', 'Receive license'] },
-          cooperative: { name: 'Cooperative Registration', platform: 'RDB', url: PLATFORM_URLS.rdb, steps: ['Visit urs.rdb.rw', 'Select cooperative registration', 'Upload member list', 'Provide bylaws', 'Pay fee', 'Receive certificate'] }
+          company: { name: 'Company Registration', platform: 'RDB Portal', url: PLATFORM_URLS.rdb, steps: ['Visit RDB Portal (urs.rdb.rw)', 'Create account', 'Reserve company name', 'Fill registration form', 'Upload required documents (ID, address proof)', 'Pay registration fee', 'Receive certificate of registration'] },
+          tin: { name: 'TIN Registration', platform: 'MyRRA Portal', url: PLATFORM_URLS.myrra_create_account, steps: ['Visit MyRRA Portal', 'Click "Create TIN Account"', 'Fill in personal/business details', 'Upload ID document (National ID/Passport)', 'Submit application', 'Receive TIN instantly'] },
+          trade_license: { name: 'Trade License', platform: 'RDB Portal', url: PLATFORM_URLS.rdb, steps: ['Visit RDB Portal (urs.rdb.rw)', 'Apply for trade license', 'Select business activity type', 'Provide business details', 'Pay license fee', 'Receive trade license'] },
+          cooperative: { name: 'Cooperative Registration', platform: 'RDB Portal', url: PLATFORM_URLS.rdb, steps: ['Visit RDB Portal', 'Select cooperative registration', 'Upload member list (minimum 5 members)', 'Provide cooperative bylaws', 'Pay registration fee', 'Receive cooperative certificate'] }
         };
         result = regServices[args.service] || { error: 'Service not found' };
         break;
 
       case 'lookup_social_security':
         const rssbServices = {
-          pension: { name: 'Pension Scheme', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Register with RSSB', 'Enroll employees', 'Calculate contributions (employer 3%, employee 3%)', 'Submit monthly', 'Pay via bank or mobile money'] },
-          medical: { name: 'Medical Insurance (MMI)', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Register with RSSB', 'Enroll in medical scheme', 'Pay premiums monthly', 'Access healthcare services'] },
-          voluntary: { name: 'Voluntary Contributions', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Visit RSSB office or portal', 'Register for voluntary contributions', 'Choose contribution amount (min 5,000 RWF/month)', 'Set up payment method', 'Start contributing monthly'] },
-          employer_registration: { name: 'Employer Registration', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Visit RSSB with business documents', 'Fill employer registration form', 'Provide employee list', 'Receive employer number', 'Start monthly declarations'] }
+          pension: { name: 'Pension Scheme', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Register with RSSB (rssb.rw)', 'Enroll all eligible employees', 'Calculate contributions (employer 3%, employee 3%)', 'Submit monthly declaration', 'Pay via bank or mobile money'] },
+          medical: { name: 'Medical Insurance (MMI)', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Register with RSSB', 'Enroll in medical insurance scheme', 'Pay premiums monthly', 'Access healthcare services at contracted facilities', 'Submit claims when needed'] },
+          voluntary: { name: 'Voluntary Contributions', platform: 'RSSB Member Portal', url: PLATFORM_URLS.rssb_member, steps: ['Visit RSSB Member Portal (imisanzu.rssb.rw)', 'Register for voluntary contributions', 'Choose contribution amount (min 5,000 RWF/month)', 'Set up payment method', 'Start contributing monthly for future benefits'] },
+          employer_registration: { name: 'Employer Registration', platform: 'RSSB', url: PLATFORM_URLS.rssb, steps: ['Visit RSSB office or website', 'Fill employer registration form', 'Provide business documents', 'Provide employee list', 'Receive employer number', 'Start monthly declarations and payments'] }
         };
         result = rssbServices[args.service] || { error: 'Service not found' };
         break;
 
       case 'get_platform_url':
         result = { platform: args.platform, url: PLATFORM_URLS[args.platform] || null };
+        break;
+
+      case 'get_login_portal':
+        const loginPortals = {
+          tax_filing: { service: 'Tax Filing (VAT, PAYE, Income Tax)', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login, description: 'For filing tax returns and making tax payments' },
+          tin_registration: { service: 'TIN Registration', platform: 'MyRRA Portal', url: PLATFORM_URLS.myrra_create_account, description: 'For registering new TIN accounts' },
+          ebm_purchase_code: { service: 'EBM Purchase Code', platform: 'MyRRA Portal', url: PLATFORM_URLS.myrra_purchase_code, description: 'For requesting EBM purchase codes to protect your TIN' },
+          local_tax: { service: 'Local Government Taxes', platform: 'RLGMS', url: PLATFORM_URLS.rlgms_login, description: 'For decentralized local government tax management' },
+          vat_reward: { service: 'VAT Reward Account', platform: 'MyRRA Portal', url: PLATFORM_URLS.myrra_vat_reward, description: 'For VAT reward lottery account access' },
+          staff: { service: 'RRA Staff Portal', platform: 'Staff Portal', url: PLATFORM_URLS.staff_portal, description: 'For RRA employees only' }
+        };
+        result = loginPortals[args.service] || { error: 'Service not found' };
         break;
 
       case 'calculate_tax_estimate':
@@ -319,17 +377,87 @@ app.post('/api/ai-agent/execute-tool', (req, res) => {
 
       case 'get_deadline_info':
         const deadlines = {
-          vat: { tax: 'VAT', deadline: '15th of every month', frequency: 'Monthly', platform: 'MyRRA' },
-          income_tax: { tax: 'Income Tax (Individual)', deadline: 'March 31 (annual)', frequency: 'Annual', platform: 'MyRRA' },
-          paye: { tax: 'PAYE', deadline: '15th of every month', frequency: 'Monthly', platform: 'MyRRA' },
-          corporate_tax: { tax: 'Corporate Income Tax', deadline: 'March 31 (annual)', frequency: 'Annual + quarterly estimates', platform: 'MyRRA' },
-          annual_return: { tax: 'Annual Return', deadline: 'March 31 every year', frequency: 'Annual', platform: 'MyRRA / RDB' }
+          vat: { tax: 'VAT', deadline: '15th of every month', frequency: 'Monthly', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login },
+          income_tax: { tax: 'Income Tax (Individual)', deadline: 'March 31 (annual)', frequency: 'Annual', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login },
+          paye: { tax: 'PAYE', deadline: '15th of every month', frequency: 'Monthly', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login },
+          corporate_tax: { tax: 'Corporate Income Tax', deadline: 'March 31 (annual)', frequency: 'Annual + quarterly estimates', platform: 'E-Tax Services', url: PLATFORM_URLS.etax_login },
+          annual_return: { tax: 'Annual Return', deadline: 'March 31 every year', frequency: 'Annual', platform: 'MyRRA / RDB', url: PLATFORM_URLS.myrra },
+          local_tax: { tax: 'Local Government Tax', deadline: 'Varies by district', frequency: 'Varies', platform: 'RLGMS', url: PLATFORM_URLS.rlgms_login }
         };
         result = deadlines[args.tax_type] || { error: 'Tax type not found' };
         break;
 
       case 'navigate_to_page':
         result = { page: args.page, url: PAGE_URLS[args.page] || null };
+        break;
+
+      case 'web_search':
+        // Real web search using SerpAPI
+        const searchQuery = args.query || '';
+        const maxResults = args.max_results || 5;
+
+        if (!SERPAPI_KEY) {
+          // Fallback to simulated results if no API key
+          const fallbackResults = [];
+          if (searchQuery.toLowerCase().includes('vat') || searchQuery.toLowerCase().includes('tax')) {
+            fallbackResults.push({
+              title: 'VAT Services - Rwanda Revenue Authority',
+              url: 'https://www.rra.gov.rw/en/domestic-tax-services/value-added-tax',
+              snippet: 'Value Added Tax (VAT) is a consumption tax charged on the supply of goods and services. Standard rate is 18%. File monthly returns by the 15th via E-Tax Services portal.'
+            });
+          }
+          if (searchQuery.toLowerCase().includes('ebm') || searchQuery.toLowerCase().includes('billing')) {
+            fallbackResults.push({
+              title: 'EBM Electronic Billing Machine - RRA',
+              url: 'https://www.rra.gov.rw/en/ebm-electronic-billing-machine',
+              snippet: 'Electronic Billing Machine (EBM) is required for all businesses. Request purchase code through MyRRA portal to protect your TIN. EBM v2.0 requirements effective November 2026.'
+            });
+          }
+          fallbackResults.push({
+            title: 'Rwanda Revenue Authority - Official Website',
+            url: 'https://www.rra.gov.rw/',
+            snippet: 'Official RRA website. Access tax services, customs, EBM, trade information. Contact: +250 788 111 222. Office hours: Mon-Fri 7:30 AM - 5:00 PM.'
+          });
+          result = { query: searchQuery, results: fallbackResults, search_time: new Date().toISOString(), note: 'Using offline data. Configure SERPAPI_KEY for live web search.' };
+          break;
+        }
+
+        try {
+          const searchUrl = `https://serpapi.com/search.json?q=${encodeURIComponent(searchQuery + ' Rwanda RRA')}&api_key=${SERPAPI_KEY}&num=${maxResults}`;
+          const searchResponse = await fetch(searchUrl);
+
+          if (!searchResponse.ok) {
+            throw new Error('Search API failed: ' + searchResponse.status);
+          }
+
+          const searchData = await searchResponse.json();
+          const realResults = [];
+
+          if (searchData.organic_results) {
+            searchData.organic_results.slice(0, maxResults).forEach(function(item) {
+              realResults.push({
+                title: item.title || '',
+                url: item.link || '',
+                snippet: item.snippet || ''
+              });
+            });
+          }
+
+          result = {
+            query: searchQuery,
+            results: realResults,
+            search_time: new Date().toISOString(),
+            source: 'SerpAPI - Live Web Search'
+          };
+        } catch (error) {
+          console.error('Web search error:', error);
+          result = {
+            query: searchQuery,
+            results: [],
+            error: 'Search failed: ' + error.message,
+            search_time: new Date().toISOString()
+          };
+        }
         break;
 
       default:
@@ -674,6 +802,375 @@ app.post('/api/ai-agent/upload', async (req, res) => {
   } catch (error) {
     console.error('File upload error:', error);
     res.status(500).json({ error: 'Failed to process file upload' });
+  }
+});
+
+// ===== ADMIN DASHBOARD API =====
+
+// Admin login
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    const result = await pool.query('SELECT * FROM admin_users WHERE username = $1', [username]);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const user = result.rows[0];
+    const valid = await bcrypt.compare(password, user.password_hash);
+    if (!valid) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    await pool.query('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE id = $1', [user.id]);
+    res.json({ success: true, user: { id: user.id, username: user.username, email: user.email, role: user.role } });
+  } catch (error) {
+    console.error('Admin login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Admin change password
+app.post('/api/admin/change-password', async (req, res) => {
+  try {
+    const { username, currentPassword, newPassword } = req.body;
+    if (!username || !currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    }
+
+    const result = await pool.query('SELECT * FROM admin_users WHERE username = $1', [username]);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const valid = await bcrypt.compare(currentPassword, result.rows[0].password_hash);
+    if (!valid) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const hash = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE admin_users SET password_hash = $1 WHERE id = $2', [hash, result.rows[0].id]);
+    res.json({ success: true, message: 'Password changed successfully' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ error: 'Failed to change password' });
+  }
+});
+
+// ===== VIDEOS CRUD =====
+app.get('/api/admin/videos', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM videos ORDER BY display_order ASC, created_at DESC');
+    res.json({ videos: result.rows });
+  } catch (error) {
+    console.error('Get videos error:', error);
+    res.status(500).json({ error: 'Failed to fetch videos' });
+  }
+});
+
+app.post('/api/admin/videos', async (req, res) => {
+  try {
+    const { title, description, video_url, thumbnail_url, category, duration, display_order, is_active } = req.body;
+    if (!title || !video_url) {
+      return res.status(400).json({ error: 'Title and video URL are required' });
+    }
+    const result = await pool.query(
+      `INSERT INTO videos (title, description, video_url, thumbnail_url, category, duration, display_order, is_active)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+      [title, description || null, video_url, thumbnail_url || null, category || null, duration || null, display_order || 0, is_active !== false]
+    );
+    res.json({ success: true, video: result.rows[0] });
+  } catch (error) {
+    console.error('Create video error:', error);
+    res.status(500).json({ error: 'Failed to create video' });
+  }
+});
+
+app.put('/api/admin/videos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, video_url, thumbnail_url, category, duration, display_order, is_active } = req.body;
+    const result = await pool.query(
+      `UPDATE videos SET title=$1, description=$2, video_url=$3, thumbnail_url=$4, category=$5, duration=$6, display_order=$7, is_active=$8, updated_at=CURRENT_TIMESTAMP
+       WHERE id=$9 RETURNING *`,
+      [title, description || null, video_url, thumbnail_url || null, category || null, duration || null, display_order || 0, is_active !== false, id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Video not found' });
+    res.json({ success: true, video: result.rows[0] });
+  } catch (error) {
+    console.error('Update video error:', error);
+    res.status(500).json({ error: 'Failed to update video' });
+  }
+});
+
+app.delete('/api/admin/videos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM videos WHERE id = $1', [id]);
+    res.json({ success: true, message: 'Video deleted' });
+  } catch (error) {
+    console.error('Delete video error:', error);
+    res.status(500).json({ error: 'Failed to delete video' });
+  }
+});
+
+// ===== PROJECTS CRUD =====
+app.get('/api/admin/projects', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM projects ORDER BY display_order ASC, created_at DESC');
+    res.json({ projects: result.rows });
+  } catch (error) {
+    console.error('Get projects error:', error);
+    res.status(500).json({ error: 'Failed to fetch projects' });
+  }
+});
+
+app.post('/api/admin/projects', async (req, res) => {
+  try {
+    const { title, description, image_url, project_url, category, tags, display_order, is_active } = req.body;
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required' });
+    }
+    const result = await pool.query(
+      `INSERT INTO projects (title, description, image_url, project_url, category, tags, display_order, is_active)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+      [title, description || null, image_url || null, project_url || null, category || null, tags || null, display_order || 0, is_active !== false]
+    );
+    res.json({ success: true, project: result.rows[0] });
+  } catch (error) {
+    console.error('Create project error:', error);
+    res.status(500).json({ error: 'Failed to create project' });
+  }
+});
+
+app.put('/api/admin/projects/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, image_url, project_url, category, tags, display_order, is_active } = req.body;
+    const result = await pool.query(
+      `UPDATE projects SET title=$1, description=$2, image_url=$3, project_url=$4, category=$5, tags=$6, display_order=$7, is_active=$8, updated_at=CURRENT_TIMESTAMP
+       WHERE id=$9 RETURNING *`,
+      [title, description || null, image_url || null, project_url || null, category || null, tags || null, display_order || 0, is_active !== false, id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Project not found' });
+    res.json({ success: true, project: result.rows[0] });
+  } catch (error) {
+    console.error('Update project error:', error);
+    res.status(500).json({ error: 'Failed to update project' });
+  }
+});
+
+app.delete('/api/admin/projects/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM projects WHERE id = $1', [id]);
+    res.json({ success: true, message: 'Project deleted' });
+  } catch (error) {
+    console.error('Delete project error:', error);
+    res.status(500).json({ error: 'Failed to delete project' });
+  }
+});
+
+// ===== SHOP PRODUCTS CRUD =====
+app.get('/api/admin/products', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM shop_products ORDER BY display_order ASC, created_at DESC');
+    res.json({ products: result.rows });
+  } catch (error) {
+    console.error('Get products error:', error);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
+});
+
+app.post('/api/admin/products', async (req, res) => {
+  try {
+    const { title, description, price, currency, image_url, preview_url, demo_url, category, features, technologies, display_order, is_featured, is_active } = req.body;
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required' });
+    }
+    const result = await pool.query(
+      `INSERT INTO shop_products (title, description, price, currency, image_url, preview_url, demo_url, category, features, technologies, display_order, is_featured, is_active)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
+      [title, description || null, price || null, currency || 'RWF', image_url || null, preview_url || null, demo_url || null, category || null, features || null, technologies || null, display_order || 0, is_featured || false, is_active !== false]
+    );
+    res.json({ success: true, product: result.rows[0] });
+  } catch (error) {
+    console.error('Create product error:', error);
+    res.status(500).json({ error: 'Failed to create product' });
+  }
+});
+
+app.put('/api/admin/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, price, currency, image_url, preview_url, demo_url, category, features, technologies, display_order, is_featured, is_active } = req.body;
+    const result = await pool.query(
+      `UPDATE shop_products SET title=$1, description=$2, price=$3, currency=$4, image_url=$5, preview_url=$6, demo_url=$7, category=$8, features=$9, technologies=$10, display_order=$11, is_featured=$12, is_active=$13, updated_at=CURRENT_TIMESTAMP
+       WHERE id=$14 RETURNING *`,
+      [title, description || null, price || null, currency || 'RWF', image_url || null, preview_url || null, demo_url || null, category || null, features || null, technologies || null, display_order || 0, is_featured || false, is_active !== false, id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Product not found' });
+    res.json({ success: true, product: result.rows[0] });
+  } catch (error) {
+    console.error('Update product error:', error);
+    res.status(500).json({ error: 'Failed to update product' });
+  }
+});
+
+app.delete('/api/admin/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM shop_products WHERE id = $1', [id]);
+    res.json({ success: true, message: 'Product deleted' });
+  } catch (error) {
+    console.error('Delete product error:', error);
+    res.status(500).json({ error: 'Failed to delete product' });
+  }
+});
+
+// ===== SITE CONTENT CRUD =====
+app.get('/api/admin/content', async (req, res) => {
+  try {
+    const { page } = req.query;
+    let result;
+    if (page) {
+      result = await pool.query('SELECT * FROM site_content WHERE page = $1 ORDER BY section, content_key', [page]);
+    } else {
+      result = await pool.query('SELECT * FROM site_content ORDER BY page, section, content_key');
+    }
+    res.json({ content: result.rows });
+  } catch (error) {
+    console.error('Get content error:', error);
+    res.status(500).json({ error: 'Failed to fetch content' });
+  }
+});
+
+app.post('/api/admin/content', async (req, res) => {
+  try {
+    const { content_key, content_value, content_type, page, section } = req.body;
+    if (!content_key) {
+      return res.status(400).json({ error: 'Content key is required' });
+    }
+    const result = await pool.query(
+      `INSERT INTO site_content (content_key, content_value, content_type, page, section)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (content_key) DO UPDATE SET content_value=$2, content_type=$3, page=$4, section=$5, updated_at=CURRENT_TIMESTAMP
+       RETURNING *`,
+      [content_key, content_value || '', content_type || 'text', page || null, section || null]
+    );
+    res.json({ success: true, content: result.rows[0] });
+  } catch (error) {
+    console.error('Create content error:', error);
+    res.status(500).json({ error: 'Failed to save content' });
+  }
+});
+
+app.put('/api/admin/content/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { content_key, content_value, content_type, page, section } = req.body;
+    const result = await pool.query(
+      `UPDATE site_content SET content_key=$1, content_value=$2, content_type=$3, page=$4, section=$5, updated_at=CURRENT_TIMESTAMP
+       WHERE id=$6 RETURNING *`,
+      [content_key, content_value || '', content_type || 'text', page || null, section || null, id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Content not found' });
+    res.json({ success: true, content: result.rows[0] });
+  } catch (error) {
+    console.error('Update content error:', error);
+    res.status(500).json({ error: 'Failed to update content' });
+  }
+});
+
+app.delete('/api/admin/content/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM site_content WHERE id = $1', [id]);
+    res.json({ success: true, message: 'Content deleted' });
+  } catch (error) {
+    console.error('Delete content error:', error);
+    res.status(500).json({ error: 'Failed to delete content' });
+  }
+});
+
+// ===== ADMIN DASHBOARD STATS =====
+app.get('/api/admin/stats', async (req, res) => {
+  try {
+    const videos = await pool.query('SELECT COUNT(*) FROM videos');
+    const activeVideos = await pool.query('SELECT COUNT(*) FROM videos WHERE is_active = true');
+    const projects = await pool.query('SELECT COUNT(*) FROM projects');
+    const activeProjects = await pool.query('SELECT COUNT(*) FROM projects WHERE is_active = true');
+    const products = await pool.query('SELECT COUNT(*) FROM shop_products');
+    const activeProducts = await pool.query('SELECT COUNT(*) FROM shop_products WHERE is_active = true');
+    const contacts = await pool.query('SELECT COUNT(*) FROM contacts');
+    const newContacts = await pool.query("SELECT COUNT(*) FROM contacts WHERE status = 'new'");
+    const newsletters = await pool.query('SELECT COUNT(*) FROM newsletter_subscriptions WHERE is_active = true');
+    const content = await pool.query('SELECT COUNT(*) FROM site_content');
+
+    res.json({
+      videos: { total: parseInt(videos.rows[0].count), active: parseInt(activeVideos.rows[0].count) },
+      projects: { total: parseInt(projects.rows[0].count), active: parseInt(activeProjects.rows[0].count) },
+      products: { total: parseInt(products.rows[0].count), active: parseInt(activeProducts.rows[0].count) },
+      contacts: { total: parseInt(contacts.rows[0].count), new: parseInt(newContacts.rows[0].count) },
+      newsletters: { total: parseInt(newsletters.rows[0].count) },
+      content: { total: parseInt(content.rows[0].count) }
+    });
+  } catch (error) {
+    console.error('Stats error:', error);
+    res.status(500).json({ error: 'Failed to fetch stats' });
+  }
+});
+
+// ===== PUBLIC API (for frontend to fetch managed content) =====
+app.get('/api/videos', async (req, res) => {
+  try {
+    const { category } = req.query;
+    let result;
+    if (category) {
+      result = await pool.query('SELECT * FROM videos WHERE is_active = true AND category = $1 ORDER BY display_order ASC', [category]);
+    } else {
+      result = await pool.query('SELECT * FROM videos WHERE is_active = true ORDER BY display_order ASC');
+    }
+    res.json({ videos: result.rows });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch videos' });
+  }
+});
+
+app.get('/api/projects', async (req, res) => {
+  try {
+    const { category } = req.query;
+    let result;
+    if (category) {
+      result = await pool.query('SELECT * FROM projects WHERE is_active = true AND category = $1 ORDER BY display_order ASC', [category]);
+    } else {
+      result = await pool.query('SELECT * FROM projects WHERE is_active = true ORDER BY display_order ASC');
+    }
+    res.json({ projects: result.rows });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch projects' });
+  }
+});
+
+app.get('/api/products', async (req, res) => {
+  try {
+    const { category, featured } = req.query;
+    let query = 'SELECT * FROM shop_products WHERE is_active = true';
+    const params = [];
+    if (category) { params.push(category); query += ` AND category = $${params.length}`; }
+    if (featured === 'true') { query += ' AND is_featured = true'; }
+    query += ' ORDER BY display_order ASC';
+    const result = await pool.query(query, params);
+    res.json({ products: result.rows });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
 

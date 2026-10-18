@@ -19,6 +19,10 @@
   var recordTimer = null;
   var emojiPickerOpen = false;
   var gifPickerOpen = false;
+  var lastSpeechTime = 0;
+  var silenceTimeout = null;
+  var isLiveVoiceMode = false;
+  var currentUtterance = null;
 
   var EMOJIS = [
     '😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃',
@@ -65,6 +69,9 @@
           '<h3 class="ai-chat__title">RRA AI Agent <span class="ai-chat__title-badge">Agent</span></h3>' +
           '<p class="ai-chat__status"><span class="ai-chat__status-dot"></span> Online — Intelligent Assistant</p>' +
         '</div>' +
+        '<button class="ai-chat__live-voice-btn" id="aiLiveVoiceBtn" aria-label="Live voice mode" title="Live voice conversation">' +
+          '<i class="lucide" data-lucide="phone"></i>' +
+        '</button>' +
         '<button class="ai-chat__close" id="aiChatClose" aria-label="Close"><i class="lucide" data-lucide="x" class="ai-chat__close-icon"></i></button>' +
       '</div>' +
       '<div class="ai-chat__messages" id="aiMessages"></div>' +
@@ -124,6 +131,7 @@
     document.getElementById('aiGifBtn').addEventListener('click', toggleGifPicker);
     document.getElementById('aiVoiceBtn').addEventListener('click', toggleVoiceRecording);
     document.getElementById('aiVoiceCancel').addEventListener('click', stopVoiceRecording);
+    document.getElementById('aiLiveVoiceBtn').addEventListener('click', toggleLiveVoiceMode);
 
     document.addEventListener('click', function(e) {
       var emojiBtn = document.getElementById('aiEmojiBtn');
@@ -294,14 +302,101 @@
     }
   }
 
+  function toggleLiveVoiceMode() {
+    isLiveVoiceMode = !isLiveVoiceMode;
+    var btn = document.getElementById('aiLiveVoiceBtn');
+
+    if (isLiveVoiceMode) {
+      btn.classList.add('active');
+      btn.title = 'Exit live voice mode';
+      document.querySelector('.ai-chat__status').innerHTML = '<span class="ai-chat__status-dot ai-chat__status-dot--live"></span> Live Voice Conversation';
+
+      if (!chatOpen) {
+        toggleChat();
+      }
+
+      addBotMessage('Muraho! Live voice mode yatangiye. Vuga ikibazo cyawe, nzakumva nzagusubize mvuga. Kanda phone icon kugirango usohoke.', []);
+
+      setTimeout(function() {
+        startVoiceRecording();
+      }, 1000);
+    } else {
+      btn.classList.remove('active');
+      btn.title = 'Live voice conversation';
+      document.querySelector('.ai-chat__status').innerHTML = '<span class="ai-chat__status-dot"></span> Online — Intelligent Assistant';
+
+      if (isRecording) {
+        stopVoiceRecording();
+      }
+
+      window.speechSynthesis.cancel();
+      addBotMessage('Live voice mode yarangiye. Ushobora kwandika cyangwa gukoresha voice input bisanzwe.', []);
+    }
+  }
+
   function detectLanguage(text) {
-    var kinWords = ['muraho', 'murakoze', 'ndashaka', 'ubwoko', 'imitsi', 'sosiyete', 'kwandikisha', 'uburyo', 'iki', 'ikihe', 'n\'iki', 'wowe', 'jye', 'we', 'bose', 'rimwe', 'kabiri', 'gatatu', 'kane', 'gatanu'];
+    var kinWords = ['muraho', 'murakoze', 'ndashaka', 'ubwoko', 'imitsi', 'sosiyete', 'kwandikisha', 'uburyo', 'iki', 'ikihe', 'n\'iki', 'wowe', 'jye', 'we', 'bose', 'rimwe', 'kabiri', 'gatatu', 'kane', 'gatanu', 'umunsi', 'amafaranga', 'igiciro', 'gukora', 'kugura', 'kugurisha', 'umukoresha', 'umurimo', 'ishuri', 'ivuriro', 'umupfumu', 'umuganga', 'imana', 'urukundo', 'amahoro', 'umutekano', 'igihugu', 'umuryango', 'umwana', 'umugore', 'umugabo', 'abantu', 'ikibazo', 'igisubizo', 'nimbere', 'inyuma', 'hejuru', 'hasi', 'ibumoso', 'iburyo', 'ejo', 'ejo hashize', 'ubu', 'hashize', 'kera', 'vuba', 'hano', 'hariya', 'kuri', 'mu', 'na', 'cyangwa', 'ariko', 'kubera', 'nka', 'nk\'', 'by\'', 'bya', 'by\'', 'wa', 'wa ', 'ba', 'ba ', 'cyane', 'gake', 'neza', 'nabi', 'byoroshye', 'bigoye'];
     var lower = text.toLowerCase();
     var kinScore = 0;
     kinWords.forEach(function(word) {
       if (lower.indexOf(word) !== -1) kinScore++;
     });
     return kinScore >= 1 ? 'rw-RW' : 'en-US';
+  }
+
+  function speakText(text) {
+    if (!('speechSynthesis' in window)) {
+      if (isLiveVoiceMode) {
+        setTimeout(function() {
+          startVoiceRecording();
+        }, 500);
+      }
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    var lang = detectLanguage(text);
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    utterance.rate = 0.9;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    var voices = window.speechSynthesis.getVoices();
+    var matchingVoice = voices.find(function(v) {
+      return v.lang.startsWith(lang.substring(0, 2));
+    });
+
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    }
+
+    currentUtterance = utterance;
+
+    utterance.onend = function() {
+      currentUtterance = null;
+      if (isLiveVoiceMode) {
+        setTimeout(function() {
+          if (isLiveVoiceMode && !isRecording) {
+            startVoiceRecording();
+          }
+        }, 800);
+      }
+    };
+
+    utterance.onerror = function() {
+      currentUtterance = null;
+      if (isLiveVoiceMode) {
+        setTimeout(function() {
+          if (isLiveVoiceMode && !isRecording) {
+            startVoiceRecording();
+          }
+        }, 500);
+      }
+    };
+
+    window.speechSynthesis.speak(utterance);
   }
 
   function startVoiceRecording() {
@@ -312,10 +407,10 @@
     }
 
     recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
+    recognition.lang = 'rw-RW';
     recognition.interimResults = true;
     recognition.continuous = true;
-    recognition.maxAlternatives = 1;
+    recognition.maxAlternatives = 3;
 
     recognition.onstart = function() {
       isRecording = true;
@@ -336,6 +431,13 @@
       inputEl.value = transcript;
       autoResize();
 
+      lastSpeechTime = Date.now();
+
+      if (silenceTimeout) {
+        clearTimeout(silenceTimeout);
+        silenceTimeout = null;
+      }
+
       if (transcript.length > 10) {
         var detectedLang = detectLanguage(transcript);
         if (detectedLang !== recognition.lang) {
@@ -344,10 +446,13 @@
         }
       }
 
-      if (isFinal && transcript.trim().length > 0) {
-        setTimeout(function() {
-          stopVoiceRecording();
-        }, 1500);
+      if (transcript.trim().length > 0) {
+        silenceTimeout = setTimeout(function() {
+          var timeSinceLastSpeech = Date.now() - lastSpeechTime;
+          if (timeSinceLastSpeech >= 4900 && transcript.trim().length > 0) {
+            stopVoiceRecording();
+          }
+        }, 5000);
       }
     };
 
@@ -376,6 +481,10 @@
   }
 
   function stopVoiceRecording() {
+    if (silenceTimeout) {
+      clearTimeout(silenceTimeout);
+      silenceTimeout = null;
+    }
     if (recognition) {
       recognition.stop();
       recognition = null;
@@ -566,6 +675,10 @@
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
     scrollToBottom();
+
+    // Text-to-speech for voice conversation
+    var plainText = html.replace(/<[^>]*>/g, '').replace(/https?:\/\/[^\s]+/g, 'link');
+    speakText(plainText);
   }
 
   function showThinking(text) {
@@ -619,34 +732,75 @@
   function getSystemPrompt() {
     return 'You are the RRA AI Agent, a live voice conversation assistant for Rwanda Revenue Authority. You speak both English and Kinyarwanda fluently.\n\n' +
       'CRITICAL RULES - YOU MUST FOLLOW THESE:\n' +
-      '1. STAY ON TOPIC: Only answer questions about RRA services (taxes, customs, business registration, social security, licensing). If asked about unrelated topics (weather, sports, politics, personal advice, etc.), politely redirect: "I can only help with RRA services. Would you like to know about taxes, business registration, or customs?"\n' +
-      '2. ASK CLARIFYING QUESTIONS: When a user\'s question is vague or incomplete, ask 1-2 specific questions to understand better. Examples:\n' +
+      '1. ALWAYS USE WEB SEARCH FIRST: Before answering ANY question about RRA services, taxes, deadlines, or procedures, use the web_search tool to get current information. This ensures you provide accurate, up-to-date information.\n' +
+      '2. STAY ON TOPIC: Only answer questions about RRA services (taxes, customs, business registration, social security, licensing). If asked about unrelated topics (weather, sports, politics, personal advice, etc.), politely redirect: "I can only help with RRA services. Would you like to know about taxes, business registration, or customs?"\n' +
+      '3. ASK CLARIFYING QUESTIONS: When a user\'s question is vague or incomplete, ask 1-2 specific questions to understand better. Examples:\n' +
       '   - If user says "I want to register" → Ask: "Are you registering a business, for TIN, or for VAT?"\n' +
       '   - If user says "How much tax?" → Ask: "What type of tax? VAT, PAYE, or income tax? And what is your income amount?"\n' +
       '   - If user says "I need help" → Ask: "What do you need help with? Tax filing, business registration, or customs?"\n' +
-      '3. LANGUAGE DETECTION: Detect if user speaks English or Kinyarwanda and respond in the same language. Common Kinyarwanda phrases: "muraho" (hello), "murakoze" (thank you), "ndashaka" (I want), "ubwoko" (type), "imitsi" (taxes).\n' +
-      '4. VOICE CONVERSATION STYLE: Speak naturally and conversationally. Use short, clear sentences. Avoid long paragraphs. Ask follow-up questions to keep the conversation going.\n' +
-      '5. PROACTIVE HELP: After answering, suggest related actions. Example: After explaining VAT, ask "Would you like me to help you calculate your VAT or guide you to file your return?"\n\n' +
+      '4. LANGUAGE DETECTION & RESPONSE: Detect if user speaks English or Kinyarwanda and ALWAYS respond in the SAME language. If user speaks Kinyarwanda, respond ONLY in Kinyarwanda. If user speaks English, respond ONLY in English. Common Kinyarwanda phrases: "muraho" (hello), "murakoze" (thank you), "ndashaka" (I want), "ubwoko" (type), "imitsi" (taxes), "uburyo" (way/method), "igisubizo" (answer), "ikibazo" (question).\n' +
+      '5. VOICE CONVERSATION STYLE: Speak naturally and conversationally. Use short, clear sentences. Avoid long paragraphs. Ask follow-up questions to keep the conversation going.\n' +
+      '6. PROACTIVE HELP: After answering, suggest related actions. Example: After explaining VAT, ask "Would you like me to help you calculate your VAT or guide you to file your return?"\n' +
+      '7. CITE SOURCES: When you use web search, mention that the information is from official RRA sources and include the URL when relevant.\n\n' +
       'YOUR KNOWLEDGE BASE:\n' +
       'Tax Services: VAT (18%), Income Tax (0-30% graduated), PAYE (Pay As You Earn), Excise Duty, Withholding Tax (2-15%), EBM (Electronic Billing Machine)\n' +
       'Customs: Import/Export declarations, e-Single Window, Trade Portal, Duties Calculator, Transit goods\n' +
       'Business Registration: Company registration (sole trader, limited, cooperative), TIN registration, Trade License (via RDB)\n' +
       'Social Security: Pension (3% employer + 3% employee), Medical Insurance (MMI), Voluntary Contributions (min 5,000 RWF/month) via RSSB\n' +
       'Licensing: Various business licenses via RURA\n\n' +
-      'OFFICIAL PLATFORMS:\n' +
-      '- MyRRA (tax filing, returns, payments): https://myrra.rra.gov.rw/\n' +
-      '- eTax (TIN registration): https://etax.rra.gov.rw/nidAssignedTIN/\n' +
-      '- e-Single Window (customs clearance): https://sw.gov.rw/\n' +
-      '- Trade Portal (trade info, duties calculator): https://rwandatrade.rw/\n' +
-      '- RDB (business registration): https://urs.rdb.rw/auth/register\n' +
-      '- RSSB (social security): https://www.rssb.gov.rw/\n' +
-      '- RURA (licensing): https://www.rura.gov.rw/\n\n' +
+      'OFFICIAL PLATFORMS & LOGIN PORTALS:\n\n' +
+      '1. MyRRA Portal (myrra.rra.gov.rw):\n' +
+      '   - TIN Registration (Create TIN Account)\n' +
+      '   - EBM Purchase Code requests (protect your TIN)\n' +
+      '   - VAT Reward Account access\n' +
+      '   - Login with TIN\n' +
+      '   - Password recovery\n\n' +
+      '2. E-Tax Services (etax.rra.gov.rw/taxPayerLogin):\n' +
+      '   - VAT returns filing (monthly, 15th)\n' +
+      '   - PAYE returns filing (monthly, 15th)\n' +
+      '   - Income Tax returns (annual, March 31)\n' +
+      '   - Excise Duty returns\n' +
+      '   - Withholding Tax returns\n' +
+      '   - Tax payments\n\n' +
+      '3. RLGMS - Local Government Taxes (rlgms.rra.gov.rw):\n' +
+      '   - Property taxes\n' +
+      '   - Local business taxes\n' +
+      '   - District-level tax management\n\n' +
+      '4. e-Single Window (sw.gov.rw):\n' +
+      '   - Import declarations\n' +
+      '   - Export declarations\n' +
+      '   - Customs clearance\n\n' +
+      '5. Trade Portal (rwandatrade.rw):\n' +
+      '   - Trade information\n' +
+      '   - Duties calculator\n\n' +
+      '6. RDB (urs.rdb.rw):\n' +
+      '   - Company registration\n' +
+      '   - Trade license\n' +
+      '   - Cooperative registration\n\n' +
+      '7. RSSB (rssb.rw):\n' +
+      '   - Pension (3% employer + 3% employee)\n' +
+      '   - Medical Insurance (MMI)\n' +
+      '   - Employer registration\n' +
+      '   - Member Portal (imisanzu.rssb.rw) for voluntary contributions\n\n' +
+      '8. RURA (rura.gov.rw):\n' +
+      '   - Telecommunications licensing\n' +
+      '   - Utility regulation\n\n' +
+      'IMPORTANT: Not all services are on MyRRA! Direct users to the correct portal:\n' +
+      '- File taxes (VAT/PAYE/Income Tax) → E-Tax Services\n' +
+      '- Register for TIN → MyRRA Portal\n' +
+      '- Get EBM purchase code → MyRRA Portal\n' +
+      '- Pay local/property tax → RLGMS\n' +
+      '- Import/Export → e-Single Window\n' +
+      '- Register business → RDB\n' +
+      '- Social security → RSSB\n\n' +
       'AVAILABLE TOOLS:\n' +
-      '- lookup_tax_service: Get detailed info about tax services\n' +
+      '- web_search: Search the web for current RRA information, tax laws, deadlines, procedures. ALWAYS use this first to get up-to-date information.\n' +
+      '- lookup_tax_service: Get detailed info about tax services (VAT, PAYE, Income Tax, Excise, WHT, EBM, Local Tax)\n' +
       '- lookup_customs_service: Get customs and trade service info\n' +
       '- lookup_business_registration: Get business registration steps\n' +
       '- lookup_social_security: Get RSSB service info\n' +
       '- get_platform_url: Get official platform URLs\n' +
+      '- get_login_portal: Get the correct login portal for a specific service (tax_filing, tin_registration, ebm_purchase_code, local_tax, vat_reward, staff)\n' +
       '- calculate_tax_estimate: Calculate VAT (18%), PAYE (graduated 0-30%), income tax, corporate tax (30%)\n' +
       '- get_deadline_info: Get tax filing deadlines (VAT/PAYE: 15th monthly, Income Tax: March 31 annual)\n' +
       '- navigate_to_page: Navigate to website pages\n\n' +
@@ -658,9 +812,13 @@
       '- If you don\'t know something, say: "I\'m not sure about that. Let me connect you with RRA directly or you can visit our FAQ page."\n\n' +
       'EXAMPLES:\n' +
       'User: "How do I pay VAT?"\n' +
-      'You: "To pay VAT, you need to file your return on MyRRA by the 15th of each month. VAT rate is 18%. Would you like me to help you calculate your VAT or guide you through the filing process?"\n\n' +
+      'You: [First use web_search tool with query "RRA VAT filing process 2026"] Then respond: "Based on current RRA information, to pay VAT you need to log in to E-Tax Services at etax.rra.gov.rw and file your return by the 15th of each month. VAT rate is 18%. Would you like me to help you calculate your VAT or guide you through the filing process?"\n\n' +
+      'User: "How do I get a TIN?"\n' +
+      'You: [First use web_search tool with query "RRA TIN registration process"] Then respond: "According to RRA, to get a TIN visit MyRRA Portal at myrra.rra.gov.rw and click Create TIN Account. You will need your National ID or Passport. The TIN is issued instantly. Would you like help with the registration steps?"\n\n' +
+      'User: "What are the tax deadlines?"\n' +
+      'You: [First use web_search tool with query "RRA tax deadlines 2026"] Then respond: "Based on current RRA information: VAT and PAYE are due by the 15th of each month. Annual Income Tax is due March 31. Corporate Tax has quarterly estimates plus annual return by March 31. All filings are through E-Tax Services. Would you like details about a specific tax?"\n\n' +
       'User: "Ndashaka kwandikisha sosiyete"\n' +
-      'You: "Muraho! Kugirango wandikishe sosiyete, ujye kuri RDB website: urs.rdb.rw. Ukeneye documents ziki? Mbese ni sosiyete y\'ubwoko kihe - sole trader cyangwa limited company?"\n\n' +
+      'You: [First use web_search tool with query "Rwanda business registration RDB process"] Then respond: "Muraho! Kugirango wandikishe sosiyete, ujye kuri RDB website: urs.rdb.rw. Ukeneye documents ziki? Mbese ni sosiyete y\'ubwoko kihe - sole trader cyangwa limited company?"\n\n' +
       'User: "What\'s the weather today?"\n' +
       'You: "I can only help with RRA services like taxes, business registration, and customs. Would you like to know about any of these?"';
   }

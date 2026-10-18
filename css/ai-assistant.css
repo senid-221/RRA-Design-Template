@@ -1013,3 +1013,59 @@
     left: 0;
   }
 }
+
+/* Live Voice Mode Button */
+.ai-chat__live-voice-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+.ai-chat__live-voice-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ai-chat__live-voice-btn .lucide {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ai-chat__live-voice-btn.active {
+  background: #22c55e;
+  animation: pulse-live 2s infinite;
+}
+
+.ai-chat__live-voice-btn.active .lucide {
+  color: white;
+}
+
+@keyframes pulse-live {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+}
+
+.ai-chat__status-dot--live {
+  background: #22c55e;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

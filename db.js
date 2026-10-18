@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
 
 // Database connection configuration
 const pool = new Pool({
@@ -51,6 +52,99 @@ const initDatabase = async () => {
         is_active BOOLEAN DEFAULT true
       )
     `);
+
+    // Create admin_users table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS admin_users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(100) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        role VARCHAR(50) DEFAULT 'admin',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_login TIMESTAMP
+      )
+    `);
+
+    // Create videos table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS videos (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        video_url VARCHAR(500) NOT NULL,
+        thumbnail_url VARCHAR(500),
+        category VARCHAR(100),
+        duration VARCHAR(50),
+        display_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create projects table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS projects (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        image_url VARCHAR(500),
+        project_url VARCHAR(500),
+        category VARCHAR(100),
+        tags TEXT,
+        display_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create shop_products table (web previews for selling)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS shop_products (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        price DECIMAL(10, 2),
+        currency VARCHAR(10) DEFAULT 'RWF',
+        image_url VARCHAR(500),
+        preview_url VARCHAR(500),
+        demo_url VARCHAR(500),
+        category VARCHAR(100),
+        features TEXT,
+        technologies TEXT,
+        display_order INTEGER DEFAULT 0,
+        is_featured BOOLEAN DEFAULT false,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create site_content table for general editable content
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS site_content (
+        id SERIAL PRIMARY KEY,
+        content_key VARCHAR(255) UNIQUE NOT NULL,
+        content_value TEXT,
+        content_type VARCHAR(50) DEFAULT 'text',
+        page VARCHAR(100),
+        section VARCHAR(100),
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Insert default admin user (password: admin123 - should be changed on first login)
+    const adminExists = await pool.query('SELECT id FROM admin_users WHERE username = $1', ['admin']);
+    if (adminExists.rows.length === 0) {
+      const hash = await bcrypt.hash('admin123', 10);
+      await pool.query(
+        `INSERT INTO admin_users (username, password_hash, email, role) 
+         VALUES ($1, $2, $3, $4)`,
+        ['admin', hash, 'admin@rra.gov.rw', 'super_admin']
+      );
+    }
 
     console.log('✓ Database tables initialized');
   } catch (error) {
