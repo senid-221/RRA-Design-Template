@@ -654,7 +654,7 @@
       const closeSuccess = document.getElementById('closeSuccess');
       
       if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
           e.preventDefault();
           
           const name = document.getElementById('name').value;
@@ -665,32 +665,70 @@
           const subject = document.getElementById('subject').value;
           const message = document.getElementById('message').value;
           
-          // Create mailto link with form data
-          const mailtoLink = `mailto:info@rra.gov.rw?subject=${encodeURIComponent('FAQ Inquiry: ' + subject)}&body=${encodeURIComponent(
-            'Name: ' + name + '\n' +
-            'Email: ' + email + '\n' +
-            'Phone: ' + phone + '\n' +
-            'TIN: ' + tin + '\n' +
-            'Category: ' + category + '\n' +
-            'Subject: ' + subject + '\n\n' +
-            'Message:\n' + message
-          )}`;
-          
-          window.location.href = mailtoLink;
-          
-          // Show success message
-          formSuccess.classList.add('show');
-          
-          // Reset form
-          contactForm.reset();
-          
-          // Scroll to success message
-          formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          
-          // Auto-hide after 8 seconds
-          setTimeout(() => {
-            formSuccess.classList.remove('show');
-          }, 8000);
+          try {
+            // Submit to API endpoint
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                name,
+                email,
+                phone,
+                tin,
+                category,
+                subject,
+                message
+              })
+            });
+
+            if (response.ok) {
+              // Show success message
+              formSuccess.classList.add('show');
+              
+              // Reset form
+              contactForm.reset();
+              
+              // Scroll to success message
+              formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              
+              // Auto-hide after 8 seconds
+              setTimeout(() => {
+                formSuccess.classList.remove('show');
+              }, 8000);
+            } else {
+              alert('Failed to submit form. Please try again or contact us directly at info@rra.gov.rw');
+            }
+          } catch (error) {
+            console.error('Form submission error:', error);
+            // Fallback to mailto if API fails
+            const mailtoLink = `mailto:info@rra.gov.rw?subject=${encodeURIComponent('FAQ Inquiry: ' + subject)}&body=${encodeURIComponent(
+              'Name: ' + name + '\n' +
+              'Email: ' + email + '\n' +
+              'Phone: ' + phone + '\n' +
+              'TIN: ' + tin + '\n' +
+              'Category: ' + category + '\n' +
+              'Subject: ' + subject + '\n\n' +
+              'Message:\n' + message
+            )}`;
+            
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            formSuccess.classList.add('show');
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Scroll to success message
+            formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Auto-hide after 8 seconds
+            setTimeout(() => {
+              formSuccess.classList.remove('show');
+            }, 8000);
+          }
         });
       }
       
