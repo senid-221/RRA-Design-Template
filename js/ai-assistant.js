@@ -401,6 +401,13 @@
     } catch (error) {
       console.error('TTS Error:', error);
       console.log('Falling back to browser speech synthesis');
+      
+      // Show notification to user
+      var errorMsg = error.message || '';
+      if (errorMsg.includes('402') || errorMsg.includes('payment_required')) {
+        console.warn('ElevenLabs requires paid plan. Using browser TTS instead.');
+      }
+      
       // Fallback to browser speech synthesis
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
