@@ -135,15 +135,36 @@ const initDatabase = async () => {
       )
     `);
 
-    // Insert default admin user (password: admin123 - should be changed on first login)
-    const adminExists = await pool.query('SELECT id FROM admin_users WHERE username = $1', ['admin']);
-    if (adminExists.rows.length === 0) {
-      const hash = await bcrypt.hash('admin123', 10);
-      await pool.query(
-        `INSERT INTO admin_users (username, password_hash, email, role) 
-         VALUES ($1, $2, $3, $4)`,
-        ['admin', hash, 'admin@rra.gov.rw', 'super_admin']
-      );
+    // Bootstrap an administrator only when explicit deployment credentials are provided.
+    // Never create a publicly documented default password.
+    const initialAdminUsername = process.env.ADMIN_INITIAL_USERNAME || '';
+    const initialAdminPassword = process.env.ADMIN_INITIAL_PASSWORD || '';
+    const initialAdminEmail = process.env.ADMIN_INITIAL_EMAIL || '';
+    if (initialAdminUsername && initialAdminPassword && initialAdminEmail) {
+      if (initialAdminPassword.length < 12) {
+        console.warn('Admin bootstrap skipped: ADMIN_INITIAL_PASSWORD must be at least 12 characters.');
+      } else {
+        const adminExists = await pool.query('SELECT id, password_hash FROM admin_users WHERE username = $1', [initialAdminUsername]);
+        const hash = await bcrypt.hash(initialAdminPassword, 12);
+        if (adminExists.rows.length === 0) {
+          await pool.query(
+            `INSERT INTO admin_users (username, password_hash, email, role)
+             VALUES ($1, $2, $3, $4)`,
+            [initialAdminUsername, hash, initialAdminEmail, 'super_admin']
+          );
+        } else if (
+          initialAdminUsername === 'admin'
+          && await bcrypt.compare('admin123', adminExists.rows[0].password_hash)
+        ) {
+          // One-time recovery for databases created with the old, publicly documented default.
+          await pool.query('UPDATE admin_users SET password_hash = $1, email = $2 WHERE id = $3', [
+            hash, initialAdminEmail, adminExists.rows[0].id
+          ]);
+          console.warn('Replaced legacy default admin password using ADMIN_INITIAL_PASSWORD.');
+        }
+      }
+    } else {
+      console.warn('Admin bootstrap skipped: configure ADMIN_INITIAL_USERNAME, ADMIN_INITIAL_PASSWORD, and ADMIN_INITIAL_EMAIL for a new database.');
     }
 
     console.log('✓ Database tables initialized');

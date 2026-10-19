@@ -1,11 +1,34 @@
 var API_BASE = '';
 var currentUser = null;
 
+function adminFetch(url, options) {
+  options = options || {};
+  var headers = Object.assign({}, options.headers || {});
+  var token = sessionStorage.getItem('adminToken');
+  if (token) headers.Authorization = 'Bearer ' + token;
+  options.headers = headers;
+  return fetch(url, options).then(function(response) {
+    if (response.status === 401) {
+      sessionStorage.removeItem('adminToken');
+      sessionStorage.removeItem('adminUser');
+      currentUser = null;
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('dashboardScreen').style.display = 'none';
+    }
+    return response;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   var saved = sessionStorage.getItem('adminUser');
-  if (saved) {
-    currentUser = JSON.parse(saved);
-    showDashboard();
+  if (saved && sessionStorage.getItem('adminToken')) {
+    try {
+      currentUser = JSON.parse(saved);
+      showDashboard();
+    } catch (error) {
+      sessionStorage.removeItem('adminUser');
+      sessionStorage.removeItem('adminToken');
+    }
   }
 
   document.getElementById('loginForm').addEventListener('submit', handleLogin);
@@ -42,6 +65,7 @@ function handleLogin(e) {
     if (data.success) {
       currentUser = data.user;
       sessionStorage.setItem('adminUser', JSON.stringify(currentUser));
+      sessionStorage.setItem('adminToken', data.token);
       showDashboard();
     } else {
       errorEl.textContent = data.error || 'Login failed';
@@ -55,7 +79,9 @@ function handleLogin(e) {
 }
 
 function handleLogout() {
+  adminFetch(API_BASE + '/api/admin/logout', { method: 'POST' }).catch(function() {});
   currentUser = null;
+  sessionStorage.removeItem('adminToken');
   sessionStorage.removeItem('adminUser');
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('dashboardScreen').style.display = 'none';
@@ -87,7 +113,7 @@ function switchSection(section) {
 }
 
 function loadStats() {
-  fetch(API_BASE + '/api/admin/stats')
+  adminFetch(API_BASE + '/api/admin/stats')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       document.getElementById('statVideos').textContent = data.videos.total;
@@ -100,7 +126,7 @@ function loadStats() {
 
 // ===== VIDEOS =====
 function loadVideos() {
-  fetch(API_BASE + '/api/admin/videos')
+  adminFetch(API_BASE + '/api/admin/videos')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var container = document.getElementById('videosList');
@@ -152,7 +178,7 @@ function openVideoModal(video) {
 }
 
 function editVideo(id) {
-  fetch(API_BASE + '/api/admin/videos')
+  adminFetch(API_BASE + '/api/admin/videos')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var video = data.videos.find(function(v) { return v.id === id; });
@@ -193,7 +219,7 @@ function saveVideo(id) {
 
 function deleteVideo(id) {
   if (!confirm('Are you sure you want to delete this video?')) return;
-  fetch(API_BASE + '/api/admin/videos/' + id, { method: 'DELETE' })
+  adminFetch(API_BASE + '/api/admin/videos/' + id, { method: 'DELETE' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) loadVideos();
@@ -202,7 +228,7 @@ function deleteVideo(id) {
 
 // ===== PRODUCTS =====
 function loadProducts() {
-  fetch(API_BASE + '/api/admin/products')
+  adminFetch(API_BASE + '/api/admin/products')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var container = document.getElementById('productsList');
@@ -263,7 +289,7 @@ function openProductModal(product) {
 }
 
 function editProduct(id) {
-  fetch(API_BASE + '/api/admin/products')
+  adminFetch(API_BASE + '/api/admin/products')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var product = data.products.find(function(p) { return p.id === id; });
@@ -309,7 +335,7 @@ function saveProduct(id) {
 
 function deleteProduct(id) {
   if (!confirm('Are you sure you want to delete this product?')) return;
-  fetch(API_BASE + '/api/admin/products/' + id, { method: 'DELETE' })
+  adminFetch(API_BASE + '/api/admin/products/' + id, { method: 'DELETE' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) loadProducts();
@@ -318,7 +344,7 @@ function deleteProduct(id) {
 
 // ===== PROJECTS =====
 function loadProjects() {
-  fetch(API_BASE + '/api/admin/projects')
+  adminFetch(API_BASE + '/api/admin/projects')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var container = document.getElementById('projectsList');
@@ -368,7 +394,7 @@ function openProjectModal(project) {
 }
 
 function editProject(id) {
-  fetch(API_BASE + '/api/admin/projects')
+  adminFetch(API_BASE + '/api/admin/projects')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var project = data.projects.find(function(p) { return p.id === id; });
@@ -409,7 +435,7 @@ function saveProject(id) {
 
 function deleteProject(id) {
   if (!confirm('Are you sure you want to delete this project?')) return;
-  fetch(API_BASE + '/api/admin/projects/' + id, { method: 'DELETE' })
+  adminFetch(API_BASE + '/api/admin/projects/' + id, { method: 'DELETE' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) loadProjects();
@@ -467,7 +493,7 @@ function openContentModal(content) {
 }
 
 function editContent(id) {
-  fetch(API_BASE + '/api/admin/content')
+  adminFetch(API_BASE + '/api/admin/content')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var content = data.content.find(function(c) { return c.id === id; });
@@ -505,7 +531,7 @@ function saveContent(id) {
 
 function deleteContent(id) {
   if (!confirm('Are you sure you want to delete this content?')) return;
-  fetch(API_BASE + '/api/admin/content/' + id, { method: 'DELETE' })
+  adminFetch(API_BASE + '/api/admin/content/' + id, { method: 'DELETE' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) loadContent();
@@ -526,7 +552,7 @@ function handleChangePassword(e) {
     return;
   }
 
-  fetch(API_BASE + '/api/admin/change-password', {
+  adminFetch(API_BASE + '/api/admin/change-password', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: currentUser.username, currentPassword: current, newPassword: newPass })

@@ -2,8 +2,9 @@
 
 ## Access
 - URL: `/admin.html`
-- Default credentials: `admin` / `admin123`
-- **Change password immediately after first login**
+- Configure `ADMIN_INITIAL_USERNAME`, `ADMIN_INITIAL_PASSWORD` (at least 12 characters), and `ADMIN_INITIAL_EMAIL` before initializing a new database.
+- Existing deployments must replace any previously seeded `admin` / `admin123` credential; that known default password is rejected by the login endpoint.
+- Dashboard API routes require an eight-hour bearer-token session.
 
 ## Features
 
