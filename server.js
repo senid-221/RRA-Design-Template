@@ -1019,8 +1019,12 @@ app.post('/api/admin/login', rateLimitAdminLogin, async (req, res) => {
     }
 
     await pool.query('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE id = $1', [user.id]);
+    const now = Date.now();
+    for (const [sessionToken, existingSession] of adminSessions) {
+      if (existingSession.expiresAt <= now) adminSessions.delete(sessionToken);
+    }
     const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = Date.now() + 8 * 60 * 60_000;
+    const expiresAt = now + 8 * 60 * 60_000;
     adminSessions.set(token, {
       userId: user.id,
       username: user.username,
@@ -1066,7 +1070,7 @@ app.post('/api/admin/change-password', async (req, res) => {
 
     const valid = await bcrypt.compare(currentPassword, result.rows[0].password_hash);
     if (!valid) {
-      return res.status(401).json({ error: 'Current password is incorrect' });
+      return res.status(400).json({ error: 'Current password is incorrect' });
     }
 
     const hash = await bcrypt.hash(newPassword, 10);
