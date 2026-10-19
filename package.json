@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "install-deps": "npm install"
+    "install-deps": "npm install",
+    "test": "node --test"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
