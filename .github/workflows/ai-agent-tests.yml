@@ -21,6 +21,8 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check server.js
+          node --check db.js
+          node --check js/admin.js
           node --check js/ai-assistant.js
           node --check lib/ai-agent-guard.js
       - name: Run unit tests
