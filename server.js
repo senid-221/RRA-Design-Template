@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -939,8 +940,36 @@ app.post('/api/ai-agent/upload', async (req, res) => {
 
 // ===== ADMIN DASHBOARD API =====
 
+// In-memory admin sessions expire after eight hours. Use a shared store for multi-instance deployments.
+const adminSessions = new Map();
+const adminLoginBuckets = new Map();
+
+function requireAdminSession(req, res, next) {
+  const header = req.get('authorization') || '';
+  const match = header.match(/^Bearer ([a-f0-9]{64})$/i);
+  const token = match && match[1];
+  const session = token && adminSessions.get(token);
+  if (!session || session.expiresAt <= Date.now()) {
+    if (token) adminSessions.delete(token);
+    return res.status(401).json({ error: 'Admin session expired or missing. Please sign in again.' });
+  }
+  req.adminSession = session;
+  req.adminToken = token;
+  next();
+}
+
+function rateLimitAdminLogin(req, res, next) {
+  const key = req.ip || req.socket.remoteAddress || 'unknown';
+  const limit = checkRateLimit(key, Date.now(), adminLoginBuckets, 10, 15 * 60_000);
+  if (!limit.allowed) {
+    res.set('Retry-After', String(Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000))));
+    return res.status(429).json({ error: 'Too many login attempts. Please try again later.' });
+  }
+  next();
+}
+
 // Admin login
-app.post('/api/admin/login', async (req, res) => {
+app.post('/api/admin/login', rateLimitAdminLogin, async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -954,27 +983,49 @@ app.post('/api/admin/login', async (req, res) => {
 
     const user = result.rows[0];
     const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    if (!valid || (user.username === 'admin' && password === 'admin123')) {
+      return res.status(401).json({ error: 'Invalid credentials. Default admin credentials are disabled.' });
     }
 
     await pool.query('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE id = $1', [user.id]);
-    res.json({ success: true, user: { id: user.id, username: user.username, email: user.email, role: user.role } });
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + 8 * 60 * 60_000;
+    adminSessions.set(token, {
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+      expiresAt
+    });
+    res.json({
+      success: true,
+      token,
+      expiresAt: new Date(expiresAt).toISOString(),
+      user: { id: user.id, username: user.username, email: user.email, role: user.role }
+    });
   } catch (error) {
     console.error('Admin login error:', error);
     res.status(500).json({ error: 'Login failed' });
   }
 });
 
+// Protect every admin endpoint except the login route registered above.
+app.use('/api/admin', requireAdminSession);
+
+app.post('/api/admin/logout', (req, res) => {
+  adminSessions.delete(req.adminToken);
+  res.json({ success: true });
+});
+
 // Admin change password
 app.post('/api/admin/change-password', async (req, res) => {
   try {
-    const { username, currentPassword, newPassword } = req.body;
-    if (!username || !currentPassword || !newPassword) {
-      return res.status(400).json({ error: 'All fields are required' });
+    const { currentPassword, newPassword } = req.body || {};
+    const username = req.adminSession.username;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current and new passwords are required' });
     }
-    if (newPassword.length < 6) {
-      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    if (typeof newPassword !== 'string' || newPassword.length < 12) {
+      return res.status(400).json({ error: 'New password must be at least 12 characters' });
     }
 
     const result = await pool.query('SELECT * FROM admin_users WHERE username = $1', [username]);
