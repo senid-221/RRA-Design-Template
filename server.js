@@ -353,6 +353,20 @@ app.post('/api/ai-agent', (req, res, next) => {
 // Separate in-memory rate-limit buckets; for multi-instance deployments use a shared store.
 const aiRequestBuckets = new Map();
 const toolRequestBuckets = new Map();
+const uploadRequestBuckets = new Map();
+const ttsRequestBuckets = new Map();
+
+function rateLimitMiddleware(buckets, maxRequests, windowMs, message) {
+  return (req, res, next) => {
+    const key = req.ip || req.socket.remoteAddress || 'unknown';
+    const limit = checkRateLimit(key, Date.now(), buckets, maxRequests, windowMs);
+    if (!limit.allowed) {
+      res.set('Retry-After', String(Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000))));
+      return res.status(429).json({ error: message });
+    }
+    next();
+  };
+}
 
 // Tool execution endpoint - executes only known, read-only agent tools server-side.
 app.post('/api/ai-agent/execute-tool', (req, res, next) => {
@@ -537,9 +551,11 @@ app.post('/api/ai-agent/execute-tool', (req, res, next) => {
 });
 
 // AI Chat endpoint (legacy - kept for compatibility)
-app.post('/api/ai-chat', async (req, res) => {
+app.post('/api/ai-chat', rateLimitMiddleware(aiRequestBuckets, 30, 60_000, 'Too many AI requests. Please wait and try again.'), async (req, res) => {
   try {
-    const { provider, model, messages, maxTokens, temperature } = req.body;
+    const { provider, model, messages, maxTokens, temperature } = req.body || {};
+    const validation = validateChatMessages(messages);
+    if (!validation.valid) return res.status(400).json({ error: validation.error });
 
     if (provider === 'openai') {
       if (!OPENAI_API_KEY) {
@@ -562,7 +578,8 @@ app.post('/api/ai-chat', async (req, res) => {
 
       if (!response.ok) {
         const error = await response.text();
-        return res.status(response.status).json({ error: `OpenAI API error: ${error}` });
+        console.error('OpenAI legacy chat request failed:', response.status, error.slice(0, 500));
+        return res.status(response.status >= 400 && response.status < 500 ? response.status : 502).json({ error: 'The AI provider could not complete the request. Check server configuration and provider quota.' });
       }
 
       const data = await response.json();
@@ -593,7 +610,8 @@ app.post('/api/ai-chat', async (req, res) => {
 
       if (!response.ok) {
         const error = await response.text();
-        return res.status(response.status).json({ error: `Anthropic API error: ${error}` });
+        console.error('Anthropic legacy chat request failed:', response.status, error.slice(0, 500));
+        return res.status(response.status >= 400 && response.status < 500 ? response.status : 502).json({ error: 'The AI provider could not complete the request. Check server configuration and provider quota.' });
       }
 
       const data = await response.json();
@@ -610,12 +628,15 @@ app.post('/api/ai-chat', async (req, res) => {
 });
 
 // Text-to-Speech endpoint using OpenAI TTS
-app.post('/api/tts', async (req, res) => {
+app.post('/api/tts', rateLimitMiddleware(ttsRequestBuckets, 20, 60_000, 'Too many speech requests. Please wait and try again.'), async (req, res) => {
   try {
-    const { text, language } = req.body;
+    const { text, language } = req.body || {};
 
-    if (!text) {
-      return res.status(400).json({ error: 'Text is required' });
+    if (typeof text !== 'string' || !text.trim()) {
+      return res.status(400).json({ error: 'Text is required.' });
+    }
+    if (text.length > 4000) {
+      return res.status(413).json({ error: 'Text exceeds the 4,000-character speech limit.' });
     }
 
     if (!OPENAI_API_KEY) {
@@ -654,7 +675,7 @@ app.post('/api/tts', async (req, res) => {
     if (!response.ok) {
       const error = await response.text();
       console.error('OpenAI TTS API error:', response.status, error);
-      return res.status(response.status).json({ error: `OpenAI TTS API error: ${error}` });
+      return res.status(response.status >= 400 && response.status < 500 ? response.status : 502).json({ error: 'Speech generation failed. Check the AI provider configuration and quota.' });
     }
 
     // Convert audio to base64
@@ -759,9 +780,14 @@ app.post('/api/newsletter', async (req, res) => {
 });
 
 // Streaming AI Agent endpoint - real-time response streaming
-app.post('/api/ai-agent/stream', async (req, res) => {
+app.post('/api/ai-agent/stream', rateLimitMiddleware(aiRequestBuckets, 30, 60_000, 'Too many AI requests. Please wait and try again.'), async (req, res) => {
   try {
-    const { messages, provider, model } = req.body;
+    const { messages, provider, model } = req.body || {};
+    const validation = validateChatMessages(messages);
+    if (!validation.valid) {
+      res.status(400).json({ error: validation.error });
+      return;
+    }
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -793,7 +819,8 @@ app.post('/api/ai-agent/stream', async (req, res) => {
 
       if (!response.ok) {
         const error = await response.text();
-        res.write(`data: ${JSON.stringify({ error: `OpenAI API error: ${error}` })}\n\n`);
+        console.error('OpenAI streaming request failed:', response.status, error.slice(0, 500));
+        res.write(`data: ${JSON.stringify({ error: 'The AI provider could not complete the request. Check server configuration and provider quota.' })}\n\n`);
         return res.end();
       }
 
@@ -863,7 +890,8 @@ app.post('/api/ai-agent/stream', async (req, res) => {
 
       if (!response.ok) {
         const error = await response.text();
-        res.write(`data: ${JSON.stringify({ error: `Anthropic API error: ${error}` })}\n\n`);
+        console.error('Anthropic streaming request failed:', response.status, error.slice(0, 500));
+        res.write(`data: ${JSON.stringify({ error: 'The AI provider could not complete the request. Check server configuration and provider quota.' })}\n\n`);
         return res.end();
       }
 
@@ -910,12 +938,15 @@ app.post('/api/ai-agent/stream', async (req, res) => {
 });
 
 // File upload endpoint for AI analysis
-app.post('/api/ai-agent/upload', async (req, res) => {
+app.post('/api/ai-agent/upload', rateLimitMiddleware(uploadRequestBuckets, 10, 60_000, 'Too many uploads. Please wait and try again.'), async (req, res) => {
   try {
-    const { file, type, name } = req.body;
+    const { file, type, name } = req.body || {};
 
-    if (!file || !type) {
-      return res.status(400).json({ error: 'File data and type are required' });
+    if (typeof file !== 'string' || !file || typeof type !== 'string' || !type) {
+      return res.status(400).json({ error: 'File data and type are required.' });
+    }
+    if (file.length > 700_000 || type.length > 100 || (name && (typeof name !== 'string' || name.length > 255))) {
+      return res.status(413).json({ error: 'File metadata or encoded content exceeds the supported size.' });
     }
 
     // For now, return file metadata - actual processing would use AI vision API
@@ -929,7 +960,7 @@ app.post('/api/ai-agent/upload', async (req, res) => {
     res.json({
       success: true,
       file: fileInfo,
-      message: 'File received. AI agent will analyze the content.'
+      message: 'File received as metadata only. Content analysis is not implemented by this endpoint yet.'
     });
 
   } catch (error) {
