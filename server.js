@@ -3,13 +3,25 @@ const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const { pool, initDatabase } = require('./db');
+const { isAllowedTool, validateChatMessages, checkRateLimit } = require('./lib/ai-agent-guard');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Middleware: same-origin requests work by default; cross-origin access must be explicitly configured.
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Origin is not allowed by CORS'));
+  },
+  credentials: true
+}));
+app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname, '.')));
 
 // Environment variables
@@ -210,9 +222,22 @@ const PAGE_URLS = {
 };
 
 // AI Agent endpoint with tool calling
-app.post('/api/ai-agent', async (req, res) => {
+app.post('/api/ai-agent', (req, res, next) => {
+  const key = req.ip || req.socket.remoteAddress || 'unknown';
+  const limit = checkRateLimit(key, Date.now(), aiRequestBuckets, 30, 60_000);
+  if (!limit.allowed) {
+    res.set('Retry-After', String(Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000))));
+    return res.status(429).json({ error: 'Too many AI requests. Please wait and try again.' });
+  }
+  next();
+}, async (req, res) => {
   try {
-    const { messages, provider, model } = req.body;
+    const { messages, provider, model } = req.body || {};
+    const validation = validateChatMessages(messages);
+    if (!validation.valid) return res.status(400).json({ error: validation.error });
+    if (model !== undefined && (typeof model !== 'string' || model.length > 100)) {
+      return res.status(400).json({ error: 'Invalid model name.' });
+    }
 
     if (provider === 'openai' || !provider) {
       if (!OPENAI_API_KEY) {
@@ -237,7 +262,9 @@ app.post('/api/ai-agent', async (req, res) => {
 
       if (!response.ok) {
         const error = await response.text();
-        return res.status(response.status).json({ error: `OpenAI API error: ${error}` });
+        console.error('OpenAI API request failed:', response.status, error.slice(0, 500));
+        return res.status(response.status >= 400 && response.status < 500 ? response.status : 502)
+          .json({ error: 'The AI provider could not complete the request. Check server configuration and provider quota.' });
       }
 
       const data = await response.json();
@@ -275,7 +302,9 @@ app.post('/api/ai-agent', async (req, res) => {
 
       if (!response.ok) {
         const error = await response.text();
-        return res.status(response.status).json({ error: `Anthropic API error: ${error}` });
+        console.error('Anthropic API request failed:', response.status, error.slice(0, 500));
+        return res.status(response.status >= 400 && response.status < 500 ? response.status : 502)
+          .json({ error: 'The AI provider could not complete the request. Check server configuration and provider quota.' });
       }
 
       const data = await response.json();
@@ -320,10 +349,28 @@ app.post('/api/ai-agent', async (req, res) => {
   }
 });
 
-// Tool execution endpoint - executes agent tools server-side
-app.post('/api/ai-agent/execute-tool', async (req, res) => {
+// Separate in-memory rate-limit buckets; for multi-instance deployments use a shared store.
+const aiRequestBuckets = new Map();
+const toolRequestBuckets = new Map();
+
+// Tool execution endpoint - executes only known, read-only agent tools server-side.
+app.post('/api/ai-agent/execute-tool', (req, res, next) => {
+  const key = req.ip || req.socket.remoteAddress || 'unknown';
+  const limit = checkRateLimit(key, Date.now(), toolRequestBuckets, 60, 60_000);
+  if (!limit.allowed) {
+    res.set('Retry-After', String(Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000))));
+    return res.status(429).json({ error: 'Too many tool requests. Please wait and try again.' });
+  }
+  next();
+}, async (req, res) => {
   try {
-    const { tool, args } = req.body;
+    const { tool, args } = req.body || {};
+    if (!isAllowedTool(tool, AGENT_TOOLS.map(item => item.function.name))) {
+      return res.status(400).json({ error: 'Unknown or unsupported tool.' });
+    }
+    if (!args || typeof args !== 'object' || Array.isArray(args)) {
+      return res.status(400).json({ error: 'Tool arguments must be a JSON object.' });
+    }
     let result = {};
 
     switch (tool) {
@@ -428,28 +475,13 @@ app.post('/api/ai-agent/execute-tool', async (req, res) => {
         const maxResults = args.max_results || 5;
 
         if (!SERPAPI_KEY) {
-          // Fallback to simulated results if no API key
-          const fallbackResults = [];
-          if (searchQuery.toLowerCase().includes('vat') || searchQuery.toLowerCase().includes('tax')) {
-            fallbackResults.push({
-              title: 'VAT Services - Rwanda Revenue Authority',
-              url: 'https://www.rra.gov.rw/en/domestic-tax-services/value-added-tax',
-              snippet: 'Value Added Tax (VAT) is a consumption tax charged on the supply of goods and services. Standard rate is 18%. File monthly returns by the 15th via E-Tax Services portal.'
-            });
-          }
-          if (searchQuery.toLowerCase().includes('ebm') || searchQuery.toLowerCase().includes('billing')) {
-            fallbackResults.push({
-              title: 'EBM Electronic Billing Machine - RRA',
-              url: 'https://www.rra.gov.rw/en/ebm-electronic-billing-machine',
-              snippet: 'Electronic Billing Machine (EBM) is required for all businesses. Request purchase code through MyRRA portal to protect your TIN. EBM v2.0 requirements effective November 2026.'
-            });
-          }
-          fallbackResults.push({
-            title: 'Rwanda Revenue Authority - Official Website',
-            url: 'https://www.rra.gov.rw/',
-            snippet: 'Official RRA website. Access tax services, customs, EBM, trade information. Contact: +250 788 111 222. Office hours: Mon-Fri 7:30 AM - 5:00 PM.'
-          });
-          result = { query: searchQuery, results: fallbackResults, search_time: new Date().toISOString(), note: 'Using offline data. Configure SERPAPI_KEY for live web search.' };
+          // Never represent fabricated or stale fallback snippets as live search results.
+          result = {
+            query: searchQuery,
+            results: [],
+            unavailable: true,
+            message: 'Live web search is not configured. Use verified local knowledge only and clearly state when current information cannot be confirmed.'
+          };
           break;
         }
 
@@ -485,7 +517,8 @@ app.post('/api/ai-agent/execute-tool', async (req, res) => {
           result = {
             query: searchQuery,
             results: [],
-            error: 'Search failed: ' + error.message,
+            unavailable: true,
+            error: 'Live search request failed. Current information could not be verified.',
             search_time: new Date().toISOString()
           };
         }
