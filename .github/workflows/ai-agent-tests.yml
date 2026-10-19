@@ -1,0 +1,27 @@
+name: RRA AI Agent checks
+
+on:
+  push:
+    branches: [main, "fix/rra-ai-agent-audit"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Check JavaScript syntax
+        run: |
+          node --check server.js
+          node --check js/ai-assistant.js
+          node --check lib/ai-agent-guard.js
+      - name: Run unit tests
+        run: npm test
