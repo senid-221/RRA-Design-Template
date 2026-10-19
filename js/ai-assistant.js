@@ -884,9 +884,9 @@
   // Render model output as text first. Only validated HTTP(S) URLs become links.
   // This prevents model-generated HTML from being interpreted as executable markup.
   function renderSafeInlineText(text) {
-    var urlRegex = /(https?:\\/\\/[^\\s]+)/gi;
+    var urlRegex = /(https?:\/\/[^\s]+)/gi;
     return String(text || '').split(urlRegex).map(function(part) {
-      if (/^https?:\\/\\//i.test(part)) {
+      if (/^https?:\/\//i.test(part)) {
         var safeUrl = escapeHtml(part);
         return '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" class="ai-message__step-link">' +
           escapeHtml(part) + '</a>';
@@ -897,15 +897,15 @@
 
   function parseAIResponse(response) {
     var safeResponse = String(response || '');
-    var urlRegex = /(https?:\\/\\/[^\\s]+)/gi;
+    var urlRegex = /(https?:\/\/[^\s]+)/gi;
     var urls = safeResponse.match(urlRegex) || [];
-    var lines = safeResponse.split('\\n');
+    var lines = safeResponse.split('\n');
     var html = '';
     var inSteps = false;
     var stepNumber = 0;
 
     lines.forEach(function(line) {
-      var stepMatch = line.match(/^\\d+[\\.\\)]\\s+(.+)/);
+      var stepMatch = line.match(/^\d+[\.)]\s+(.+)/);
       if (stepMatch) {
         if (!inSteps) {
           html += '<div class="ai-message__steps">';
