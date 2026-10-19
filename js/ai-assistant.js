@@ -881,37 +881,53 @@
     }
   }
 
-  function parseAIResponse(response) {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
-    var urls = response.match(urlRegex) || [];
+  // Render model output as text first. Only validated HTTP(S) URLs become links.
+  // This prevents model-generated HTML from being interpreted as executable markup.
+  function renderSafeInlineText(text) {
+    var urlRegex = /(https?:\\/\\/[^\\s]+)/gi;
+    return String(text || '').split(urlRegex).map(function(part) {
+      if (/^https?:\\/\\//i.test(part)) {
+        var safeUrl = escapeHtml(part);
+        return '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" class="ai-message__step-link">' +
+          escapeHtml(part) + '</a>';
+      }
+      return escapeHtml(part);
+    }).join('');
+  }
 
-    var lines = response.split('\n');
+  function parseAIResponse(response) {
+    var safeResponse = String(response || '');
+    var urlRegex = /(https?:\\/\\/[^\\s]+)/gi;
+    var urls = safeResponse.match(urlRegex) || [];
+    var lines = safeResponse.split('\\n');
     var html = '';
     var inSteps = false;
+    var stepNumber = 0;
 
     lines.forEach(function(line) {
-      var stepMatch = line.match(/^\d+[\.\)]\s+(.+)/);
+      var stepMatch = line.match(/^\\d+[\\.\\)]\\s+(.+)/);
       if (stepMatch) {
         if (!inSteps) {
           html += '<div class="ai-message__steps">';
           inSteps = true;
+          stepNumber = 0;
         }
-        var stepText = stepMatch[1].replace(urlRegex, '<a href="$1" target="_blank" rel="noopener" class="ai-message__step-link">$1</a>');
-        html += '<div class="ai-message__step"><span class="ai-message__step-num">' + (html.split('ai-message__step-num').length) + '</span><span class="ai-message__step-text">' + stepText + '</span></div>';
+        stepNumber += 1;
+        html += '<div class="ai-message__step"><span class="ai-message__step-num">' +
+          stepNumber + '</span><span class="ai-message__step-text">' +
+          renderSafeInlineText(stepMatch[1]) + '</span></div>';
       } else {
         if (inSteps) {
           html += '</div>';
           inSteps = false;
         }
-        var formattedLine = line.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600;">$1</a>');
         if (line.trim()) {
-          html += '<p style="margin:8px 0;">' + formattedLine + '</p>';
+          html += '<p style="margin:8px 0;">' + renderSafeInlineText(line) + '</p>';
         }
       }
     });
 
     if (inSteps) html += '</div>';
-
     return { html: html, urls: urls };
   }
 
