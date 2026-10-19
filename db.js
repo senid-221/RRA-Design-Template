@@ -144,14 +144,23 @@ const initDatabase = async () => {
       if (initialAdminPassword.length < 12) {
         console.warn('Admin bootstrap skipped: ADMIN_INITIAL_PASSWORD must be at least 12 characters.');
       } else {
-        const adminExists = await pool.query('SELECT id FROM admin_users WHERE username = $1', [initialAdminUsername]);
+        const adminExists = await pool.query('SELECT id, password_hash FROM admin_users WHERE username = $1', [initialAdminUsername]);
+        const hash = await bcrypt.hash(initialAdminPassword, 12);
         if (adminExists.rows.length === 0) {
-          const hash = await bcrypt.hash(initialAdminPassword, 12);
           await pool.query(
             `INSERT INTO admin_users (username, password_hash, email, role)
              VALUES ($1, $2, $3, $4)`,
             [initialAdminUsername, hash, initialAdminEmail, 'super_admin']
           );
+        } else if (
+          initialAdminUsername === 'admin'
+          && await bcrypt.compare('admin123', adminExists.rows[0].password_hash)
+        ) {
+          // One-time recovery for databases created with the old, publicly documented default.
+          await pool.query('UPDATE admin_users SET password_hash = $1, email = $2 WHERE id = $3', [
+            hash, initialAdminEmail, adminExists.rows[0].id
+          ]);
+          console.warn('Replaced legacy default admin password using ADMIN_INITIAL_PASSWORD.');
         }
       }
     } else {
