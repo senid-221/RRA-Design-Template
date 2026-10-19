@@ -1022,6 +1022,9 @@
           });
 
           clearTimeout(finalTimeoutId);
+          if (!finalResponse.ok) {
+            throw new Error('AI follow-up request failed: ' + finalResponse.status);
+          }
 
           var finalData = await finalResponse.json();
           var finalMessage = finalData.choices[0].message.content;
