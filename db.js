@@ -135,15 +135,27 @@ const initDatabase = async () => {
       )
     `);
 
-    // Insert default admin user (password: admin123 - should be changed on first login)
-    const adminExists = await pool.query('SELECT id FROM admin_users WHERE username = $1', ['admin']);
-    if (adminExists.rows.length === 0) {
-      const hash = await bcrypt.hash('admin123', 10);
-      await pool.query(
-        `INSERT INTO admin_users (username, password_hash, email, role) 
-         VALUES ($1, $2, $3, $4)`,
-        ['admin', hash, 'admin@rra.gov.rw', 'super_admin']
-      );
+    // Bootstrap an administrator only when explicit deployment credentials are provided.
+    // Never create a publicly documented default password.
+    const initialAdminUsername = process.env.ADMIN_INITIAL_USERNAME || '';
+    const initialAdminPassword = process.env.ADMIN_INITIAL_PASSWORD || '';
+    const initialAdminEmail = process.env.ADMIN_INITIAL_EMAIL || '';
+    if (initialAdminUsername && initialAdminPassword && initialAdminEmail) {
+      if (initialAdminPassword.length < 12) {
+        console.warn('Admin bootstrap skipped: ADMIN_INITIAL_PASSWORD must be at least 12 characters.');
+      } else {
+        const adminExists = await pool.query('SELECT id FROM admin_users WHERE username = $1', [initialAdminUsername]);
+        if (adminExists.rows.length === 0) {
+          const hash = await bcrypt.hash(initialAdminPassword, 12);
+          await pool.query(
+            `INSERT INTO admin_users (username, password_hash, email, role)
+             VALUES ($1, $2, $3, $4)`,
+            [initialAdminUsername, hash, initialAdminEmail, 'super_admin']
+          );
+        }
+      }
+    } else {
+      console.warn('Admin bootstrap skipped: configure ADMIN_INITIAL_USERNAME, ADMIN_INITIAL_PASSWORD, and ADMIN_INITIAL_EMAIL for a new database.');
     }
 
     console.log('✓ Database tables initialized');
